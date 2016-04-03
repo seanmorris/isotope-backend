@@ -6,5 +6,11 @@
             "email": "sean@sean-morris.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+		"psr-4": {
+			"SeanMorris\\Ids\\Test\\": "test/",
+			"SeanMorris\\Ids\\": "source/"
+		}
+	}
 }
