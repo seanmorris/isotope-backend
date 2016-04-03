@@ -9,8 +9,8 @@
     "require": {},
     "autoload": {
 		"psr-4": {
-			"SeanMorris\\Ids\\Test\\": "test/",
-			"SeanMorris\\Ids\\": "source/"
+			"SeanMorris\\Isotope\\Test\\": "test/",
+			"SeanMorris\\Isotope\\": "source/"
 		}
 	}
 }
