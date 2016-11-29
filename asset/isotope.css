@@ -1,0 +1,48 @@
+table.IsotopeBoard {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table.IsotopeBoard td {
+	width:64px;
+	height:64px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+table.IsotopeBoard td a{
+	color: #FFF;
+	text-shadow:1px 1px #000;
+}
+
+table.IsotopeBoard td {
+	background: rgba(0,0,0,0.5);
+}
+
+table.IsotopeBoard td[data-claim="0"] {
+	background: rgba(255,0,0,0.6);
+}
+
+table.IsotopeBoard td[data-claim="1"] {
+	background: rgba(0,0,255,0.6);
+}
+
+table.IsotopeBoard td[data-claim="2"] {
+	background: rgba(0,192,0,0.6);
+}
+
+table.IsotopeBoard td:hover {
+	background: #444;
+}
+
+table.IsotopeBoard td.exploding {
+	background: #FFF;
+}
+
+table.IsotopeBoard td.exploding a {
+	color: #333;
+}
+
+.IsotopeStatus {
+	color: #FFF;
+}
