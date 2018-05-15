@@ -66,7 +66,7 @@ class Game extends \SeanMorris\PressKit\Model
 
 		foreach($players as $i => $player)
 		{
-			if($user->id !== $player->id)
+			if($user->id != $player->id)
 			{
 				continue;
 			}
@@ -102,6 +102,11 @@ class Game extends \SeanMorris\PressKit\Model
 					)
 				);
 
+				if($this->chain == NULL)
+				{
+					\SeanMorris\Ids\Log::error($this, debug_backtrace());
+				}
+
 				return TRUE;
 			}
 		}
@@ -115,10 +120,10 @@ class Game extends \SeanMorris\PressKit\Model
 		return FALSE;
 	}
 
-	protected function add($i, $x, $y, $negative = FALSE)
+	protected function add($i, $x, $y, $negative = FALSE , $stage = 0)
 	{
 		\SeanMorris\Ids\Log::debug(sprintf('Adding atom to %d %d', $x, $y));
-		$this->chain[] = [$x, $y];
+		$this->chain[] = [$x, $y, $stage];
 
 		$board = $this->boardData;
 
@@ -155,60 +160,60 @@ class Game extends \SeanMorris\PressKit\Model
 		);
 
 		if($board->data[$x][$y]->mass > 3
-			|| ($board->data[$x][$y]->mass > 2 && $random < 0.33)
-			|| ($board->data[$x][$y]->mass > 1 && $random < 0.66)
+			// || ($board->data[$x][$y]->mass > 2 && $random < 0.33 && count($this->chain) < 4)
+			// || ($board->data[$x][$y]->mass > 1 && $random < 0.66 && count($this->chain) < 4)
 			//|| ($board->data[$x][$y]->mass == 1 && $random < 0.1515)
 		){
 			$board->data[$x][$y]->mass -= 4;
 
 			if(isset($board->data[$x][$y+1]))
 			{
-				$this->add($i, $x, $y+1);
+				$this->add($i, $x, $y+1, FALSE, $stage+1);
 			}
 
 			if(isset($board->data[$x+1][$y]))
 			{
-				$this->add($i, $x+1, $y);
+				$this->add($i, $x+1, $y, FALSE, $stage+1);
 			}
 
 			if(isset($board->data[$x-1][$y]))
 			{
-				$this->add($i, $x-1, $y);
+				$this->add($i, $x-1, $y, FALSE, $stage+1);
 			}
 
 			if(isset($board->data[$x][$y-1]))
 			{
-				$this->add($i, $x, $y-1);
+				$this->add($i, $x, $y-1, FALSE, $stage+1);
 			}
 		}
-		else if($board->data[$x][$y]->mass == -1 && $random > 0.66)
-		{
-			$board->data[$x][$y]->mass += 4;
+		// else if($board->data[$x][$y]->mass == -1 && $random > 0.66)
+		// {
+		// 	$board->data[$x][$y]->mass += 4;
 
-			if(isset($board->data[$x][$y+1]))
-			{
-				$this->add($i, $x, $y+1, TRUE);
-			}
+		// 	if(isset($board->data[$x][$y+1]))
+		// 	{
+		// 		$this->add($i, $x, $y+1, TRUE, $stage+1);
+		// 	}
 
-			if(isset($board->data[$x+1][$y]))
-			{
-				$this->add($i, $x+1, $y, TRUE);
-			}
+		// 	if(isset($board->data[$x+1][$y]))
+		// 	{
+		// 		$this->add($i, $x+1, $y, TRUE, $stage+1);
+		// 	}
 
-			if(isset($board->data[$x-1][$y]))
-			{
-				$this->add($i, $x-1, $y, TRUE);
-			}
+		// 	if(isset($board->data[$x-1][$y]))
+		// 	{
+		// 		$this->add($i, $x-1, $y, TRUE, $stage+1);
+		// 	}
 
-			if(isset($board->data[$x][$y-1]))
-			{
-				$this->add($i, $x, $y-1, TRUE);
-			}
-		}
-		else if($board->data[$x][$y]->mass < -3)
-		{
-			$board->data[$x][$y]->mass += 4;
-		}
+		// 	if(isset($board->data[$x][$y-1]))
+		// 	{
+		// 		$this->add($i, $x, $y-1, TRUE, $stage+1);
+		// 	}
+		// }
+		// else if($board->data[$x][$y]->mass < -3)
+		// {
+		// 	$board->data[$x][$y]->mass += 4;
+		// }
 	}
 
 	public function addPlayer($user)
@@ -261,7 +266,5 @@ class Game extends \SeanMorris\PressKit\Model
 		$instance->chain = $skeleton['chain'] = json_encode($instance->chain);
 		$instance->scores = $skeleton['scores'] = json_encode($instance->scores);
 		$instance->boardData = $skeleton['boardData'] = json_encode($instance->boardData);
-
-		var_dump($instance, $skeleton);
 	}
 }

@@ -6,11 +6,37 @@
             "email": "sean@sean-morris.com"
         }
     ],
-    "require": {},
+    "require": {
+        "seanmorris/ids": "dev-master",
+        "seanmorris/access": "dev-master",
+        "seanmorris/theme": ">=1",
+        "seanmorris/form": "dev-master",
+        "seanmorris/message": "dev-master",
+        "seanmorris/presskit": "dev-master",
+        "simpletest/simpletest": "^1.1"
+    },
     "autoload": {
 		"psr-4": {
 			"SeanMorris\\Isotope\\Test\\": "test/",
 			"SeanMorris\\Isotope\\": "source/"
 		}
-	}
+	},
+    "repositories": [
+        {   
+            "type": "vcs",
+            "url":  "git@bitbucket.org:SeanMorris227/ids.git"
+        },
+        {   
+            "type": "vcs",
+            "url": "git@bitbucket.org:SeanMorris227/presskit.git"
+        },
+        {   
+            "type": "vcs",
+            "url": "git@bitbucket.org:SeanMorris227/message.git"
+        },
+        {   
+            "type": "vcs",
+            "url": "git@bitbucket.org:SeanMorris227/access.git"
+        }
+    ]
 }

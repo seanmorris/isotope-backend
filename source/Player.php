@@ -1,5 +1,5 @@
 <?php
-namespace \SeanMorris\Isotope;
+namespace SeanMorris\Isotope;
 class Player extends \SeanMorris\PressKit\Model
 {
 	protected
