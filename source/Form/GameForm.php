@@ -44,8 +44,8 @@ class GameForm extends \SeanMorris\PressKit\Form\Form
 			'_title' => 'Visibility'
 			, 'type' => 'select'
 			, '_options' => [
-				1 => 'Public'
-				, 0 => 'Private'
+				'Public'    => 1
+				, 'Private' => 0
 			]
 		];
 

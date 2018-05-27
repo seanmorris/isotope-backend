@@ -92,7 +92,10 @@ class Game extends \SeanMorris\PressKit\Model
 
 				$chainLength = count($this->chain);
 
-				$this->scores[$i] += floor((pow($chainLength,3)-pow($chainLength,2))/pow($chainLength,2));
+				$this->scores[$i] += floor(
+					(pow($chainLength,3)-pow($chainLength,2))
+					/pow($chainLength,2)
+				);
 
 				$this->forceSave();
 
