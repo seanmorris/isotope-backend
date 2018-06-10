@@ -20,23 +20,5 @@
 			"SeanMorris\\Isotope\\Test\\": "test/",
 			"SeanMorris\\Isotope\\": "source/"
 		}
-	},
-    "repositories": [
-        {   
-            "type": "vcs",
-            "url":  "git@bitbucket.org:SeanMorris227/ids.git"
-        },
-        {   
-            "type": "vcs",
-            "url": "git@bitbucket.org:SeanMorris227/presskit.git"
-        },
-        {   
-            "type": "vcs",
-            "url": "git@bitbucket.org:SeanMorris227/message.git"
-        },
-        {   
-            "type": "vcs",
-            "url": "git@bitbucket.org:SeanMorris227/access.git"
-        }
-    ]
+	}
 }
