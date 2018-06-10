@@ -7,7 +7,6 @@ COPY ./isotope-backend.conf /etc/apache2/sites-available/isotope-backend.conf
 RUN chmod -R 775 /app \
 	&& chmod -R 777 /app/temporary \
 	&& mkdir -p /app/public/Static/Dynamic/Min \
-	&& chmod -R 777 /app/public/Static \
 	&& ln -s /app/vendor/seanmorris/ids/source/Idilic/idilic /usr/local/bin/idilic \
 	&& a2enmod rewrite \
 	&& a2ensite isotope-backend \
@@ -17,6 +16,7 @@ RUN chmod -R 775 /app \
 	&& apt-get install -y --no-install-recommends git zip openssh-server \
 	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
 	&& chmod -R 775 /app \
+	&& chmod -R 776 /app/public/Static \
 	&& chmod -R 777 /app/temporary \
 	&& cd /app \
 	&& composer install --prefer-source --no-interaction
