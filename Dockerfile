@@ -6,6 +6,8 @@ COPY ./isotope-backend.conf /etc/apache2/sites-available/isotope-backend.conf
 
 RUN chmod -R 775 /app \
 	&& chmod -R 777 /app/temporary \
+	&& mkdir -p /app/public/Static/Dynamic/Min \
+	&& chmod -R 777 /app/public/Static \
 	&& a2enmod rewrite \
 	&& a2ensite isotope-backend \
 	&& docker-php-ext-install pdo_mysql \
