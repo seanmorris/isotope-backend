@@ -1,0 +1,20 @@
+{
+	"entrypoint" : "SeanMorris\\Isotope\\Route\\RootRoute"
+	, "corsDomains": [
+		"http://thruput:9999"
+		, "http://thruput"
+		, "http://isotope:9998"
+		, "http://isotope-frontend:3333"
+		, "http://isotope"
+	]
+	, "devmode" : false
+	, "databases" : {
+		"main" : {
+			"connection" : "mysql:dbname=isotope;host=database;"
+			, "username" : "isotope"
+			, "password" : "iso_secret"
+		}
+	}
+	, "public": "/app/isotope-backend/public"
+	, "logLevel": "off"
+}
