@@ -20,8 +20,10 @@ RUN chmod -R 775 /app \
 	&& composer clear-cache \
 	&& cd /app \
 	&& composer install --prefer-source --no-interaction \
-	&& composer update --prefer-source --no-interaction \
-	&& service ssh start
+	&& composer update --prefer-source --no-interaction
+
+RUN service ssh start \
+	&& ssh-keygen
 
 # RUN cd /app/vendor/seanmorris/ids/source/Idilic 1 \
 # 	&& ./idilic -d=isotope-backend:9997 applySchema SeanMorris/Ids 1 \
