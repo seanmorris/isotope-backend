@@ -12,10 +12,20 @@ RUN chmod -R 775 /app \
 	&& ln -s /app/vendor/seanmorris/ids/source/Idilic/idilic /usr/local/bin/idilic \
 	&& echo "Listen 9997" | tee /etc/apache2/ports.conf
 
-# RUN cd /app/vendor/seanmorris/ids/source/Idilic \
-#	&& ./idilic -d=isotope-backend:9997 applySchema SeanMorris/Ids \
-#	&& ./idilic -d=isotope-backend:9997 applySchema SeanMorris/Access \
-#	&& ./idilic -d=isotope-backend:9997 applySchema SeanMorris/PressKit \
-#	&& ./idilic -d=isotope-backend:9997 applySchema SeanMorris/Isotope
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends git zip
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
+
+RUN chmod -R 775 /app \
+	&& chmod -R 777 /app/temporary \
+	&& cd /app \
+	&& composer install --prefer-source --no-interaction
+
+# RUN cd /app/vendor/seanmorris/ids/source/Idilic 1 \
+# 	&& ./idilic -d=isotope-backend:9997 applySchema SeanMorris/Ids 1 \
+# 	&& ./idilic -d=isotope-backend:9997 applySchema SeanMorris/Access 1 \
+# 	&& ./idilic -d=isotope-backend:9997 applySchema SeanMorris/PressKit 1 \
+# 	&& ./idilic -d=isotope-backend:9997 applySchema SeanMorris/Isotope 1
 
 WORKDIR /app
