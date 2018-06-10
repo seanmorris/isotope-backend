@@ -19,9 +19,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ 
 
 RUN chmod -R 775 /app \
 	&& chmod -R 777 /app/temporary \
-	&& cd /app
-
-RUN composer install --prefer-source --no-interaction
+	&& cd /app \
+	&& composer install --prefer-source --no-interaction
 
 # RUN cd /app/vendor/seanmorris/ids/source/Idilic 1 \
 # 	&& ./idilic -d=isotope-backend:9997 applySchema SeanMorris/Ids 1 \
