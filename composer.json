@@ -21,8 +21,10 @@
 			"SeanMorris\\Isotope\\": "source/"
 		}
 	},
-    "discard-changes": true
-    , "repositories": [
+    "config": {
+        "discard-changes": true
+    },
+    "repositories": [
         {   
             "type": "vcs",
             "url":  "git@github.com:seanmorris/ids.git"
