@@ -30,4 +30,4 @@ RUN ssh-keygen -t rsa -N "" -f id_rsa \
 
 WORKDIR /app
 
-EXEC /usr/sbin/sshd
+CMD /usr/sbin/sshd -D && apache2-foreground
