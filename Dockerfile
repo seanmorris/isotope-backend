@@ -19,7 +19,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ 
 
 RUN chmod -R 775 /app \
 	&& chmod -R 777 /app/temporary \
-	&& cd /app \
+	&& cd /app
 
 RUN composer install --prefer-source --no-interaction
 
