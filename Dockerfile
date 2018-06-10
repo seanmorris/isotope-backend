@@ -23,7 +23,7 @@ RUN chmod -R 775 /app \
 	&& composer clear-cache
 
 RUN cd /app \
-	&& composer install --prefer-source --no-interaction
+	&& composer install --prefer-source --no-interaction \
 	&& composer update --prefer-source --no-interaction
 
 # RUN cd /app/vendor/seanmorris/ids/source/Idilic 1 \
