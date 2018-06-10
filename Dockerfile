@@ -17,8 +17,7 @@ RUN chmod -R 775 /app \
 	&& chmod -R 775 /app \
 	&& chmod -R 777 /app/temporary \
 	&& cd /app \
-	&& composer install --prefer-source --no-interaction \
-	&& composer update --prefer-source --no-interaction
+	&& composer install --prefer-source --no-interaction
 
 RUN ssh-keygen -t rsa -N "" -f id_rsa
 
