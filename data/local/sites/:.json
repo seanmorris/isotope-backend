@@ -10,11 +10,11 @@
 	, "devmode" : false
 	, "databases" : {
 		"main" : {
-			"connection" : "mysql:dbname=isotope;host=database;"
-			, "username" : "isotope"
-			, "password" : "iso_secret"
+			"connection" : "mysql:dbname=isotope;host=localhost;"
+			, "username" : "sean"
+			, "password" : ""
 		}
 	}
 	, "public": "/app/public"
-	, "logLevel": "off"
+	, "logLevel": "query"
 }

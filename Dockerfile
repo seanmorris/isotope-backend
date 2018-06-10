@@ -11,8 +11,8 @@ RUN chmod -R 775 /app \
 	&& a2enmod rewrite \
 	&& a2ensite isotope-backend \
 	&& docker-php-ext-install pdo_mysql \
-	&& echo "Listen 9997" >> /etc/apache2/ports.conf \
 	&& apt-get update \
+	&& echo "Listen 9997" >> /etc/apache2/ports.conf \
 	&& apt-get install -y --no-install-recommends git zip openssh-server \
 	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
 	&& chmod -R 775 /app \
