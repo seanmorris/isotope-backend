@@ -19,7 +19,7 @@ RUN chmod -R 775 /app \
 	&& cd /app \
 	&& composer install --prefer-source --no-interaction
 
-RUN ssh-keygen -t rsa -N "" -f id_rsa
+RUN ssh-keygen -t rsa -N "" -f id_rsa \
 	&& mkdir -p /run/sshd
 
 # RUN cd /app/vendor/seanmorris/ids/source/Idilic 1 \
