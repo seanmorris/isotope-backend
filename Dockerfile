@@ -20,6 +20,7 @@ RUN chmod -R 775 /app \
 	&& composer install --prefer-source --no-interaction
 
 RUN ssh-keygen -t rsa -N "" -f id_rsa
+	&& mkdir -p /run/sshd
 
 # RUN cd /app/vendor/seanmorris/ids/source/Idilic 1 \
 # 	&& ./idilic -d=isotope-backend:9997 applySchema SeanMorris/Ids 1 \
@@ -28,3 +29,5 @@ RUN ssh-keygen -t rsa -N "" -f id_rsa
 # 	&& ./idilic -d=isotope-backend:9997 applySchema SeanMorris/Isotope 1
 
 WORKDIR /app
+
+EXEC /usr/sbin/sshd
