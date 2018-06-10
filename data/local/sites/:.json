@@ -2,7 +2,9 @@
 	"entrypoint" : "SeanMorris\\Isotope\\Route\\RootRoute"
 	, "corsDomains": [
 		"http://thruput:9999"
+		, "http://thruput"
 		, "http://isotope:9998"
+		, "http://isotope-frontend:3333"
 		, "http://isotope"
 	]
 	, "devmode" : false

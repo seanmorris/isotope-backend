@@ -21,22 +21,25 @@
 			"SeanMorris\\Isotope\\": "source/"
 		}
 	},
+    "config": {
+        "discard-changes": true
+    },
     "repositories": [
         {   
             "type": "vcs",
-            "url":  "git@bitbucket.org:SeanMorris227/ids.git"
+            "url":  "git@github.com:seanmorris/ids.git"
         },
         {   
             "type": "vcs",
-            "url": "git@bitbucket.org:SeanMorris227/presskit.git"
+            "url": "git@github.com:seanmorris/presskit.git"
         },
         {   
             "type": "vcs",
-            "url": "git@bitbucket.org:SeanMorris227/message.git"
+            "url": "git@github.com:seanmorris/message.git"
         },
         {   
             "type": "vcs",
-            "url": "git@bitbucket.org:SeanMorris227/access.git"
+            "url": "git@github.com:seanmorris/access.git"
         }
     ]
 }
