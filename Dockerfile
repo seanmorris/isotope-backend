@@ -15,7 +15,10 @@ RUN chmod -R 775 /app \
 	&& apt-get install -y --no-install-recommends git zip openssh-server \
 	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
 	&& chmod -R 775 /app \
-	&& chmod -R 777 /app/temporary
+	&& chmod -R 777 /app/temporary \
+	&& cd /app \
+	&& composer install --prefer-source --no-interaction \
+	&& composer update --prefer-source --no-interaction
 
 RUN ssh-keygen -t rsa -N "" -f id_rsa
 
