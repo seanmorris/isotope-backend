@@ -20,7 +20,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ 
 RUN chmod -R 775 /app \
 	&& chmod -R 777 /app/temporary \
 	&& cd /app \
-	&& composer clearcache \
+	&& composer clear-cache
+
+RUN cd /app \
 	&& composer install --prefer-source --no-interaction
 
 # RUN cd /app/vendor/seanmorris/ids/source/Idilic 1 \
