@@ -201,3 +201,7 @@ label input {
 .lobby-content {
 	padding: 10px;
 }
+
+.lobby-content a {
+	font-family: monospace;
+}
