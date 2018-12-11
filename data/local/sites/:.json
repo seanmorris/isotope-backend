@@ -6,15 +6,16 @@
 		, "http://isotope:9998"
 		, "http://isotope-frontend:3333"
 		, "http://isotope"
+		, "http://localhost"
 	]
 	, "devmode" : false
 	, "databases" : {
 		"main" : {
-			"connection" : "mysql:dbname=isotope;host=database;"
+			"connection" : "mysql:dbname=isotope;host=database.isotope.seanmorr.is;"
 			, "username" : "isotope"
 			, "password" : "iso_secret"
 		}
 	}
 	, "public": "/app/public"
-	, "logLevel": "off"
+	, "logLevel": "query"
 }

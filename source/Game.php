@@ -2,6 +2,11 @@
 namespace SeanMorris\Isotope;
 class Game extends \SeanMorris\PressKit\Model
 {
+	const NEW_GAME            = 0
+		, WAITING_FOR_PLAYERS = 1
+		, PLAY_IN_PROGRESS    = 2
+		, GAME_OVER           = 3;
+
 	protected
 		$publicId
 		, $created
@@ -230,7 +235,7 @@ class Game extends \SeanMorris\PressKit\Model
 
 		if(count($this->players) >= $this->maxPlayers)
 		{
-			$this->mode = 2;
+			$this->mode = static::PLAY_IN_PROGRESS;
 			$this->forceSave();
 
 			$messages->addFlash(
@@ -245,29 +250,37 @@ class Game extends \SeanMorris\PressKit\Model
 
 	protected static function afterRead($instance)
 	{
-		$instance->chain = json_decode($instance->chain);
-		$instance->scores = json_decode($instance->scores);
+		$instance->chain     = json_decode($instance->chain);
+		$instance->scores    = json_decode($instance->scores);
 		$instance->boardData = json_decode($instance->boardData);
 	}
 
 	protected static function afterWrite($instance, &$skeleton)
 	{
-		$instance->chain = json_decode($instance->chain);
-		$instance->scores = json_decode($instance->scores);
-		$instance->boardData = json_decode($instance->boardData);
+		$instance->chain     = is_string($instance->chain)
+			? json_decode($instance->chain)
+			: $instance->chain;
+
+		$instance->scores    = is_string($instance->scores)
+			? json_decode($instance->scores)
+			: $instance->scores;
+
+		$instance->boardData = is_string($instance->boardData)
+			? json_decode($instance->boardData)
+			: $instance->boardData;
 	}
 
 	protected static function beforeCreate($instance, &$skeleton)
 	{
-		$skeleton['mode'] = 0;
-		$skeleton['moves'] = 0;
+		$skeleton['mode']          = static::NEW_GAME;
+		$skeleton['moves']         = 0;
 		$skeleton['currentPlayer'] = 0;
 	}
 
 	protected static function beforeWrite($instance, &$skeleton)
 	{
-		$instance->chain = $skeleton['chain'] = json_encode($instance->chain);
-		$instance->scores = $skeleton['scores'] = json_encode($instance->scores);
+		$instance->chain     = $skeleton['chain']     = json_encode($instance->chain);
+		$instance->scores    = $skeleton['scores']    = json_encode($instance->scores);
 		$instance->boardData = $skeleton['boardData'] = json_encode($instance->boardData);
 	}
 }

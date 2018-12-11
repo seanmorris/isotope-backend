@@ -1,0 +1,32 @@
+<div class = "board-wrap">
+	<div class = "board" cv-each = "rows:row:r">
+		[[row]]
+	</div>
+	<br />
+	<div class = "scoreboard">
+		<div cv-if = "over">
+			Game Over!
+		</div>
+		
+		<div cv-if = "!full">
+			<button cv-on = "click:join(event)">Join</button>
+		</div>
+		<div cv-if = "full">
+			<div cv-if = "!over">
+				<span cv-if = "currentPlayer">
+					<b>[[currentPlayer]]</b> Player's Turn
+				</span>
+			</div>
+			Red
+			<div cv-each = "scores:score:s" style = "display: inline">
+				[[score]]
+			</div>
+			Blue<br />
+			[[move]] / [[maxMoves]]
+		</div>
+		
+		<div cv-if = "over">
+			<a cv-link = "/">Back to lobby</a>
+		</div>
+	</div>
+</div>
