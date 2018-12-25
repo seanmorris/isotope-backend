@@ -73,14 +73,14 @@ services:
   #   volumes:
   #     - jenkins:/var/jenkins_home
 
-  compose.isotope.seanmorr.is:
-    build:
-      context: ../
-      dockerfile: infra/compose.Dockerfile
-    image: compose.isotope.seanmorr.is.com
-    restart: on-failure
-    volumes:
-      - ../:/app
+  # compose.isotope.seanmorr.is:
+  #   build:
+  #     context: ../
+  #     dockerfile: infra/compose.Dockerfile
+  #   image: compose.isotope.seanmorr.is.com
+  #   restart: on-failure
+  #   volumes:
+  #     - ../:/app
 
 volumes:
   schema.isotope.seanmorr.is:
