@@ -9,11 +9,13 @@
     "require": {
         "seanmorris/ids": "dev-master",
         "seanmorris/access": "dev-master",
-        "seanmorris/theme": ">=1",
+        "seanmorris/theme": "^1",
         "seanmorris/form": "dev-master",
         "seanmorris/message": "dev-master",
         "seanmorris/presskit": "dev-master",
-        "simpletest/simpletest": "^1.1"
+        "simpletest/simpletest": "^1.1",
+        "seanmorris/kalisti": "dev-master",
+        "seanmorris/subspace": "dev-master"
     },
     "autoload": {
 		"psr-4": {

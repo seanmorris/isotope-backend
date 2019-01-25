@@ -65,6 +65,19 @@ services:
       MYSQL_DATABASE: 'isotope'
     command: ['mysqld', '--character-set-server=utf8mb4']
 
+  socket.isotope.seanmorr.is:
+    build:
+      context: ../
+      dockerfile: vendor/seanmorris/subspace/infra/socket.Dockerfile
+    image: socket.subspace.seanmorr.is
+    restart: always
+    ports:
+      - "9998:9998"
+    volumes:
+      - ../:/app
+    depends_on:
+      - database.isotope.seanmorr.is
+
   # jenkins:
   #   image: r.cfcr.io/seanmorris/seanmorris/isotope-jenkins:master
   #   restart: always
@@ -73,14 +86,15 @@ services:
   #   volumes:
   #     - jenkins:/var/jenkins_home
 
-  # compose.isotope.seanmorr.is:
-  #   build:
-  #     context: ../
-  #     dockerfile: infra/compose.Dockerfile
-  #   image: compose.isotope.seanmorr.is.com
-  #   restart: on-failure
-  #   volumes:
-  #     - ../:/app
+  compose.isotope.seanmorr.is:
+    build:
+      context: ../
+      dockerfile: infra/compose.Dockerfile
+    image: compose.isotope.seanmorr.is.com
+    restart: on-failure
+    volumes:
+      - ../:/app
+      - ../data/local/composer/:/root/.composer/
 
 volumes:
   schema.isotope.seanmorr.is:

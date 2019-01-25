@@ -52,8 +52,12 @@ class Game extends \SeanMorris\PressKit\Model
 					, 'type' => 'LEFT'
 				]
 			]
-			, */'order' => [
+			, */
+			'order' => [
 				'id' => 'DESC'
+			]
+			, 'with' => [
+				'state' => 'byNull'
 			]
 		]
 	;
