@@ -17,9 +17,10 @@ class Game extends \SeanMorris\PressKit\Model
 		, $currentPlayer
 		, $state
 		, $players
+		, $chain    = []
+		, $scores   = []
+		, $submoves = []
 		, $boardData
-		, $chain = []
-		, $scores = []
 	;
 
 	protected static
@@ -62,16 +63,55 @@ class Game extends \SeanMorris\PressKit\Model
 		]
 	;
 
-	public function move($x, $y, $user = null)
+	public function pass($user)
+	{
+		$players = $this->getSubjects('players');
+
+		foreach($players as $i => $player)
+		{
+			if($user->id != $player->id)
+			{
+				continue;
+			}
+
+			if($i == $this->currentPlayer)
+			{
+				$this->submoves[$this->currentPlayer]++;
+				$this->submoves[$this->currentPlayer]++;
+
+				if($this->submoves[$this->currentPlayer] > 3)
+				{
+					$this->submoves[$this->currentPlayer] = 3;
+				}
+
+				$this->currentPlayer++;
+
+				if($this->currentPlayer > (count($players)-1))
+				{
+					$this->currentPlayer = 0;
+				}
+
+				$this->submoves[$this->currentPlayer]++;
+
+				if($this->submoves[$this->currentPlayer] > 3)
+				{
+					$this->submoves[$this->currentPlayer] = 3;
+				}
+
+				$this->moves++;
+
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	public function move($x, $y, $user)
 	{
 		if($this->maxMoves <= floor($this->moves / $this->maxPlayers))
 		{
 			return FALSE;
-		}
-
-		if($user === NULL)
-		{
-			$user = \SeanMorris\Access\Route\AccessRoute::_currentUser();
 		}
 
 		$players = $this->getSubjects('players');
@@ -86,12 +126,33 @@ class Game extends \SeanMorris\PressKit\Model
 
 			if($i == $this->currentPlayer)
 			{
-				$this->currentPlayer++;
-
-				if($this->currentPlayer > (count($players)-1))
+				if(!isset($this->submoves[$i]) || $this->submoves[$i] <= 0)
 				{
-					$this->currentPlayer = 0;
+					$this->submoves[$i] = 0;
 				}
+				else
+				{
+					$this->submoves[$i]--;
+				}
+
+				if($this->submoves[$i] == 0)
+				{
+					$this->currentPlayer++;
+
+					if($this->currentPlayer > (count($players)-1))
+					{
+						$this->currentPlayer = 0;
+					}
+
+					// $this->submoves[$this->currentPlayer] = 3;
+					$this->submoves[$this->currentPlayer]++;
+					if($this->submoves[$this->currentPlayer] > 3)
+					{
+						$this->submoves[$this->currentPlayer] = 3;
+					}
+					$this->moves++;
+				}
+
 
 				$this->chain = [];
 
@@ -101,7 +162,6 @@ class Game extends \SeanMorris\PressKit\Model
 				}
 
 				$this->add($i, $x, $y);
-				$this->moves++;
 
 				$chainLength = count($this->chain);
 
@@ -112,11 +172,11 @@ class Game extends \SeanMorris\PressKit\Model
 
 				$this->forceSave();
 
-				$messages->addFlash(
-					new \SeanMorris\Message\SuccessMessage(
-						'Move accepted.'
-					)
-				);
+				// $messages->addFlash(
+				// 	new \SeanMorris\Message\SuccessMessage(
+				// 		'Move accepted.'
+				// 	)
+				// );
 
 				if($this->chain == NULL)
 				{
@@ -127,11 +187,11 @@ class Game extends \SeanMorris\PressKit\Model
 			}
 		}
 
-		$messages->addFlash(
-			new \SeanMorris\Message\ErrorMessage(
-				'Moving out of turn.'
-			)
-		);
+		// $messages->addFlash(
+		// 	new \SeanMorris\Message\ErrorMessage(
+		// 		'Moving out of turn.'
+		// 	)
+		// );
 
 		return FALSE;
 	}
@@ -239,7 +299,8 @@ class Game extends \SeanMorris\PressKit\Model
 		$this->addSubject('players', $user);
 		$this->storeRelationships('players', $this->players);
 
-		$this->scores[] = 0;
+		$this->scores[]   = 0;
+		$this->submoves[] = 3;
 
 		if(count($this->players) >= $this->maxPlayers)
 		{
@@ -260,6 +321,7 @@ class Game extends \SeanMorris\PressKit\Model
 	{
 		$instance->chain     = json_decode($instance->chain);
 		$instance->scores    = json_decode($instance->scores);
+		$instance->submoves  = json_decode($instance->submoves);
 		$instance->boardData = json_decode($instance->boardData);
 	}
 
@@ -272,6 +334,10 @@ class Game extends \SeanMorris\PressKit\Model
 		$instance->scores    = is_string($instance->scores)
 			? json_decode($instance->scores)
 			: $instance->scores;
+
+		$instance->submoves  = is_string($instance->submoves)
+			? json_decode($instance->submoves)
+			: $instance->submoves;
 
 		$instance->boardData = is_string($instance->boardData)
 			? json_decode($instance->boardData)
@@ -289,6 +355,7 @@ class Game extends \SeanMorris\PressKit\Model
 	{
 		$instance->chain     = $skeleton['chain']     = json_encode($instance->chain);
 		$instance->scores    = $skeleton['scores']    = json_encode($instance->scores);
+		$instance->submoves  = $skeleton['submoves']  = json_encode($instance->submoves);
 		$instance->boardData = $skeleton['boardData'] = json_encode($instance->boardData);
 	}
 }

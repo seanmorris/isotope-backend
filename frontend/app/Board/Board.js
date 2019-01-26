@@ -105,12 +105,11 @@ export class Board extends View
 
 		this.args.currentPlayer = this.playerNames[body.currentPlayer];
 
-		this.args.scores = this.args.scores || [];
-
-		for(let i in body.scores)
-		{
-			this.args.scores[i] = this.args.scores[i];
-		}
+		this.args.scores   = body.scores;
+		this.args.submoves = body.submoves.map((s)=>{
+			s = parseInt(s);
+			return '●'.repeat(s) + '○'.repeat(3-s);
+		});
 
 		this.args.over = false;
 
@@ -172,6 +171,13 @@ export class Board extends View
 			Config.backend + '/games/' + this.args.gameId
 			, {_t: (new Date()).getTime()}
 		).then(callback);
+	}
+
+	pass()
+	{
+		this.socket.publish(`game:${this.args.gameId}`, JSON.stringify({
+			type: 'pass'
+		}));
 	}
 
 	join()

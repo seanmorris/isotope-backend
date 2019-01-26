@@ -2,7 +2,12 @@
 	<div class = "board" cv-each = "rows:row:r">
 		[[row]]
 	</div>
-	<br />
+	
+	<p class = "turn-indicator">
+		<span cv-each = "submoves:submove:s"><span>[[submove]]</span></span><br />
+		<button cv-on = "click:pass(event)">done</button>
+	</p>
+	
 	<div class = "scoreboard">
 		<div cv-if = "over">
 			Game Over!
@@ -18,8 +23,8 @@
 				</span>
 			</div>
 			Red
-			<div cv-each = "scores:score:s" style = "display: inline">
-				[[score]]
+			<div class = "scores" cv-each = "scores:score:s" style = "display: inline">
+				<span>[[score]]</span>
 			</div>
 			Blue<br />
 			[[move]] / [[maxMoves]]

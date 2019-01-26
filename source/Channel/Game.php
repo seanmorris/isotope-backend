@@ -27,6 +27,9 @@ class Game extends \SeanMorris\Kalisti\Channel
 			case 'join':
 				$output = $this->join($origin, $originalChannel);
 				break;
+			case 'pass':
+				$output = $this->pass($origin, $originalChannel);
+				break;
 			case 'move':
 				$output = $this->move($origin, $originalChannel, $received);
 				break;
@@ -37,6 +40,34 @@ class Game extends \SeanMorris\Kalisti\Channel
 			$output = 'invalid.';
 			return;
 		}
+	}
+
+	protected function pass($origin, $originalChannel)
+	{
+		if(!$user = $origin->contextGet('__persistent'))
+		{
+			return 'Not logged in.';
+		}
+
+		$game = $this->game;
+
+		if(!$game->pass($user))
+		{
+			return 'Unknown error';
+		}
+
+		foreach($this->subscribers as $origin)
+		{
+			$origin->onMessage(
+				json_encode($this->game->toApi(2))
+				, $output
+				, $origin
+				, $this
+				, $originalChannel
+			);
+		}
+
+		return 'Passed.';
 	}
 
 	protected function move($origin, $originalChannel, $move)
@@ -58,7 +89,7 @@ class Game extends \SeanMorris\Kalisti\Channel
 
 		if(!$game->move($x, $y, $user))
 		{
-			return;
+			return 'Unknown error';
 		}
 
 		foreach($this->subscribers as $origin)
@@ -97,7 +128,6 @@ class Game extends \SeanMorris\Kalisti\Channel
 
 			if($game->addPlayer($user))
 			{
-				return 'Joined.';
 				return json_encode($this->game->toApi(2));
 			}
 		}

@@ -169,6 +169,22 @@
                     }
                 }
             }
+        },
+        "2": {
+            "IsotopeGame": {
+                "fields": {
+                    "submoves": {
+                        "Field": "submoves",
+                        "Type": "varchar(255)",
+                        "Collation": "utf8mb4_general_ci",
+                        "Null": "NO",
+                        "Key": "",
+                        "Default": null,
+                        "Extra": "",
+                        "Comment": ""
+                    }
+                }
+            }
         }
     }
 }

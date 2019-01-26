@@ -151,9 +151,11 @@ html, body, div.main-box {
 }
 
 .scoreboard {
-	background: #888;
+	/*background: #888;*/
 	width: 200px;
 	text-align: center;
+	color: white;
+	font-size: 1.25em;
 }
 
 label,
@@ -185,10 +187,10 @@ label {
 .lobby-welcome,
 .scoreboard,
 label {
-	border-top: 1px solid #CCC;
+	/*border-top: 1px solid #CCC;
 	border-left:1px solid #AAA;
 	border-right: 1px solid #999;
-	border-bottom: 1px solid #666;
+	border-bottom: 1px solid #666;*/
 }
 
 label input {
@@ -204,4 +206,36 @@ label input {
 
 .lobby-content a {
 	font-family: monospace;
+}
+
+.turn-indicator {
+	font-size: 3em;
+	color:white;
+	text-shadow: 0px 4px 0px #000;
+	text-align: center;
+	line-height: 0.75em;
+}
+
+.turn-indicator span:nth-child(1) {
+	color: #F99;
+}
+
+.turn-indicator span:nth-child(2) {
+	color: #99F;
+}
+
+.scores span:nth-child(1) {
+	color: #F99;
+}
+
+.scores span:nth-child(2) {
+	color: #99F;
+}
+
+button {
+	padding-left: 1.5em;
+	padding-right: 1.5em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	margin-bottom: 1em;
 }
