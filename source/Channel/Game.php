@@ -106,7 +106,7 @@ class Game extends \SeanMorris\Kalisti\Channel
 		return 'Moved.';
 	}
 
-	protected function join($origin)
+	protected function join($origin, $originalChannel)
 	{
 		$game = $this->game;
 		$players = $game->getSubjects('players');
@@ -122,13 +122,35 @@ class Game extends \SeanMorris\Kalisti\Channel
 			{
 				if($user->publicId == $player->publicId)
 				{
+					foreach($this->subscribers as $origin)
+					{
+						$origin->onMessage(
+							json_encode($this->game->toApi(2))
+							, $output
+							, $origin
+							, $this
+							, $originalChannel
+						);
+					}
+
 					return 'Already joined.';
 				}
 			}
 
 			if($game->addPlayer($user))
 			{
-				return json_encode($this->game->toApi(2));
+				foreach($this->subscribers as $origin)
+				{
+					$origin->onMessage(
+						json_encode($this->game->toApi(2))
+						, $output
+						, $origin
+						, $this
+						, $originalChannel
+					);
+				}
+
+				return 'Joined.';
 			}
 		}
 

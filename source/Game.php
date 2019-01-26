@@ -67,6 +67,8 @@ class Game extends \SeanMorris\PressKit\Model
 	{
 		$players = $this->getSubjects('players');
 
+		$this->chain = [];
+
 		foreach($players as $i => $player)
 		{
 			if($user->id != $player->id)

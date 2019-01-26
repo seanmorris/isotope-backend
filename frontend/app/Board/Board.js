@@ -92,7 +92,7 @@ export class Board extends View
 			}
 		}
 
-		if(this.lastMove < body.moves && body.chain && body.chain.length > 1)
+		if(body.chain && body.chain.length > 1)
 		{
 			this.chain(body.chain);
 			this.lastMove = body.moves;

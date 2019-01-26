@@ -3,20 +3,20 @@
 		[[row]]
 	</div>
 	
-	<p class = "turn-indicator">
-		<span cv-each = "submoves:submove:s"><span>[[submove]]</span></span><br />
-		<button cv-on = "click:pass(event)">done</button>
-	</p>
-	
 	<div class = "scoreboard">
 		<div cv-if = "over">
 			Game Over!
 		</div>
 		
-		<div cv-if = "!full">
+		<div cv-if = "!full"><br />
 			<button cv-on = "click:join(event)">Join</button>
 		</div>
 		<div cv-if = "full">
+			<p class = "turn-indicator">
+				<span cv-each = "submoves:submove:s"><span>[[submove]]</span></span><br />
+				<button cv-on = "click:pass(event)">done</button>
+			</p>
+			
 			<div cv-if = "!over">
 				<span cv-if = "currentPlayer">
 					<b>[[currentPlayer]]</b> Player's Turn
