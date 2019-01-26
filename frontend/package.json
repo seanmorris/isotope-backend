@@ -10,8 +10,8 @@
     "build": "brunch build --production"
   },
   "dependencies": {
-    "curvature": "^0.0.8",
-    "babel-brunch": "^6.1.1"
+    "curvature": "^0.0.15",
+    "subspace-client": "^0.0.2"
   },
   "devDependencies": {
     "auto-reload-brunch": "^2",

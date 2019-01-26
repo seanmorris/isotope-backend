@@ -4,6 +4,8 @@ import { View       } from 'curvature/base/View';
 
 import { Row } from './Row';
 
+import { Socket } from 'subspace-client/Socket';
+
 export class Board extends View
 {
 	constructor(args)
@@ -26,6 +28,23 @@ export class Board extends View
 			, 'Green'
 		];
 
+		this.socket = Socket.get('ws://localhost:9998');
+
+		args.authed.then(()=>{
+			this.socket.send('motd');
+
+			this.socket.subscribe(
+				`message:game:${this.args.gameId}`
+				, (e, m, c, o, i, oc, p) => {
+					this.updateBoard(JSON.parse(m));
+				}
+			);
+
+			this.cleanup.push(()=>{
+				this.socket.unsubscribe(`message:game:${this.args.gameId}`);
+			});
+		});
+
 		this.refresh(resp=>{
 			this.args.height = resp.body.boardData.height;
 			this.args.width  = resp.body.boardData.width;
@@ -43,7 +62,7 @@ export class Board extends View
 			}
 
 			this.onTimeout(1, ()=>{
-				this.updateBoard(resp)
+				this.updateBoard(resp.body);
 
 				document.dispatchEvent(new Event('renderComplete'));
 			});
@@ -51,14 +70,14 @@ export class Board extends View
 
 		this.template = require('./BoardTemplate.html');
 
-		this.onInterval(1000, ()=>{
-			this.refresh(resp=>this.updateBoard(resp));
-		});
+		// this.onInterval(1000, ()=>{
+		// 	this.refresh(resp=>this.updateBoard(resp));
+		// });
 	}
 
-	updateBoard(resp)
+	updateBoard(body)
 	{
-		let body = resp.body;
+		console.log(body);
 
 		for(let x = 0; x < this.args.width; x++)
 		{
@@ -157,11 +176,15 @@ export class Board extends View
 
 	join()
 	{
-		Repository.request(
-			Config.backend + '/games/' + this.args.gameId + '/join'
-			, {_t: (new Date()).getTime()}
-		).then(()=>{
+		this.socket.publish(`game:${this.args.gameId}`, JSON.stringify({
+			type: 'join'
+		}));
 
-		});
+		// Repository.request(
+		// 	Config.backend + '/games/' + this.args.gameId + '/join'
+		// 	, {_t: (new Date()).getTime()}
+		// ).then(()=>{
+
+		// });
 	}
 }

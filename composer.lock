@@ -136,12 +136,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:seanmorris/ids.git",
-                "reference": "0e36a26d8de438ca0fba3394837cf288cef30306"
+                "reference": "34cb106c5645f03c78311c0dabf0ee8d2ea1d74b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/ids/zipball/0e36a26d8de438ca0fba3394837cf288cef30306",
-                "reference": "0e36a26d8de438ca0fba3394837cf288cef30306",
+                "url": "https://api.github.com/repos/seanmorris/ids/zipball/34cb106c5645f03c78311c0dabf0ee8d2ea1d74b",
+                "reference": "34cb106c5645f03c78311c0dabf0ee8d2ea1d74b",
                 "shasum": ""
             },
             "require-dev": {
@@ -163,11 +163,7 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "support": {
-                "source": "https://github.com/seanmorris/ids/tree/master",
-                "issues": "https://github.com/seanmorris/ids/issues"
-            },
-            "time": "2019-01-02T05:30:59+00:00"
+            "time": "2019-01-25T07:57:29+00:00"
         },
         {
             "name": "seanmorris/kalisti",
@@ -175,12 +171,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/kalisti.git",
-                "reference": "3ef370a1cea1a798d7da40d53e059597dce4b483"
+                "reference": "db118c7689ab7f621f6efc7cbe63a2255a64ac26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/kalisti/zipball/3ef370a1cea1a798d7da40d53e059597dce4b483",
-                "reference": "3ef370a1cea1a798d7da40d53e059597dce4b483",
+                "url": "https://api.github.com/repos/seanmorris/kalisti/zipball/db118c7689ab7f621f6efc7cbe63a2255a64ac26",
+                "reference": "db118c7689ab7f621f6efc7cbe63a2255a64ac26",
                 "shasum": ""
             },
             "require-dev": {
@@ -201,7 +197,7 @@
                 }
             ],
             "description": "Channel based messaging interface",
-            "time": "2018-12-21T01:29:55+00:00"
+            "time": "2019-01-26T05:01:25+00:00"
         },
         {
             "name": "seanmorris/message",
@@ -272,12 +268,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/subspace-server.git",
-                "reference": "1c5adf831399b114963b0bf75227c87b9cde0629"
+                "reference": "8622b3f85da814f3d20d10e97cc31f573e0234a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/subspace-server/zipball/1c5adf831399b114963b0bf75227c87b9cde0629",
-                "reference": "1c5adf831399b114963b0bf75227c87b9cde0629",
+                "url": "https://api.github.com/repos/seanmorris/subspace-server/zipball/8622b3f85da814f3d20d10e97cc31f573e0234a7",
+                "reference": "8622b3f85da814f3d20d10e97cc31f573e0234a7",
                 "shasum": ""
             },
             "require": {
@@ -306,7 +302,7 @@
                 }
             ],
             "description": "Kalisti websocket server.",
-            "time": "2019-01-24T22:37:01+00:00"
+            "time": "2019-01-26T05:01:40+00:00"
         },
         {
             "name": "seanmorris/theme",

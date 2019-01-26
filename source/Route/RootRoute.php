@@ -28,28 +28,13 @@ class RootRoute extends \SeanMorris\PressKit\Controller
 				die;
 			}
 		}
-	// 	if(isset($_SERVER['HTTP_REFERER']) && $corsDomains = \SeanMorris\Ids\Settings::read('corsDomains'))
-	// 	{
-	// 		$referrer = parse_url($_SERVER['HTTP_REFERER']);
-	// 		$referrerDomain = sprintf('%s://%s', $referrer['scheme'], $referrer['host']);
+	}
 
-	// 		if(isset($referrer['port']))
-	// 		{
-	// 			$referrerDomain .= ':' . $referrer['port'];
-	// 		}
-
-	// 		$corsDomainsIndex = array_flip($corsDomains);
-
-	// 		if(isset($corsDomainsIndex[$referrerDomain]))
-	// 		{
-	// 			$index = $corsDomainsIndex[$referrerDomain];
-
-	// 			header(sprintf('Access-Control-Allow-Origin: %s', $corsDomains[$index]));
-	// 			header('Access-Control-Allow-Credentials: true');
-	// 			header('Access-Control-Allow-Methods: GET,POST');
-	// 			header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
-	// 		}
-	// 	}
+	public function auth($router)
+	{
+		$subspaceRoute = new \SeanMorris\SubSpace\WebRoute;
+		print (string) $subspaceRoute->auth($router);
+		die;
 	}
 
 	public function facebookLogin($router)

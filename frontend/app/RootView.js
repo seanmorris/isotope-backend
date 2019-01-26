@@ -8,6 +8,9 @@ import { Profile  } from './Access/Profile';
 import { Lobby } from './Lobby/Lobby';
 import { Board } from './Board/Board';
 
+
+import { Socket } from 'subspace-client/Socket';
+
 export class RootView extends View
 {
 	constructor(args = {})
@@ -16,11 +19,28 @@ export class RootView extends View
 
 		this.args.toast = Toast.instance();
 
+		this.socket = Socket.get('ws://localhost:9998');
+
+		let authed = fetch('/auth?api').then((response)=>{
+			return response.text();
+		}).then((token)=>{
+			this.socket.send(`auth ${token}`);
+
+			return new Promise(accept=>{
+				this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {
+					if(m && m.substring(0,7) === '"authed' && o == 'server')
+					{
+						accept();
+					}
+				});
+			});
+		});
+
 		this.routes = {
 			'':               Lobby
 			, home:           Lobby
-			, game:           Board
-			, 'game/%gameId': Board
+			, game:           a=>new Board(Object.assign(a,{authed}))
+			, 'game/%gameId': a=>new Board(Object.assign(a,{authed}))
 			, login:          Login
 			, register:       Register
 			, 'my-account':   Profile

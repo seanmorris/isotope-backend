@@ -1,7 +1,7 @@
 import { Config         } from 'Config';
-import { Cookie         } from 'curvature/base/Cookie';
-import { Repository     } from 'curvature/base/Repository';
+// import { Cookie         } from 'curvature/base/Cookie';
 import { UserRepository } from 'curvature/access/UserRepository';
+import { Repository     } from 'curvature/base/Repository';
 import { View           } from 'curvature/base/View';
 
 export class Lobby extends View
@@ -20,11 +20,12 @@ export class Lobby extends View
 		this.args.currentUserId = null;
 
 		this.args.bindTo('games', (v)=>{
+			console.log(v);
 			if(!v)
 			{
-				console.log(v);
 				return;
 			}
+			console.log(v.length);
 			this.args.gamesFound = v.length;
 		});
 
@@ -32,12 +33,12 @@ export class Lobby extends View
 			this.incrementElipses();
 		});
 
-		if(!Cookie.get('prerenderer'))
-		{
-			UserRepository.getCurrentUser(1).then((resp)=>{
-				this.args.currentUserId = resp.body.publicId;
-			});
-		}
+		// if(!Cookie.get('prerenderer'))
+		// {
+		// }
+		UserRepository.getCurrentUser(1).then((resp)=>{
+			this.args.currentUserId = resp.body.publicId;
+		});
 		
 		this.findGame().then(()=>{
 			document.dispatchEvent(new Event('renderComplete'));

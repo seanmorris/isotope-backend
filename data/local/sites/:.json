@@ -18,4 +18,11 @@
 	}
 	, "public": "/app/public"
 	, "logLevel": "query"
+	, "jwtSecret": "0x3D07E202911E9BAE80242AC140002"
+	, "kalisti": {
+		"channels": {
+			"game:*": "SeanMorris\\Isotope\\Channel\\Game"
+			, "*": "SeanMorris\\Isotope\\Channel\\BlackHole"
+		}
+	}
 }

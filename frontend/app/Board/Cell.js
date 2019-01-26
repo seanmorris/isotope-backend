@@ -4,6 +4,8 @@ import { Toast      } from 'curvature/toast/Toast';
 import { ToastAlert } from 'curvature/toast/ToastAlert';
 import { View       } from 'curvature/base/View';
 
+import { Socket } from 'subspace-client/Socket';
+
 export class Cell extends View
 {
 	constructor(args)
@@ -29,6 +31,8 @@ export class Cell extends View
 		this.args.lit          = false;
 		this.args.owner        = null;
 
+		this.socket = Socket.get('ws://localhost:9998');
+
 		this.args.bindTo('value', (v)=>{
 			let icon = this.icons.neutral;
 
@@ -44,6 +48,11 @@ export class Cell extends View
 				icon = this.icons.minus;
 
 				v*=-1;
+			}
+
+			if(v > 3)
+			{
+				v = 0;
 			}
 		
 			this.args.displayValue = icon.repeat(v);
@@ -79,6 +88,11 @@ export class Cell extends View
 			icon = this.icons.minus;
 
 			number*=-1;
+		}
+
+		if(number > 3)
+		{
+			number = 0;
 		}
 
 		if(!Number.isNumber(number))
@@ -133,30 +147,37 @@ export class Cell extends View
 
 	sendMove()
 	{
-		Repository.request(
-			Config.backend
-			+ '/games/'
-			+ this.args.board.args.gameId
-			+ '/move'
-			, {
-				x: this.args.x
-				, y: this.args.y
-				, _t: (new Date()).getTime()
-			}
-		).then(resp=>{
-			if(resp.messages.length)
-			{
-				for(let i in resp.messages)
-				{
-					Toast.instance().pop(new ToastAlert({
-						title: resp.code == 0
-							? 'Success!'
-							: 'Error!'
-						, body: resp.messages[i]
-						, time: 2400
-					}));
-				}
-			}
-		});
+		this.socket.publish(`game:${this.args.board.args.gameId}`, JSON.stringify({
+			type: 'move'
+			, x: this.args.x
+			, y: this.args.y
+			, _t: (new Date()).getTime()
+		}));
+
+		// Repository.request(
+		// 	Config.backend
+		// 	+ '/games/'
+		// 	+ this.args.board.args.gameId
+		// 	+ '/move'
+		// 	, {
+		// 		x: this.args.x
+		// 		, y: this.args.y
+		// 		, _t: (new Date()).getTime()
+		// 	}
+		// ).then(resp=>{
+		// 	if(resp.messages.length)
+		// 	{
+		// 		for(let i in resp.messages)
+		// 		{
+		// 			Toast.instance().pop(new ToastAlert({
+		// 				title: resp.code == 0
+		// 					? 'Success!'
+		// 					: 'Error!'
+		// 				, body: resp.messages[i]
+		// 				, time: 2400
+		// 			}));
+		// 		}
+		// 	}
+		// });
 	}
 }

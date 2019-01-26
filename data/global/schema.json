@@ -153,6 +153,22 @@
                     }
                 }
             }
+        },
+        "1": {
+            "IsotopeGame": {
+                "fields": {
+                    "chain": {
+                        "Field": "chain",
+                        "Type": "longtext",
+                        "Collation": "latin1_swedish_ci",
+                        "Null": "NO",
+                        "Key": "",
+                        "Default": null,
+                        "Extra": "",
+                        "Comment": ""
+                    }
+                }
+            }
         }
     }
 }

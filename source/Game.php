@@ -62,14 +62,18 @@ class Game extends \SeanMorris\PressKit\Model
 		]
 	;
 
-	public function move($x, $y)
+	public function move($x, $y, $user = null)
 	{
 		if($this->maxMoves <= floor($this->moves / $this->maxPlayers))
 		{
-			return;
+			return FALSE;
 		}
 
-		$user = \SeanMorris\Access\Route\AccessRoute::_currentUser();
+		if($user === NULL)
+		{
+			$user = \SeanMorris\Access\Route\AccessRoute::_currentUser();
+		}
+
 		$players = $this->getSubjects('players');
 		$messages = \SeanMorris\Message\MessageHandler::get();
 
