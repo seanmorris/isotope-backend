@@ -12,26 +12,28 @@
 			<button cv-on = "click:join(event)">Join</button>
 		</div>
 		<div cv-if = "full">
-			<p class = "turn-indicator">
-				<span cv-each = "submoves:submove:s"><span>[[submove]]</span></span><br />
-				<button cv-on = "click:pass(event)">done</button>
-			</p>
-			
-			<div cv-if = "!over">
-				<span cv-if = "currentPlayer">
-					<b>[[currentPlayer]]</b> Player's Turn
-				</span>
+			<div class = "turn-indicator" cv-each = "submoves:submove:s">
+				<div>[[submove]]</div>
 			</div>
-			Red
-			<div class = "scores" cv-each = "scores:score:s" style = "display: inline">
+			
+			<div class = "scores" cv-each = "scores:score:s">
 				<span>[[score]]</span>
 			</div>
-			Blue<br />
-			[[move]] / [[maxMoves]]
+
+			<button cv-on = "click:pass(event)">done</button>
+
+			<div class = "color-[[currentPlayer]]">
+
+				<div cv-if = "!over">
+					<span cv-if = "currentPlayer">
+						<b>[[currentPlayer]]</b> Player's Turn
+					</span>
+				</div>
+			</div>
+			Round #[[move]] / [[maxMoves]]
 		</div>
 		
 		<div cv-if = "over">
-			<a cv-link = "/">Back to lobby</a>
 		</div>
 	</div>
 </div>

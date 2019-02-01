@@ -26,6 +26,7 @@ export class Cell extends View
 		};
 
 		this.args.value        = 0;
+		this.args.chained      = '';
 		this.args.displayValue = '';
 		this.args.exploding    = false;
 		this.args.lit          = false;

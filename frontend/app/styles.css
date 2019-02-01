@@ -8,8 +8,25 @@ html {
 	font-family: arial;
 }
 
-html, body, div.main-box {
+html, body {
 	height: 100%;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+}
+
+.header {
+	background-color: white;
+	font-size: 2em;
+	box-shadow: 0px 5px 5px rgba(0,0,0,0.5);
+	padding: 1rem;
+}
+
+.header a {
+	color: black;
+	text-decoration: none;
 }
 
 .board-wrap {
@@ -61,9 +78,11 @@ html, body, div.main-box {
 	font-size: 21pt;
 
 	background: rgba(0,0,0,1);
-	color: white;
+	color: rgba(255,255,255,0.75);
 
-	text-shadow: 2px 2px 1px rgba(0,0,0,1);
+	/*text-shadow: 2px 2px 1px rgba(0,0,0,1);*/
+	text-shadow: 0px 0px 12px rgba(255,255,255,1);
+	/*letter-spacing: -5px;*/
 
 	box-shadow: inset 0 0 10px #000000;
 
@@ -113,8 +132,28 @@ html, body, div.main-box {
 	margin:2px;
 	padding:25px;
 	border: none;
-	text-shadow: 9px 7px 6px rgba(0,0,0,0.5);
+	/*text-shadow: 9px 7px 6px rgba(0,0,0,0.5);*/
 	transition: all 0.1s ease-in;
+}
+
+.cell.chained:not([data-exploding="true"]) {
+	color: rgba(255,255,255,1);
+	/*text-shadow: 9px 7px 6px rgba(0,0,0,0.33);*/
+	/*opacity: 0.75;*/
+}
+
+@keyframes flicker {
+  from {color: color: rgba(255,255,255,1);}
+  to {color: color: rgba(0,0,0,0..25);}
+}
+
+.cell:not(.chained):hover {
+	filter: brightness(250%) contrast(150%);
+}
+
+.cell.chained:hover {
+	opacity: 0.25;
+	animation: flicker 0.25s infinite;
 }
 
 .lobby-welcome {
@@ -216,26 +255,43 @@ label input {
 	line-height: 0.75em;
 }
 
-.turn-indicator span:nth-child(1) {
+.turn-indicator,
+.scores {
+	display: flex;
+	justify-content: center;
+}
+
+.scores > * {
+	padding: 0.25em;
+}
+
+.color-Red,
+.turn-indicator > *:nth-child(1),
+.scores > *:nth-child(1) {
 	color: #F99;
 }
 
-.turn-indicator span:nth-child(2) {
+.color-Blue,
+.turn-indicator > *:nth-child(2),
+.scores > *:nth-child(2) {
 	color: #99F;
 }
 
-.scores span:nth-child(1) {
-	color: #F99;
+
+.color-Green,
+.turn-indicator > *:nth-child(3),
+.scores > *:nth-child(3) {
+	color: #9F9;
 }
 
-.scores span:nth-child(2) {
-	color: #99F;
-}
-
-button {
+button,
+select,
+input[type="text"],
+input[type="password"],
+input[type="submit"],
+input[type="button"] {
 	padding-left: 1.5em;
 	padding-right: 1.5em;
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
-	margin-bottom: 1em;
 }

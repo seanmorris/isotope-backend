@@ -235,12 +235,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:seanmorris/presskit.git",
-                "reference": "f40c81efa5af2213605505f11ba3818d2bf4babd"
+                "reference": "ed03463a29a9ef6e195812a84a569ff2f8ca0cbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/presskit/zipball/f40c81efa5af2213605505f11ba3818d2bf4babd",
-                "reference": "f40c81efa5af2213605505f11ba3818d2bf4babd",
+                "url": "https://api.github.com/repos/seanmorris/presskit/zipball/ed03463a29a9ef6e195812a84a569ff2f8ca0cbf",
+                "reference": "ed03463a29a9ef6e195812a84a569ff2f8ca0cbf",
                 "shasum": ""
             },
             "type": "library",
@@ -256,11 +256,7 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "support": {
-                "source": "https://github.com/seanmorris/PressKit/tree/master",
-                "issues": "https://github.com/seanmorris/PressKit/issues"
-            },
-            "time": "2019-01-12T21:57:22+00:00"
+            "time": "2019-02-01T03:05:38+00:00"
         },
         {
             "name": "seanmorris/subspace",

@@ -111,6 +111,14 @@ class Game extends \SeanMorris\PressKit\Model
 
 	public function move($x, $y, $user)
 	{
+		foreach($this->chain as $chainLink)
+		{
+			if($chainLink[0] == $x && $chainLink[1] == $y)
+			{
+				return false;
+			}
+		}
+
 		if($this->maxMoves <= floor($this->moves / $this->maxPlayers))
 		{
 			return FALSE;
@@ -165,12 +173,12 @@ class Game extends \SeanMorris\PressKit\Model
 
 				$this->add($i, $x, $y);
 
-				$chainLength = count($this->chain);
+				// $chainLength = count($this->chain);
 
-				$this->scores[$i] += floor(
-					(pow($chainLength,3)-pow($chainLength,2))
-					/pow($chainLength,2)
-				);
+				// $this->scores[$i] += floor(
+				// 	(pow($chainLength,3)-pow($chainLength,2))
+				// 	/pow($chainLength,2)
+				// );
 
 				$this->forceSave();
 

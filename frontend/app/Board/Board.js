@@ -88,6 +88,7 @@ export class Board extends View
 				{
 					cell.args.value = body.boardData.data[x][y].mass;
 					cell.args.owner = body.boardData.data[x][y].claimed;
+					cell.args.chained = '';
 				}
 			}
 		}
@@ -96,6 +97,10 @@ export class Board extends View
 		{
 			this.chain(body.chain);
 			this.lastMove = body.moves;
+		}
+		else if(body.chain.length === 1)
+		{
+			this.cell(body.chain[0][0], body.chain[0][1]).args.chained = 'chained';
 		}
 		
 		if(body.chain.length >= 1)
@@ -152,7 +157,10 @@ export class Board extends View
 			{
 				t    = chain[i][2];
 			}
+
 			let cell = this.cell(x, y);
+
+			cell.args.chained   = 'chained';
 
 			this.onTimeout(t*200, ()=>{
 				cell.args.exploding = true;

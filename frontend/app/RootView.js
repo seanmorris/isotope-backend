@@ -24,17 +24,15 @@ export class RootView extends View
 		let authed = fetch('/auth?api').then((response)=>{
 			return response.text();
 		}).then((token)=>{
-			this.socket.send(`auth ${token}`);
-
-			return new Promise(accept=>{
-				this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {
-					if(m && m.substring(0,7) === '"authed' && o == 'server')
-					{
-						accept();
-					}
-				});
+			return this.socket.send(`auth ${token}`);
+		}).then(()=>new Promise(accept=>{
+			this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {
+				if(m && m.substring(0,7) === '"authed' && o == 'server')
+				{
+					accept();
+				}
 			});
-		});
+		}));
 
 		this.routes = {
 			'':               Lobby
@@ -50,6 +48,9 @@ export class RootView extends View
 
 		this.template = `
 			[[toast]]
+			<div class = "header">
+				<a cv-link = "/">Isotope</a>
+			</div>
 			<div
 				class = "main-box"
 				style = "

@@ -20,7 +20,7 @@ services:
     build:
       context: ../
       dockerfile: infra/backend.Dockerfile
-    image: backend.isotope.seanmorr.is
+    image: r.cfcr.io/seanmorris/backend.isotope.seanmorr.is
     restart: always
     ports:
       - "80:80"
@@ -33,7 +33,7 @@ services:
     build:
       context: ../
       dockerfile: infra/worker.Dockerfile
-    image: worker.isotope.seanmorr.is
+    image: r.cfcr.io/seanmorris/worker.isotope.seanmorr.is
     restart: on-failure
     volumes:
       - ../:/app
@@ -44,7 +44,7 @@ services:
     build:
       context: ../
       dockerfile: infra/updater.Dockerfile
-    image: updater.isotope.seanmorr.is
+    image: r.cfcr.io/seanmorris/updater.isotope.seanmorr.is
     restart: on-failure
     volumes:
       - ../:/app
@@ -69,7 +69,7 @@ services:
     build:
       context: ../
       dockerfile: vendor/seanmorris/subspace/infra/socket.Dockerfile
-    image: socket.subspace.seanmorr.is
+    image: r.cfcr.io/seanmorris/socket.isotope.seanmorr.is
     restart: always
     ports:
       - "9998:9998"
@@ -90,7 +90,7 @@ services:
     build:
       context: ../
       dockerfile: infra/compose.Dockerfile
-    image: compose.isotope.seanmorr.is.com
+    image: r.cfcr.io/seanmorris/compose.isotope.seanmorr.is
     restart: on-failure
     volumes:
       - ../:/app
