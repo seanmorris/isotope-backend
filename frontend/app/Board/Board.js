@@ -190,15 +190,15 @@ export class Board extends View
 
 	join()
 	{
-		this.socket.publish(`game:${this.args.gameId}`, JSON.stringify({
-			type: 'join'
-		}));
+		// this.socket.publish(`game:${this.args.gameId}`, JSON.stringify({
+		// 	type: 'join'
+		// }));
 
-		// Repository.request(
-		// 	Config.backend + '/games/' + this.args.gameId + '/join'
-		// 	, {_t: (new Date()).getTime()}
-		// ).then(()=>{
-
-		// });
+		Repository.request(
+			Config.backend + '/games/' + this.args.gameId + '/join'
+			, {_t: (new Date()).getTime()}
+		).then((response)=>{
+			console.log(response);
+		});
 	}
 }

@@ -306,16 +306,34 @@ class Game extends \SeanMorris\PressKit\Model
 	{
 		$messages = \SeanMorris\Message\MessageHandler::get();
 
-		$this->addSubject('players', $user);
-		$this->storeRelationships('players', $this->players);
+		if(!$this->players || count($this->players) < $this->maxPlayers)
+		{
+			if(!$user->id)
+			{
+				$generatedName = sprintf('%s::%d', $this->publicId
+					, rand(0, PHP_INT_MAX)
+				);
 
-		$this->scores[]   = 0;
-		$this->submoves[] = 3;
+				$user->consume([
+					'username' => $generatedName
+					, 'email'  => sprintf('%s@isotope.seanmorr.is', $generatedName)
+				]);
 
-		if(count($this->players) >= $this->maxPlayers)
+				$user->save();
+
+				\SeanMorris\Access\Route\AccessRoute::_currentUser($user);
+			}
+
+			$this->addSubject('players', $user);
+			$this->storeRelationships('players', $this->players);
+			
+			$this->scores[]   = 0;
+			$this->submoves[] = 3;
+		}
+
+		if($this->players && count($this->players) >= $this->maxPlayers)
 		{
 			$this->mode = static::PLAY_IN_PROGRESS;
-			$this->forceSave();
 
 			$messages->addFlash(
 				new \SeanMorris\Message\ErrorMessage(
@@ -323,6 +341,8 @@ class Game extends \SeanMorris\PressKit\Model
 				)
 			);
 		}
+
+		$this->forceSave();
 
 		return $this->players;
 	}

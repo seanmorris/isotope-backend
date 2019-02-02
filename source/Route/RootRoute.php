@@ -33,8 +33,13 @@ class RootRoute extends \SeanMorris\PressKit\Controller
 	public function auth($router)
 	{
 		$subspaceRoute = new \SeanMorris\SubSpace\WebRoute;
-		print (string) $subspaceRoute->auth($router);
-		die;
+		$token         = $subspaceRoute->auth($router);
+		$string        = (string) $token;
+
+		return (object)[
+			'string'  => $string
+			, 'token' => $token
+		];
 	}
 
 	public function facebookLogin($router)

@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "curvature": "^0.0.15",
-    "subspace-client": "^0.0.2"
+    "subspace-client": "^0.0.3"
   },
   "devDependencies": {
     "auto-reload-brunch": "^2",

@@ -8,6 +8,7 @@ import { Profile  } from './Access/Profile';
 import { Lobby } from './Lobby/Lobby';
 import { Board } from './Board/Board';
 
+import { UserRepository } from 'curvature/access/UserRepository';
 
 import { Socket } from 'subspace-client/Socket';
 
@@ -21,18 +22,24 @@ export class RootView extends View
 
 		this.socket = Socket.get('ws://localhost:9998');
 
-		let authed = fetch('/auth?api').then((response)=>{
-			return response.text();
-		}).then((token)=>{
-			return this.socket.send(`auth ${token}`);
-		}).then(()=>new Promise(accept=>{
-			this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {
-				if(m && m.substring(0,7) === '"authed' && o == 'server')
-				{
-					accept();
-				}
-			});
-		}));
+		let authed;
+
+		UserRepository.onChange((user)=>{
+			authed = fetch('/auth?api', {credentials: 'same-origin'}).then((response)=>{
+				return response.text();
+			}).then((tokenSource)=>{
+				let token = JSON.parse(tokenSource);
+				console.log(token);
+				return this.socket.send(`auth ${token.body.string}`);
+			}).then(()=>new Promise(accept=>{
+				this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {
+					if(m && m.substring(0,7) === '"authed' && o == 'server')
+					{
+						accept();
+					}
+				});
+			}));
+		});
 
 		this.routes = {
 			'':               Lobby
