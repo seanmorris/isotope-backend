@@ -102,6 +102,8 @@ class Game extends \SeanMorris\PressKit\Model
 
 				$this->moves++;
 
+				$this->forceSave();
+
 				return TRUE;
 			}
 		}
@@ -305,8 +307,9 @@ class Game extends \SeanMorris\PressKit\Model
 	public function addPlayer($user)
 	{
 		$messages = \SeanMorris\Message\MessageHandler::get();
+		$players  = $this->getSubjects('players');
 
-		if(!$this->players || count($this->players) < $this->maxPlayers)
+		if(count($players) < $this->maxPlayers)
 		{
 			if(!$user->id)
 			{
@@ -324,49 +327,54 @@ class Game extends \SeanMorris\PressKit\Model
 				\SeanMorris\Access\Route\AccessRoute::_currentUser($user);
 			}
 
-			$this->addSubject('players', $user);
-			$this->storeRelationships('players', $this->players);
-			
 			$this->scores[]   = 0;
 			$this->submoves[] = 3;
-		}
 
-		if($this->players && count($this->players) >= $this->maxPlayers)
-		{
-			$this->mode = static::PLAY_IN_PROGRESS;
+			if($this->addSubject('players', $user))
+			{
+				if(count($players) + 1 >= $this->maxPlayers)
+				{
+					$this->mode = static::PLAY_IN_PROGRESS;
 
-			$messages->addFlash(
-				new \SeanMorris\Message\ErrorMessage(
-					'Game is now full.'
-				)
-			);
+					$messages->addFlash(
+						new \SeanMorris\Message\ErrorMessage(
+							'Game is now full.'
+						)
+					);
+				}
+				else
+				{
+					$this->mode = static::WAITING_FOR_PLAYERS;
+				}
+			}
+
 		}
 
 		$this->forceSave();
 
-		return $this->players;
+		return $players;
 	}
 
 	protected static function afterRead($instance)
 	{
-		$instance->chain     = json_decode($instance->chain);
-		$instance->scores    = json_decode($instance->scores);
-		$instance->submoves  = json_decode($instance->submoves);
 		$instance->boardData = json_decode($instance->boardData);
+		$instance->chain     = json_decode($instance->chain, TRUE);
+		$instance->scores    = json_decode($instance->scores, TRUE);
+		$instance->submoves  = json_decode($instance->submoves, TRUE);
 	}
 
 	protected static function afterWrite($instance, &$skeleton)
 	{
 		$instance->chain     = is_string($instance->chain)
-			? json_decode($instance->chain)
+			? json_decode($instance->chain, TRUE)
 			: $instance->chain;
 
 		$instance->scores    = is_string($instance->scores)
-			? json_decode($instance->scores)
+			? json_decode($instance->scores, TRUE)
 			: $instance->scores;
 
 		$instance->submoves  = is_string($instance->submoves)
-			? json_decode($instance->submoves)
+			? json_decode($instance->submoves, TRUE)
 			: $instance->submoves;
 
 		$instance->boardData = is_string($instance->boardData)

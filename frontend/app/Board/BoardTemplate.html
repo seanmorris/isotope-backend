@@ -1,4 +1,22 @@
 <div class = "board-wrap">
+	<div class = "scoreboard">
+		<div class = "color-[[currentPlayer]]">
+			<div cv-if = "!over">
+				<span cv-if = "currentPlayer">
+					<span cv-if = "!yourTurn">
+						<b>[[currentPlayer]]</b> Player's Turn
+					</span>
+					<span cv-if = "yourTurn">
+						<b>Your Turn</b>
+					</span>
+				</span>
+			</div>
+			<div class = "scores" cv-each = "scores:score:s">
+				<span>[[score]]</span>
+			</div>
+		</div>
+	</div>
+
 	<div class = "board" cv-each = "rows:row:r">
 		[[row]]
 	</div>
@@ -15,22 +33,11 @@
 			<div class = "turn-indicator" cv-each = "submoves:submove:s">
 				<div>[[submove]]</div>
 			</div>
-			
-			<div class = "scores" cv-each = "scores:score:s">
-				<span>[[score]]</span>
-			</div>
+
+			Round #[[move]] / [[maxMoves]]
 
 			<button cv-on = "click:pass(event)">done</button>
 
-			<div class = "color-[[currentPlayer]]">
-
-				<div cv-if = "!over">
-					<span cv-if = "currentPlayer">
-						<b>[[currentPlayer]]</b> Player's Turn
-					</span>
-				</div>
-			</div>
-			Round #[[move]] / [[maxMoves]]
 		</div>
 		
 		<div cv-if = "over">

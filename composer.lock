@@ -55,7 +55,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/seanmorris/access.git",
+                "url": "git@github.com:seanmorris/access.git",
                 "reference": "3e955326f2845d506bc0760531e17f40648f9468"
             },
             "dist": {
@@ -135,7 +135,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/seanmorris/ids.git",
+                "url": "git@github.com:seanmorris/ids.git",
                 "reference": "34cb106c5645f03c78311c0dabf0ee8d2ea1d74b"
             },
             "dist": {
@@ -163,10 +163,6 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "support": {
-                "source": "https://github.com/seanmorris/ids/tree/master",
-                "issues": "https://github.com/seanmorris/ids/issues"
-            },
             "time": "2019-01-25T07:57:29+00:00"
         },
         {
@@ -208,7 +204,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/seanmorris/message.git",
+                "url": "git@github.com:seanmorris/message.git",
                 "reference": "73c1b67f72dedba14c572e6e80c2c4fdd7ac8d3e"
             },
             "dist": {
@@ -224,16 +220,13 @@
                     "SeanMorris\\Message\\": "source/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "authors": [
                 {
                     "name": "Sean Morris",
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "support": {
-                "source": "https://github.com/seanmorris/message/tree/master",
-                "issues": "https://github.com/seanmorris/message/issues"
-            },
             "time": "2018-05-07T18:57:24+00:00"
         },
         {
@@ -241,12 +234,12 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/seanmorris/PressKit.git",
+                "url": "git@github.com:seanmorris/presskit.git",
                 "reference": "ed03463a29a9ef6e195812a84a569ff2f8ca0cbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/PressKit/zipball/ed03463a29a9ef6e195812a84a569ff2f8ca0cbf",
+                "url": "https://api.github.com/repos/seanmorris/presskit/zipball/ed03463a29a9ef6e195812a84a569ff2f8ca0cbf",
                 "reference": "ed03463a29a9ef6e195812a84a569ff2f8ca0cbf",
                 "shasum": ""
             },
@@ -263,10 +256,6 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "support": {
-                "source": "https://github.com/seanmorris/PressKit/tree/master",
-                "issues": "https://github.com/seanmorris/PressKit/issues"
-            },
             "time": "2019-02-01T03:05:38+00:00"
         },
         {

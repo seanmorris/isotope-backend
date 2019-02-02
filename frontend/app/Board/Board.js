@@ -6,6 +6,8 @@ import { Row } from './Row';
 
 import { Socket } from 'subspace-client/Socket';
 
+import { UserRepository } from 'curvature/access/UserRepository';
+
 export class Board extends View
 {
 	constructor(args)
@@ -77,8 +79,6 @@ export class Board extends View
 
 	updateBoard(body)
 	{
-		console.log(body);
-
 		for(let x = 0; x < this.args.width; x++)
 		{
 			for(let y = 0; y < this.args.height; y++)
@@ -110,11 +110,27 @@ export class Board extends View
 
 		this.args.currentPlayer = this.playerNames[body.currentPlayer];
 
-		this.args.scores   = body.scores;
-		this.args.submoves = body.submoves.map((s)=>{
-			s = parseInt(s);
-			return '●'.repeat(s) + '○'.repeat(3-s);
+		this.args.yourTurn = false;
+
+		UserRepository.getCurrentUser(false).then((response)=>{
+			console.log(body.players[body.currentPlayer].publicId, response.body.publicId);
+			if(body.players[body.currentPlayer].publicId === response.body.publicId)
+			{
+				this.args.yourTurn = true;
+			}
 		});
+
+		this.args.scores   = body.scores;
+
+		console.log(this.args.submoves);
+
+		if(body.submoves)
+		{
+			this.args.submoves = body.submoves.map((s)=>{
+				s = parseInt(s);
+				return '●'.repeat(s) + '○'.repeat(3-s);
+			});
+		}
 
 		this.args.over = false;
 
@@ -125,6 +141,8 @@ export class Board extends View
 
 		this.args.move     = parseInt(body.moves / body.maxPlayers);
 		this.args.maxMoves = body.maxMoves;
+
+		console.log(body.players.length);
 
 		if(body.players.length < body.maxPlayers)
 		{

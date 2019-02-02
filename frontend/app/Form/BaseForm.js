@@ -45,6 +45,9 @@ export class BaseForm extends View
 			document.dispatchEvent(new Event('renderComplete'));
 
 			this.args.form.onSubmit((form, event)=>{
+				event.preventDefault();
+				event.stopPropagation();
+
 				let formElement = form.tags.formTag.element;
 				let uri         = formElement.getAttribute('action') || path;
 				let method      = formElement.getAttribute('method') || this.args.method;

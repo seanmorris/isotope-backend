@@ -49,7 +49,11 @@ class Game extends \SeanMorris\Kalisti\Channel
 			return 'Not logged in.';
 		}
 
+		$this->game::clearCache();
+
 		$game = $this->game;
+		$game = $game::loadOneById($this->game->id);
+		$this->game = $game;
 
 		if(!$game->pass($user))
 		{
@@ -85,7 +89,11 @@ class Game extends \SeanMorris\Kalisti\Channel
 		$x = (int) $move['x'];
 		$y = (int) $move['y'];
 
+		$this->game::clearCache();
+
 		$game = $this->game;
+		$game = $game::loadOneById($this->game->id);
+		$this->game = $game;
 
 		if(!$game->move($x, $y, $user))
 		{
@@ -108,7 +116,12 @@ class Game extends \SeanMorris\Kalisti\Channel
 
 	protected function join($origin, $originalChannel)
 	{
+		$this->game::clearCache();
+
 		$game = $this->game;
+		$game = $game::loadOneById($this->game->id);
+		$this->game = $game;
+
 		$players = $game->getSubjects('players');
 
 		if(count($players) >= $game->maxPlayers)

@@ -19,7 +19,7 @@ class GameForm extends \SeanMorris\PressKit\Form\Form
 		$skeleton['width'] = [
 			'_title' => 'Width'
 			, 'type' => 'text'
-			, 'value'  => 11
+			, 'value'  => 5
 			, '_range' => [
 				3       => '%s must be at least 3.'
 				, 20    => '%s can be at most 20.'
@@ -30,7 +30,7 @@ class GameForm extends \SeanMorris\PressKit\Form\Form
 		$skeleton['height'] = [
 			'_title' => 'Height'
 			, 'type' => 'text'
-			, 'value'  => 13
+			, 'value'  => 8
 			, '_range' => [
 				3       => '%s must be at least 3.'
 				, 20    => '%s can be at most 20.'
