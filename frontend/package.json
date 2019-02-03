@@ -10,7 +10,7 @@
     "build": "brunch build --production"
   },
   "dependencies": {
-    "curvature": "^0.0.15",
+    "curvature": "^0.0.21",
     "subspace-client": "^0.0.3"
   },
   "devDependencies": {

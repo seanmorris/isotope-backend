@@ -170,24 +170,28 @@ body {
 	right: 0.5em;
 	z-index: 99999999999;
 	pointer-events: none;
+
+	background: rgba(0,0,0,0.6);
+	color: white;
+}
+
+.toast:empty {
+	
 }
 
 .toast .alert{
 	margin-right: 0px;
 	margin-left: auto;
-	border: 1px solid #ccc;
-	border-radius: 0.5em;
-	background: #FFF;
 	padding-left: 1em;
 	padding-right: 1.5em;
 	width: fit-content;
+	text-align: right;
 }
 
-.toast .alert {
+/*.toast .alert {
 	margin-top: 0.85em;
 	margin-bottom: 0.25em;
-	filter:invert(1);
-}
+}*/
 
 .scoreboard {
 	/*background: #888;*/
