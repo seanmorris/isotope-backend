@@ -211,11 +211,12 @@ class Game extends \SeanMorris\PressKit\Model
 	protected function add($i, $x, $y, $negative = FALSE , $stage = 0)
 	{
 		\SeanMorris\Ids\Log::debug(sprintf('Adding atom to %d %d', $x, $y));
-		$this->chain[] = [$x, $y, $stage];
 
 		$board = $this->boardData;
 
-		// $this->scores[$i] += abs($board->data[$x][$y]->mass ? pow($board->data[$x][$y]->mass, 2) : 1);
+		$prevMass = $board->data[$x][$y]->mass;
+		$prevClaim = $board->data[$x][$y]->claimed;
+
 		$this->scores[$i] += ($board->data[$x][$y]->mass
 			? abs($board->data[$x][$y]->mass)
 			: 1
@@ -226,7 +227,6 @@ class Game extends \SeanMorris\PressKit\Model
 		if(isset($board->data[$x][$y]->claimed)
 			&& $board->data[$x][$y]->claimed != $i
 		){
-			//$this->scores[$board->data[$x][$y]->claimed] -= abs($board->data[$x][$y]->mass-1);
 			$this->scores[$board->data[$x][$y]->claimed] -= ($board->data[$x][$y]->mass
 				? abs($board->data[$x][$y]->mass)
 				: 1
@@ -235,23 +235,16 @@ class Game extends \SeanMorris\PressKit\Model
 
 		$board->data[$x][$y]->claimed = $i;
 
-		$random = rand(0, 10) / 10;
+		$this->chain[] = [
+			$x, $y, $stage
+			, $board->data[$x][$y]->mass
+			, $board->data[$x][$y]->claimed
+			, $prevMass
+			, $prevClaim
+		];
 
-		if($this->maxMoves - floor($this->moves / $this->maxPlayers) <=	 10)
+		if($board->data[$x][$y]->mass > 3)
 		{
-			$random = $random * 2;
-		}
-
-		\SeanMorris\Ids\Log::debug(
-			'MOVES LEFT: ' . ($this->maxMoves - floor($this->moves / $this->maxPlayers))
-			, 'RNG ' . $random
-		);
-
-		if($board->data[$x][$y]->mass > 3
-			// || ($board->data[$x][$y]->mass > 2 && $random < 0.33 && count($this->chain) < 4)
-			// || ($board->data[$x][$y]->mass > 1 && $random < 0.66 && count($this->chain) < 4)
-			//|| ($board->data[$x][$y]->mass == 1 && $random < 0.1515)
-		){
 			$board->data[$x][$y]->mass -= 4;
 
 			if(isset($board->data[$x][$y+1]))
@@ -274,34 +267,6 @@ class Game extends \SeanMorris\PressKit\Model
 				$this->add($i, $x, $y-1, FALSE, $stage+1);
 			}
 		}
-		// else if($board->data[$x][$y]->mass == -1 && $random > 0.66)
-		// {
-		// 	$board->data[$x][$y]->mass += 4;
-
-		// 	if(isset($board->data[$x][$y+1]))
-		// 	{
-		// 		$this->add($i, $x, $y+1, TRUE, $stage+1);
-		// 	}
-
-		// 	if(isset($board->data[$x+1][$y]))
-		// 	{
-		// 		$this->add($i, $x+1, $y, TRUE, $stage+1);
-		// 	}
-
-		// 	if(isset($board->data[$x-1][$y]))
-		// 	{
-		// 		$this->add($i, $x-1, $y, TRUE, $stage+1);
-		// 	}
-
-		// 	if(isset($board->data[$x][$y-1]))
-		// 	{
-		// 		$this->add($i, $x, $y-1, TRUE, $stage+1);
-		// 	}
-		// }
-		// else if($board->data[$x][$y]->mass < -3)
-		// {
-		// 	$board->data[$x][$y]->mass += 4;
-		// }
 	}
 
 	public function addPlayer($user)

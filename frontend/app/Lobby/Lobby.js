@@ -20,12 +20,12 @@ export class Lobby extends View
 		this.args.currentUserId = null;
 
 		this.args.bindTo('games', (v)=>{
-			console.log(v);
+			// console.log(v);
 			if(!v)
 			{
 				return;
 			}
-			console.log(v.length);
+			// console.log(v.length);
 			this.args.gamesFound = v.length;
 		});
 

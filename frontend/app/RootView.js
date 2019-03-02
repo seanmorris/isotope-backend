@@ -31,15 +31,18 @@ export class RootView extends View
 			}).then((tokenSource)=>{
 				let token = JSON.parse(tokenSource);
 
-				return this.socket.send(`auth ${token.body.string}`);
-			}).then(()=>new Promise(accept=>{
 				this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {
 					if(m && m.substring(0,7) === '"authed' && o == 'server')
 					{
-						accept();
+						return Promise.resolve();
+					}
+					else
+					{
 					}
 				});
-			}));
+
+				return this.socket.send(`auth ${token.body.string}`);
+			});
 		});
 
 		this.routes = {

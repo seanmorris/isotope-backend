@@ -25,22 +25,19 @@ export class Cell extends View
 			, plus:    '●'
 		};
 
-		this.args.value        = 0;
-		this.args.chained      = '';
-		this.args.displayValue = '';
-		this.args.exploding    = false;
-		this.args.lit          = false;
-		this.args.owner        = null;
+		this.args.value         = 0;
+		this.args.chained       = '';
+		this.args.displayValue  = '';
+		this.args._displayValue = '';
+		this.args.exploding     = false;
+		this.args.lit           = false;
+		this.args.owner         = null;
 
 		this.socket = Socket.get(Config.socketUri);
 
-		this.args.bindTo('value', (v)=>{
-			let icon = this.icons.neutral;
+		let icon = this.icons.neutral;
 
-			if(this.args.exploding)
-			{
-				v = 4;
-			}
+		this.args.bindTo('value', (v)=>{
 
 			icon = this.icons.plus;
 
@@ -56,7 +53,7 @@ export class Cell extends View
 				v = 0;
 			}
 		
-			this.args.displayValue = icon.repeat(v);
+			this.args.displayValue = v;
 		});
 
 		this.args.bindTo('lit', (v)=>{
@@ -70,6 +67,7 @@ export class Cell extends View
 		});
 
 		this.args.bindTo('exploding', (v)=>{
+			this.args.displayValue = this.args.value;
 			if(!v)
 			{
 				return;
@@ -77,6 +75,17 @@ export class Cell extends View
 			setTimeout(()=>{
 				this.args.exploding = false;
 			}, 350);
+		});
+
+		this.args.bindTo('value', (v)=>{
+			this.args._displayValue = icon.repeat(v);
+			// if(!v)
+			// {
+			// 	return;
+			// }
+			// setTimeout(()=>{
+			// 	this.args.lit = false;
+			// }, 350);
 		});
 	}
 

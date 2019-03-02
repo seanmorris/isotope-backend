@@ -130,10 +130,10 @@ body {
 	border-radius: 5px;
 	color: #AAA;
 	margin:2px;
-	padding:10px;
+	padding:7.5px;
 	border: none;
 	/*text-shadow: 9px 7px 6px rgba(0,0,0,0.5);*/
-	transition: all 0.1s ease-in;
+	transition: all 0.45s ease-in;
 }
 
 .cell.chained:not([data-exploding="true"]) {
@@ -149,6 +149,7 @@ body {
 
 .cell:not(.chained) {
 	filter: brightness(250%) contrast(150%);
+	transition: all 0.15s ease-in;
 }
 
 .cell.chained {
@@ -156,6 +157,7 @@ body {
 	animation: flicker 0.25s infinite;
 	background-color: grey;
 	color: black !important;
+	transition: all 0.15s ease-out;
 }
 
 .lobby-welcome {

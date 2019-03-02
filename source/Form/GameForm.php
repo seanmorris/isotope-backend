@@ -54,7 +54,7 @@ class GameForm extends \SeanMorris\PressKit\Form\Form
 			, 'type'     => 'select'
 			, 'value'    => 2
 			, '_options' => [
-				2=>2, 3=>3
+				2=>2, 3=>3, 'Training Mode' => 1
 			]
 		];
 

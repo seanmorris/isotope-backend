@@ -47,7 +47,8 @@ class GameRoute extends \SeanMorris\PressKit\Controller
 
 		$instance->consume([
 			'boardData' => $boardData
-			, 'maxPlayers' => (int) ($skeleton['maxPlayers'] < 3 ? 2 : 3)
+			// , 'maxPlayers' => (int) ($skeleton['maxPlayers'] < 3 ? 2 : 3)
+			, 'maxPlayers' => (int) $skeleton['maxPlayers']
 			, 'maxMoves' => (int) ($skeleton['maxMoves'] < 40 ? $skeleton['maxMoves'] : 40)
 		], TRUE);
 

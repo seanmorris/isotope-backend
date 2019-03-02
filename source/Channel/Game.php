@@ -57,7 +57,7 @@ class Game extends \SeanMorris\Kalisti\Channel
 
 		if(!$game->pass($user))
 		{
-			return 'Unknown error';
+			return 'Unknown error 0x01.';
 		}
 
 		foreach($this->subscribers as $origin)
@@ -97,7 +97,7 @@ class Game extends \SeanMorris\Kalisti\Channel
 
 		if(!$game->move($x, $y, $user))
 		{
-			return 'Unknown error';
+			return 'Unknown error 0x02.';
 		}
 
 		foreach($this->subscribers as $origin)
@@ -167,6 +167,6 @@ class Game extends \SeanMorris\Kalisti\Channel
 			}
 		}
 
-		return 'Unknown error.';
+		return 'Unknown error 0x03.';
 	}
 }

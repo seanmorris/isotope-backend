@@ -32,7 +32,11 @@ export class Board extends View
 
 		this.socket = Socket.get(Config.socketUri);
 
+		console.log(args.authed);
+
 		args.authed.then(()=>{
+			console.log(args.authed);
+
 			this.socket.send('motd');
 
 			this.socket.subscribe(
@@ -93,7 +97,7 @@ export class Board extends View
 			}
 		}
 
-		if(body.chain && body.chain.length > 1)
+		if(body.chain)
 		{
 			this.chain(body.chain);
 			this.lastMove = body.moves;
@@ -113,7 +117,7 @@ export class Board extends View
 		this.args.yourTurn = false;
 
 		UserRepository.getCurrentUser(false).then((response)=>{
-			console.log(body.players[body.currentPlayer].publicId, response.body.publicId);
+			// console.log(body.players[body.currentPlayer].publicId, response.body.publicId);
 			if(body.players[body.currentPlayer].publicId === response.body.publicId)
 			{
 				this.args.yourTurn = true;
@@ -136,7 +140,7 @@ export class Board extends View
 
 		this.args.scores   = body.scores;
 
-		console.log(this.args.submoves);
+		// console.log(this.args.submoves);
 
 		if(body.submoves)
 		{
@@ -156,7 +160,7 @@ export class Board extends View
 		this.args.move     = parseInt(body.moves / body.maxPlayers);
 		this.args.maxMoves = body.maxMoves;
 
-		console.log(body.players.length);
+		// console.log(body.players.length);
 
 		if(body.players.length < body.maxPlayers)
 		{
@@ -184,18 +188,34 @@ export class Board extends View
 		{
 			let x    = chain[i][0];
 			let y    = chain[i][1];
-			let t    = 0;
-			if(chain[i][2])
-			{
-				t    = chain[i][2];
-			}
+			let t    = chain[i][2];
+			let cM   = chain[i][3];
+			let cC   = chain[i][4];
+			let pM   = chain[i][5];
+			let pC   = chain[i][6];
 
 			let cell = this.cell(x, y);
 
-			cell.args.chained   = 'chained';
+			if(!cell.args.setback)
+			{
+				cell.args.value   = pM;
+				cell.args.owner   = pC;
+				cell.args.setback = true;
+			}
 
-			this.onTimeout(t*200, ()=>{
-				cell.args.exploding = true;
+			this.onTimeout(t*450, ()=>{
+				cell.args.chained = 'chained';
+				cell.args.value   = cM;
+				cell.args.owner   = cC;
+				cell.args.setback = false;
+			});
+
+			this.onTimeout((t+1)*450, ()=>{
+				if(cM > 3)
+				{
+					cell.args.exploding = true;
+					cell.args.value     = 0;
+				}
 			});
 		}
 	}
@@ -231,8 +251,10 @@ export class Board extends View
 			, {_t: (new Date()).getTime()}
 		).then((response)=>{
 			console.log(response);
+			this.refresh(resp=>this.updateBoard(resp.body));
 		}).catch(error=>{
-
+			console.error(error);
+			this.refresh(resp=>this.updateBoard(resp.body));
 		});
 	}
 }
