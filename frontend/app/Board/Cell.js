@@ -32,7 +32,7 @@ export class Cell extends View
 		this.args.lit          = false;
 		this.args.owner        = null;
 
-		this.socket = Socket.get('ws://localhost:9998');
+		this.socket = Socket.get(Config.socketUri);
 
 		this.args.bindTo('value', (v)=>{
 			let icon = this.icons.neutral;

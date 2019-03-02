@@ -30,7 +30,7 @@ export class Board extends View
 			, 'Green'
 		];
 
-		this.socket = Socket.get('ws://localhost:9998');
+		this.socket = Socket.get(Config.socketUri);
 
 		args.authed.then(()=>{
 			this.socket.send('motd');
@@ -232,7 +232,7 @@ export class Board extends View
 		).then((response)=>{
 			console.log(response);
 		}).catch(error=>{
-			
+
 		});
 	}
 }

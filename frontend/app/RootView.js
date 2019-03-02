@@ -1,3 +1,4 @@
+import { Config     } from 'Config';
 import { View     } from 'curvature/base/View';
 import { Toast    } from 'curvature/toast/Toast';
 import { Login    } from './Form/Login';
@@ -20,7 +21,7 @@ export class RootView extends View
 
 		this.args.toast = Toast.instance();
 
-		this.socket = Socket.get('ws://localhost:9998');
+		this.socket = Socket.get(Config.socketUri);
 
 		let authed;
 
