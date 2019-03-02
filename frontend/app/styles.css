@@ -130,7 +130,7 @@ body {
 	border-radius: 5px;
 	color: #AAA;
 	margin:2px;
-	padding:25px;
+	padding:10px;
 	border: none;
 	/*text-shadow: 9px 7px 6px rgba(0,0,0,0.5);*/
 	transition: all 0.1s ease-in;
@@ -147,13 +147,15 @@ body {
   to {color: color: rgba(0,0,0,0..25);}
 }
 
-.cell:not(.chained):hover {
+.cell:not(.chained) {
 	filter: brightness(250%) contrast(150%);
 }
 
-.cell.chained:hover {
-	opacity: 0.25;
+.cell.chained {
+	opacity: 0.75;
 	animation: flicker 0.25s infinite;
+	background-color: grey;
+	color: black !important;
 }
 
 .lobby-welcome {
