@@ -107,10 +107,10 @@ export class BaseForm extends View
 			{
 				Toast.instance().pop(new ToastAlert({
 					title: response.body && response.body.id
-						? 'Success!'
-						: 'Error!'
+						? 'Error!'
+						: 'Success!'
 					, body: response.messages[i]
-					, time: 2400
+					, time: 9400
 				}));
 			}
 		}

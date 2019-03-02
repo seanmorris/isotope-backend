@@ -56,12 +56,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:seanmorris/access.git",
-                "reference": "3e955326f2845d506bc0760531e17f40648f9468"
+                "reference": "00c961239cd40c162fa0097ebd39360054fd7e67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/access/zipball/3e955326f2845d506bc0760531e17f40648f9468",
-                "reference": "3e955326f2845d506bc0760531e17f40648f9468",
+                "url": "https://api.github.com/repos/seanmorris/access/zipball/00c961239cd40c162fa0097ebd39360054fd7e67",
+                "reference": "00c961239cd40c162fa0097ebd39360054fd7e67",
                 "shasum": ""
             },
             "require": {
@@ -84,11 +84,7 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "support": {
-                "source": "https://github.com/seanmorris/access/tree/master",
-                "issues": "https://github.com/seanmorris/access/issues"
-            },
-            "time": "2019-01-11T06:43:46+00:00"
+            "time": "2019-03-01T08:36:23+00:00"
         },
         {
             "name": "seanmorris/form",
@@ -96,12 +92,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/form.git",
-                "reference": "1501aba6b50fb75b8605fc4afd986449b4c29fe9"
+                "reference": "1a060505b4638fe7e1c4784de13b775ec66500fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/form/zipball/1501aba6b50fb75b8605fc4afd986449b4c29fe9",
-                "reference": "1501aba6b50fb75b8605fc4afd986449b4c29fe9",
+                "url": "https://api.github.com/repos/seanmorris/form/zipball/1a060505b4638fe7e1c4784de13b775ec66500fc",
+                "reference": "1a060505b4638fe7e1c4784de13b775ec66500fc",
                 "shasum": ""
             },
             "require": {
@@ -128,7 +124,7 @@
                 }
             ],
             "description": "Simple, Object oriented forms for PHP.",
-            "time": "2018-12-09T04:27:18+00:00"
+            "time": "2019-02-13T14:43:44+00:00"
         },
         {
             "name": "seanmorris/ids",
@@ -136,12 +132,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:seanmorris/ids.git",
-                "reference": "34cb106c5645f03c78311c0dabf0ee8d2ea1d74b"
+                "reference": "c2082db591de34f85c188f29efb4235e91d6e69e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/ids/zipball/34cb106c5645f03c78311c0dabf0ee8d2ea1d74b",
-                "reference": "34cb106c5645f03c78311c0dabf0ee8d2ea1d74b",
+                "url": "https://api.github.com/repos/seanmorris/ids/zipball/c2082db591de34f85c188f29efb4235e91d6e69e",
+                "reference": "c2082db591de34f85c188f29efb4235e91d6e69e",
                 "shasum": ""
             },
             "require-dev": {
@@ -163,7 +159,7 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "time": "2019-01-25T07:57:29+00:00"
+            "time": "2019-02-28T23:48:46+00:00"
         },
         {
             "name": "seanmorris/kalisti",
@@ -235,12 +231,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:seanmorris/presskit.git",
-                "reference": "ed03463a29a9ef6e195812a84a569ff2f8ca0cbf"
+                "reference": "a78b4fd414cdd6a53226ad7fa0bb3e14eb37d5ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/presskit/zipball/ed03463a29a9ef6e195812a84a569ff2f8ca0cbf",
-                "reference": "ed03463a29a9ef6e195812a84a569ff2f8ca0cbf",
+                "url": "https://api.github.com/repos/seanmorris/presskit/zipball/a78b4fd414cdd6a53226ad7fa0bb3e14eb37d5ef",
+                "reference": "a78b4fd414cdd6a53226ad7fa0bb3e14eb37d5ef",
                 "shasum": ""
             },
             "type": "library",
@@ -256,7 +252,7 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "time": "2019-02-01T03:05:38+00:00"
+            "time": "2019-03-01T08:35:47+00:00"
         },
         {
             "name": "seanmorris/subspace",

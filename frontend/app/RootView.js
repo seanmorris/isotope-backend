@@ -29,7 +29,7 @@ export class RootView extends View
 				return response.text();
 			}).then((tokenSource)=>{
 				let token = JSON.parse(tokenSource);
-				console.log(token);
+
 				return this.socket.send(`auth ${token.body.string}`);
 			}).then(()=>new Promise(accept=>{
 				this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {

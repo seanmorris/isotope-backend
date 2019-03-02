@@ -118,6 +118,20 @@ export class Board extends View
 			{
 				this.args.yourTurn = true;
 			}
+		}).catch((response)=>{
+			if(response.messages)
+			{
+				for(let i in response.messages)
+				{
+					Toast.instance().pop(new ToastAlert({
+						title: response.body && response.body.id
+							? 'Error!'
+							: 'Success!'
+						, body: response.messages[i]
+						, time: 9400
+					}));
+				}
+			}
 		});
 
 		this.args.scores   = body.scores;
@@ -217,6 +231,8 @@ export class Board extends View
 			, {_t: (new Date()).getTime()}
 		).then((response)=>{
 			console.log(response);
+		}).catch(error=>{
+			
 		});
 	}
 }

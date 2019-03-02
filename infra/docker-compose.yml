@@ -23,7 +23,7 @@ services:
     image: r.cfcr.io/seanmorris/backend.isotope.seanmorr.is
     restart: always
     ports:
-      - "80:80"
+      - "9999:80"
     volumes:
       - ../:/app
     depends_on:
