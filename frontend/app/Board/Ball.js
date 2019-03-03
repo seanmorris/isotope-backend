@@ -40,8 +40,6 @@ export class Ball extends View
 			 / this.args.nucleus
 		);
 
-		console.log(this.args.offset);
-
 		this.onInterval(15, ()=>{
 			let speed = 0.1;
 

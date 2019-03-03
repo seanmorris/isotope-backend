@@ -34,10 +34,10 @@ export class Board extends View
 
 		this.socket = Socket.get(Config.socketUri);
 
-		console.log(args.authed);
+		// console.log(args.authed);
 
 		args.authed.then(()=>{
-			console.log(args.authed);
+			// console.log(args.authed);
 
 			this.socket.send('motd');
 
