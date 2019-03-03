@@ -107,6 +107,12 @@ class Game extends \SeanMorris\PressKit\Model
 
 				$this->moves++;
 
+				if($this->maxMoves <= floor($this->moves / $this->maxPlayers)
+					&& $this->submoves[$this->currentPlayer] <= 0
+				){
+					$this->submoves[$this->currentPlayer] = 1;
+				}
+
 				$this->forceSave();
 
 				return TRUE;
@@ -187,14 +193,11 @@ class Game extends \SeanMorris\PressKit\Model
 
 					$this->moves++;
 
-					if($this->moves < $this->maxMoves
-						&& $this->submoves[$this->currentPlayer] <= 0
-					){
+					if($this->submoves[$this->currentPlayer] <= 0)
+					{
 						$this->submoves[$this->currentPlayer] = 1;
 					}
-
 				}
-
 
 				$this->chain = [];
 

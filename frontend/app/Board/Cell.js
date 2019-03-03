@@ -69,9 +69,10 @@ export class Cell extends View
 			{
 				return;
 			}
+			console.log(this.args.value);
 			setTimeout(()=>{
 				this.args.lit = false;
-			}, 350);
+			}, 350 * ((this.args.value >= 3) ? 4 : 1));
 		});
 
 		this.args.bindTo('mass', (v,k,t,d,p)=>{
@@ -106,6 +107,7 @@ export class Cell extends View
 			}
 			setTimeout(()=>{
 				this.args.exploding = false;
+				console.log(this.args.value);
 			}, 350);
 		});
 

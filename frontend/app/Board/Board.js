@@ -217,8 +217,9 @@ export class Board extends View
 			if(!cell.args.setback)
 			{
 				cell.args.setback = true;
-				cell.args.value   = pM;
 				cell.args.owner   = pC;
+				// cell.args.mass    = pM;
+				cell.args.value   = pM;
 
 				cell.args.previousMass  = pM;
 				cell.args.previousOwner = pC;
@@ -226,26 +227,27 @@ export class Board extends View
 
 			cell.args.link    = t;
 
-			let speed = 450;
+			let speed = 650;
 
 			this.onTimeout(t*speed, ()=>{
-				cell.args.value   = cM;
-				cell.args.owner   = cC;
-				cell.args.setback = false;
+				cell.args.setback   = false;
 				cell.args.exploding = true;
 				if(cM > 3)
 				{
-					cell.args.chained   = 'chained';
+					// cell.args.mass    = cM;
+					// cell.args.value   = cM;
+					cell.args.chained = 'chained';
 				}
+				cell.args.value     = cM;
 			});
 
 			this.onTimeout((t+1)*speed, ()=>{
 				cell.args.chained   = 'chained';
+				cell.args.owner     = cC;
 				cell.args.mass      = cM;
 				if(cM > 3)
 				{
-					cell.args.value     = 0;
-					cell.args.owner     = cC;
+					cell.args.value = 0;
 				}
 			});
 		}
