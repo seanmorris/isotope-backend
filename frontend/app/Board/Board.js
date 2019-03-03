@@ -71,7 +71,7 @@ export class Board extends View
 				}
 			}
 
-			this.onTimeout(1, ()=>{
+			this.onTimeout(100, ()=>{
 				this.updateBoard(resp.body);
 
 				document.dispatchEvent(new Event('renderComplete'));
