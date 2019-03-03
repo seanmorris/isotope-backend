@@ -59,8 +59,8 @@ body {
 }
 
 .cell {
-	width: 4rem;
-	height: 4rem;
+	width: 4em;
+	height: 4em;
 
 	display: flex;
 	align-items: center;
@@ -74,8 +74,6 @@ body {
 	word-break: break-all;
 
 	overflow: hidden;
-
-	font-size: 2.5em;
 
 	background: rgba(0,0,0,1);
 	color: rgba(255,255,255,0.75);
@@ -179,6 +177,13 @@ body {
 		background-color 0.5s ease-in
 		, filter 0.5s ease-in
 		, padding 0.1s 0.1s ease-in;*/
+}
+
+.cell .particles{
+	font-size: 2.5em;
+	width: 1.5em;
+	margin: auto;
+	display: block;
 }
 
 .cell.chained[data-exploding="false"] .particles{
@@ -290,7 +295,7 @@ label input {
 }
 
 .turn-indicator {
-	font-size: 3em;
+	font-size: 4rem;
 	color:white;
 	text-shadow: 0px 4px 0px #000;
 	text-align: center;
