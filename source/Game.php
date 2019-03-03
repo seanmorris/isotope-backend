@@ -170,7 +170,8 @@ class Game extends \SeanMorris\PressKit\Model
 					}
 
 					// $this->submoves[$this->currentPlayer] = 3;
-					$this->submoves[$i]++;
+					$this->submoves[$this->currentPlayer]++;
+					// $this->submoves[$i]++;
 
 					if($this->submoves[$i] > 3)
 					{

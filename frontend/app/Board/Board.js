@@ -235,11 +235,11 @@ export class Board extends View
 			});
 
 			this.onTimeout((t+1)*speed, ()=>{
-				cell.args.chained = 'chained';
-				cell.args.mass    = cM;
+				cell.args.chained   = 'chained';
+				cell.args.mass      = cM;
+				cell.args.exploding = true;
 				if(cM > 3)
 				{
-					cell.args.exploding = true;
 					cell.args.value     = 0;
 					cell.args.owner     = cC;
 				}
