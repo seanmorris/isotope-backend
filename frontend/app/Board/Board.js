@@ -224,7 +224,6 @@ export class Board extends View
 				cell.args.previousOwner = pC;
 			}
 
-			cell.args.chained = 'chained';
 			cell.args.link    = t;
 
 			let speed = 450;
@@ -236,6 +235,7 @@ export class Board extends View
 			});
 
 			this.onTimeout((t+1)*speed, ()=>{
+				cell.args.chained = 'chained';
 				cell.args.mass    = cM;
 				if(cM > 3)
 				{

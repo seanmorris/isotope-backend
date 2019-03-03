@@ -75,7 +75,7 @@ body {
 
 	overflow: hidden;
 
-	font-size: 21pt;
+	font-size: 28px;
 
 	background: rgba(0,0,0,1);
 	color: rgba(255,255,255,0.75);
@@ -91,6 +91,8 @@ body {
 	position: relative;
 
 	overflow: visible;
+
+	border-radius: 5px;
 }
 
 .cell[data-owner="0"][data-value="1"] {background: rgba(255,0,0,0.2);}
@@ -288,7 +290,7 @@ label input {
 }
 
 .turn-indicator {
-	font-size: 3em;
+	font-size: 48px;
 	color:white;
 	text-shadow: 0px 4px 0px #000;
 	text-align: center;
