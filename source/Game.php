@@ -118,12 +118,19 @@ class Game extends \SeanMorris\PressKit\Model
 
 	public function move($x, $y, $user)
 	{
+		$negative = FALSE;
+
 		foreach($this->chain as $chainLink)
 		{
-			if($chainLink[0] == $x && $chainLink[1] == $y)
-			{
-				\SeanMorris\Ids\Log::error('Same chain!');
-				return false;
+			$board = $this->boardData;
+
+			if($chainLink[0] == $x
+				&& $chainLink[1] == $y
+				&& $board->data[$x][$y]->mass > 0
+			){
+				// \SeanMorris\Ids\Log::error('Same chain!');
+				// return false;
+				$negative = TRUE;
 			}
 		}
 
@@ -170,12 +177,17 @@ class Game extends \SeanMorris\PressKit\Model
 					}
 
 					// $this->submoves[$this->currentPlayer] = 3;
-					$this->submoves[$this->currentPlayer]++;
+					// $this->submoves[$this->currentPlayer]++;
 					// $this->submoves[$i]++;
 
 					if($this->submoves[$i] > 3)
 					{
 						$this->submoves[$i] = 3;
+					}
+
+					if($this->submoves[$this->currentPlayer] <= 0)
+					{
+						$this->submoves[$this->currentPlayer] = 1;
 					}
 
 					$this->moves++;
@@ -189,7 +201,7 @@ class Game extends \SeanMorris\PressKit\Model
 					$this->scores[$i] = 0;
 				}
 
-				$this->add($i, $x, $y);
+				$this->add($i, $x, $y, $negative);
 
 				// $chainLength = count($this->chain);
 
