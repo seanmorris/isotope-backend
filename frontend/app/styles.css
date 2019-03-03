@@ -189,7 +189,6 @@ body {
 	font-family: monospace;
 	font-size: 1.75em;
 	width: 2.25em;
-	display: block;
 }
 
 .cell.chained[data-exploding="false"] .particles{
@@ -413,3 +412,33 @@ input[type="button"] {
 .cell[data-owner="2"][data-value="4"][data-lit="true"],
 .cell[data-owner="2"][data-exploding="true"] {
 	background: rgba(200,255,200,0.8*/
+
+div.particles {
+	display:         flex;
+	width:           50px;
+	height:          25px;
+	flex-wrap:       wrap;
+	align-items:     center;
+	justify-content: center;
+}
+
+.particles .svg.ball {
+	width:     35%;
+	height:    35%;
+	overflow:  visible;
+}
+
+.particles .svg.ball:nth-child(3n) {
+	flex-basis: 100%;
+}
+
+.svg {
+	position: relative;
+}
+
+.svg svg {
+	position:  absolute;
+	top:       50%;
+	left:      50%;
+	transform: translate(-50%,-50%);
+}

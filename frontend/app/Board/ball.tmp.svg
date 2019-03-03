@@ -1,0 +1,49 @@
+<div class = " svg ball">
+	<svg
+		cv-attr = "width:_size,height:_size"
+		viewBox = "0 0 100 100"
+	>
+		<defs>
+			<filter
+				id = "glow_[[_id]]"
+				x  = "-1"
+				y  = "-1"
+				width  = "400%"
+				height = "400%"
+			>
+				<feColorMatrix
+					in     = "SourceAlpha"
+					result = "inverted"
+					type   = "matrix"
+					values = "
+						-1 0 0 0 1 
+						0 -1 0 0 1 
+						0 0 -1 0 1
+						0 0 0 1 0"
+					/>
+				<feGaussianBlur
+					in      = "inverted"
+					result  = "blurred"
+					stdDeviation = "[[blur]]"
+				/>
+
+				<feBlend
+					in   = "SourceGraphic"
+					in2  = "blurred"
+					mode = "normal"
+				/>
+			</filter>
+		</defs>
+		<ellipse
+			cx     = "50"
+			cy     = "50"
+			cv-attr = "rx:radius,ry:radius"
+			filter = "url(#glow_[[_id]])"
+			style  = "
+				fill:         [[fillColor]];
+				stroke:       [[strokeColor]];
+				stroke-width: [[strokeWidth]];
+			"
+		/>
+	</svg>
+</div>

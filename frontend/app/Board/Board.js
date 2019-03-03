@@ -4,7 +4,7 @@ import { View       } from 'curvature/base/View';
 import { Toast      } from 'curvature/toast/Toast';
 import { ToastAlert } from 'curvature/toast/ToastAlert';
 
-import { Row } from './Row';
+import { Row  } from './Row';
 
 import { Socket } from 'subspace-client/Socket';
 

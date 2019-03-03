@@ -21,13 +21,13 @@
 		</div>
 		<div class = "lobby-content">
 			<span cv-if = "!currentUserId">
-				<a cv-link = 'login'>login</a>
-				| <a cv-link = 'register'>register</a>
+				<button cv-link = 'login'>login</button>
+				| <button cv-link = 'register'>register</button>
 			</span>
 			<span cv-if = "currentUserId">
-				<a cv-link = 'my-account'>my account</a>
-				| <a href = 'logout' cv-on = 'click:logout(event)'>logout</a>
-				| <a cv-link = 'create'>new game</a>
+				<button cv-link = 'my-account'>my account</button>
+				| <button href = 'logout' cv-on = 'click:logout(event)'>logout</button>
+				| <button cv-link = 'create'>new game</button>
 			</span>
 		</div>
 	</div>

@@ -3,6 +3,7 @@ import { Repository } from 'curvature/base/Repository';
 import { Toast      } from 'curvature/toast/Toast';
 import { ToastAlert } from 'curvature/toast/ToastAlert';
 import { View       } from 'curvature/base/View';
+import { Ball       } from './Ball';
 
 import { Socket } from 'subspace-client/Socket';
 
@@ -29,7 +30,9 @@ export class Cell extends View
 		this.args.chained       = '';
 		this.args.link          = 0;
 		this.args.displayValue  = '';
-		this.args._displayValue = '';
+
+		this.args.particles     = [];
+
 		this.args.exploding     = false;
 		this.args.lit           = false;
 		this.args.owner         = null;
@@ -71,15 +74,6 @@ export class Cell extends View
 			}, 350);
 		});
 
-		// this.args.bindTo('previousMass', (v,k,t,d,p)=>{
-		// 	if(this.args.previousOwner !== null
-		// 		&& this.args.previousOwner !== this.args.owner
-		// 	){
-				
-		// 	}
-		// 	 = -p;
-		// });
-
 		this.args.bindTo('mass', (v,k,t,d,p)=>{
 			if(this.args.previousOwner !== null)
 			{
@@ -115,78 +109,39 @@ export class Cell extends View
 			}, 350);
 		});
 
+		this.args.bindTo('chained', (v)=>{
+			this.args.particles.map((particle)=>{
+				particle.args.color = v
+					? '#000'
+					: '#FFF';
+			});
+		});
+
 		this.args.bindTo('value', (v)=>{
-			this.args._displayValue = icon.repeat(v);
-			// if(!v)
-			// {
-			// 	return;
-			// }
-			// setTimeout(()=>{
-			// 	this.args.lit = false;
-			// }, 350);
+			this.args.particles = [];
+
+			for(let i = 0; i < v; i++)
+			{
+				let particle = new Ball({
+					nucleus: v
+					, index: parseInt(i)
+					, color: this.args.chained 
+						? '#000'
+						: '#FFF'
+				});
+
+				this.args.particles.push(particle);
+			}
+
+			if(!v)
+			{
+				return;
+			}
+			setTimeout(()=>{
+				this.args.lit = false;
+			}, 350);
 		});
 	}
-
-	drawIcons(number)
-	{
-		let icon = this.icons.plus;
-
-		if(number < 0)
-		{
-			icon = this.icons.minus;
-
-			number*=-1;
-		}
-
-		if(number > 3)
-		{
-			number = 0;
-		}
-
-		if(!Number.isNumber(number))
-		{
-			return;
-		}
-
-		this.args.displayValue = icon.repeat(number);
-	}
-
-	// increment(step = 0)
-	// {
-	// 	if(step === 0)
-	// 	{
-	// 		this.args.board.setMoving(true);
-	// 	}
-
-	// 	this.args.value++;
-
-	// 	let v    = this.args.value;
-
-	// 	let left  = this.args.board.cell(this.args.x - 1, this.args.y);
-	// 	let right = this.args.board.cell(this.args.x + 1, this.args.y);
-	// 	let above = this.args.board.cell(this.args.x, this.args.y - 1);
-	// 	let below = this.args.board.cell(this.args.x, this.args.y + 1);
-
-	// 	if(v > this.max)
-	// 	{
-	// 		this.args.exploding = true;
-
-	// 		v = 0;
-	// 		this.args.value = 0;
-
-	// 		setTimeout(
-	// 			()=>{
-	// 				this.args.exploding = false;
-
-	// 				left  &&  left.increment(step+1);
-	// 				below && below.increment(step+1);
-	// 				above && above.increment(step+1);
-	// 				right && right.increment(step+1);					
-	// 			}
-	// 			, this.delay
-	// 		);
-	// 	}
-	// }
 
 	click()
 	{
@@ -201,31 +156,5 @@ export class Cell extends View
 			, y: this.args.y
 			, _t: (new Date()).getTime()
 		}));
-
-		// Repository.request(
-		// 	Config.backend
-		// 	+ '/games/'
-		// 	+ this.args.board.args.gameId
-		// 	+ '/move'
-		// 	, {
-		// 		x: this.args.x
-		// 		, y: this.args.y
-		// 		, _t: (new Date()).getTime()
-		// 	}
-		// ).then(resp=>{
-		// 	if(resp.messages.length)
-		// 	{
-		// 		for(let i in resp.messages)
-		// 		{
-		// 			Toast.instance().pop(new ToastAlert({
-		// 				title: resp.code == 0
-		// 					? 'Success!'
-		// 					: 'Error!'
-		// 				, body: resp.messages[i]
-		// 				, time: 2400
-		// 			}));
-		// 		}
-		// 	}
-		// });
 	}
 }
