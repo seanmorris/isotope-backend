@@ -1,10 +1,25 @@
 <div
-	class          = "cell [[chained]]"
+	class          = "cell [[chained]] [[changed]]"
 	cv-on          = "click:click(event);"
 	data-value     = "[[value]]"
 	data-owner     = "[[owner]]"
 	data-lit       = "[[lit]]"
 	data-exploding = "[[exploding]]"
 >
-	<div>[[_displayValue]]</div>
+	<div>
+		<span class = "particles">[[_displayValue]]</span>
+		<div class = "score-pop">
+			
+			<span 
+				cv-if      = "previousMass"
+				data-owner = "[[owner]]"
+			>+[[previousMass]]</span>
+
+			<span 
+				cv-if      = "lostMass"
+				data-owner = "[[previousOwner]]"
+			>[[lostMass]]</span>
+
+		</div>
+	</div>
 </div>

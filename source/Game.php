@@ -65,6 +65,11 @@ class Game extends \SeanMorris\PressKit\Model
 
 	public function pass($user)
 	{
+		if($this->maxMoves <= floor($this->moves / $this->maxPlayers))
+		{
+			return FALSE;
+		}
+
 		$players = $this->getSubjects('players');
 
 		$this->chain = [];
@@ -117,6 +122,7 @@ class Game extends \SeanMorris\PressKit\Model
 		{
 			if($chainLink[0] == $x && $chainLink[1] == $y)
 			{
+				\SeanMorris\Ids\Log::error('Same chain!');
 				return false;
 			}
 		}
@@ -127,6 +133,13 @@ class Game extends \SeanMorris\PressKit\Model
 		}
 
 		$players = $this->getSubjects('players');
+
+		if(count($players) < $this->maxPlayers)
+		{
+			\SeanMorris\Ids\Log::error('Game not full!');
+			return FALSE;
+		}
+
 		$messages = \SeanMorris\Message\MessageHandler::get();
 
 		foreach($players as $i => $player)
@@ -147,7 +160,7 @@ class Game extends \SeanMorris\PressKit\Model
 					$this->submoves[$i]--;
 				}
 
-				if($this->submoves[$i] == 0)
+				if($this->submoves[$i] === 0)
 				{
 					$this->currentPlayer++;
 
@@ -157,11 +170,13 @@ class Game extends \SeanMorris\PressKit\Model
 					}
 
 					// $this->submoves[$this->currentPlayer] = 3;
-					$this->submoves[$this->currentPlayer]++;
-					if($this->submoves[$this->currentPlayer] > 3)
+					$this->submoves[$i]++;
+
+					if($this->submoves[$i] > 3)
 					{
-						$this->submoves[$this->currentPlayer] = 3;
+						$this->submoves[$i] = 3;
 					}
+
 					$this->moves++;
 				}
 
@@ -199,11 +214,11 @@ class Game extends \SeanMorris\PressKit\Model
 			}
 		}
 
-		// $messages->addFlash(
-		// 	new \SeanMorris\Message\ErrorMessage(
-		// 		'Moving out of turn.'
-		// 	)
-		// );
+		$messages->addFlash(
+			new \SeanMorris\Message\ErrorMessage(
+				'Moving out of turn.'
+			)
+		);
 
 		return FALSE;
 	}
@@ -217,10 +232,9 @@ class Game extends \SeanMorris\PressKit\Model
 		$prevMass = $board->data[$x][$y]->mass;
 		$prevClaim = $board->data[$x][$y]->claimed;
 
-		$this->scores[$i] += ($board->data[$x][$y]->mass
-			? abs($board->data[$x][$y]->mass)
-			: 1
-		);
+		$this->scores[$i] += $prevMass
+			? abs($prevMass)
+			: 1;
 
 		$board->data[$x][$y]->mass += $negative ? -1 : 1;
 
@@ -241,6 +255,7 @@ class Game extends \SeanMorris\PressKit\Model
 			, $board->data[$x][$y]->claimed
 			, $prevMass
 			, $prevClaim
+			, 
 		];
 
 		if($board->data[$x][$y]->mass > 3)
@@ -292,12 +307,14 @@ class Game extends \SeanMorris\PressKit\Model
 				\SeanMorris\Access\Route\AccessRoute::_currentUser($user);
 			}
 
-			$this->scores[]   = 0;
-			$this->submoves[] = 3;
-
 			if($this->addSubject('players', $user))
 			{
-				if(count($players) + 1 >= $this->maxPlayers)
+				$playerCount = count($players);
+
+				$this->scores[]   = 0;
+				$this->submoves[] = 3;
+
+				if($playerCount + 1 >= $this->maxPlayers)
 				{
 					$this->mode = static::PLAY_IN_PROGRESS;
 

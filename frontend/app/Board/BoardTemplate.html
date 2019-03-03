@@ -1,5 +1,8 @@
 <div class = "board-wrap">
 	<div class = "scoreboard" cv-if = "full">
+		<div cv-if = "over">
+			Game Over!
+		</div>
 		<div class = "color-[[currentPlayer]]">
 			<div cv-if = "!over">
 				<span cv-if = "currentPlayer">
@@ -22,10 +25,6 @@
 	</div>
 	
 	<div class = "scoreboard">
-		<div cv-if = "over">
-			Game Over!
-		</div>
-		
 		<div cv-if = "!full"><br />
 			<button cv-on = "click:join(event)">Join</button>
 		</div>
@@ -34,13 +33,21 @@
 				<div>[[submove]]</div>
 			</div>
 
-			Round #[[move]] / [[maxMoves]]
+			<span cv-if = "roundsLeft">
+
+				<span cv-if ="!lastRound">
+					[[roundsLeft]] Rounds left.
+				</span>
+
+				<span cv-if ="lastRound">
+					Last round.
+				</span>
+			</span>
+
+			<br />
 
 			<button cv-on = "click:pass(event)">done</button>
 
-		</div>
-		
-		<div cv-if = "over">
 		</div>
 	</div>
 </div>

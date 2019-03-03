@@ -2,7 +2,7 @@
 namespace SeanMorris\Isotope\Channel;
 class Game extends \SeanMorris\Kalisti\Channel
 {
-	protected $game;
+	protected $game, $gameId;
 
 	public function __construct($server, $name)
 	{
@@ -10,7 +10,9 @@ class Game extends \SeanMorris\Kalisti\Channel
 
 		list(,$gameId) = explode(':', $name);
 
-		$this->game = \SeanMorris\Isotope\Game::loadOneByPublicId($gameId);
+		$this->gameId = $gameId;
+
+		$this->getGame();
 	}
 
 	public function send($content, &$output, $origin, $originalChannel = NULL)
@@ -49,11 +51,7 @@ class Game extends \SeanMorris\Kalisti\Channel
 			return 'Not logged in.';
 		}
 
-		$this->game::clearCache();
-
-		$game = $this->game;
-		$game = $game::loadOneById($this->game->id);
-		$this->game = $game;
+		$game = $this->getGame();
 
 		if(!$game->pass($user))
 		{
@@ -89,11 +87,7 @@ class Game extends \SeanMorris\Kalisti\Channel
 		$x = (int) $move['x'];
 		$y = (int) $move['y'];
 
-		$this->game::clearCache();
-
-		$game = $this->game;
-		$game = $game::loadOneById($this->game->id);
-		$this->game = $game;
+		$game = $this->getGame();
 
 		if(!$game->move($x, $y, $user))
 		{
@@ -116,16 +110,25 @@ class Game extends \SeanMorris\Kalisti\Channel
 
 	protected function join($origin, $originalChannel)
 	{
-		$this->game::clearCache();
+		$game = $this->getGame();
 
-		$game = $this->game;
-		$game = $game::loadOneById($this->game->id);
-		$this->game = $game;
+		\SeanMorris\Ids\Relationship::clearCache();
 
 		$players = $game->getSubjects('players');
 
 		if(count($players) >= $game->maxPlayers)
 		{
+			foreach($this->subscribers as $origin)
+			{
+				$origin->onMessage(
+					json_encode($this->game->toApi(2))
+					, $output
+					, $origin
+					, $this
+					, $originalChannel
+				);
+			}
+
 			return 'Game full.';
 		}
 
@@ -135,17 +138,6 @@ class Game extends \SeanMorris\Kalisti\Channel
 			{
 				if($user->publicId == $player->publicId)
 				{
-					foreach($this->subscribers as $origin)
-					{
-						$origin->onMessage(
-							json_encode($this->game->toApi(2))
-							, $output
-							, $origin
-							, $this
-							, $originalChannel
-						);
-					}
-
 					return 'Already joined.';
 				}
 			}
@@ -168,5 +160,18 @@ class Game extends \SeanMorris\Kalisti\Channel
 		}
 
 		return 'Unknown error 0x03.';
+	}
+
+	protected function getGame()
+	{
+		\SeanMorris\Isotope\Game::clearCache();
+		\SeanMorris\Ids\Relationship::clearCache();
+		\SeanMorris\Isotope\Game::canHaveMany('players')::clearCache();
+
+		$this->game = \SeanMorris\Isotope\Game::loadOneByPublicId($this->gameId);
+
+		\SeanMorris\Ids\Log::debug($this->game);
+
+		return $this->game;
 	}
 }

@@ -27,11 +27,16 @@ export class Cell extends View
 
 		this.args.value         = 0;
 		this.args.chained       = '';
+		this.args.link          = 0;
 		this.args.displayValue  = '';
 		this.args._displayValue = '';
 		this.args.exploding     = false;
 		this.args.lit           = false;
 		this.args.owner         = null;
+		this.args.previousOwner = null;
+		this.args.mass          = null;
+		this.args.lostMass      = 0;
+		this.args.changed       = 'not';
 
 		this.socket = Socket.get(Config.socketUri);
 
@@ -64,6 +69,39 @@ export class Cell extends View
 			setTimeout(()=>{
 				this.args.lit = false;
 			}, 350);
+		});
+
+		// this.args.bindTo('previousMass', (v,k,t,d,p)=>{
+		// 	if(this.args.previousOwner !== null
+		// 		&& this.args.previousOwner !== this.args.owner
+		// 	){
+				
+		// 	}
+		// 	 = -p;
+		// });
+
+		this.args.bindTo('mass', (v,k,t,d,p)=>{
+			if(this.args.previousOwner !== null)
+			{
+				if(this.args.previousOwner !== this.args.owner)
+				{
+					this.args.lostMass = -v || 0;
+				}
+			}
+			else
+			{
+				this.args.previousMass = v;
+			}
+
+			if(p !== undefined)
+			{
+				this.args.changed = 'changed';
+			}
+
+
+			setTimeout(()=>{
+				this.args.changed = 'not';
+			}, 250 * (this.args.link+1));
 		});
 
 		this.args.bindTo('exploding', (v)=>{

@@ -1,6 +1,8 @@
 import { Config     } from 'Config';
 import { Repository } from 'curvature/base/Repository';
 import { View       } from 'curvature/base/View';
+import { Toast      } from 'curvature/toast/Toast';
+import { ToastAlert } from 'curvature/toast/ToastAlert';
 
 import { Row } from './Row';
 
@@ -42,6 +44,8 @@ export class Board extends View
 			this.socket.subscribe(
 				`message:game:${this.args.gameId}`
 				, (e, m, c, o, i, oc, p) => {
+					console.log('MESSAGE');
+					// console.log(m);
 					this.updateBoard(JSON.parse(m));
 				}
 			);
@@ -157,7 +161,21 @@ export class Board extends View
 			this.args.over = true;
 		}
 
-		this.args.move     = parseInt(body.moves / body.maxPlayers);
+		this.args.move = parseInt(body.moves / body.maxPlayers);
+
+		this.args.roundsLeft = body.maxMoves - this.args.move;
+
+		this.args.lastRound = false;
+
+		if(this.args.roundsLeft == 1)
+		{
+			this.args.lastRound = true;
+		}
+		else if(this.args.roundsLeft < 0)
+		{
+			this.args.roundsLeft = 0;
+		}
+
 		this.args.maxMoves = body.maxMoves;
 
 		// console.log(body.players.length);
@@ -198,23 +216,32 @@ export class Board extends View
 
 			if(!cell.args.setback)
 			{
+				cell.args.setback = true;
 				cell.args.value   = pM;
 				cell.args.owner   = pC;
-				cell.args.setback = true;
+
+				cell.args.previousMass  = pM;
+				cell.args.previousOwner = pC;
 			}
 
-			this.onTimeout(t*450, ()=>{
-				cell.args.chained = 'chained';
+			cell.args.chained = 'chained';
+			cell.args.link    = t;
+
+			let speed = 450;
+
+			this.onTimeout(t*speed, ()=>{
 				cell.args.value   = cM;
 				cell.args.owner   = cC;
 				cell.args.setback = false;
 			});
 
-			this.onTimeout((t+1)*450, ()=>{
+			this.onTimeout((t+1)*speed, ()=>{
+				cell.args.mass    = cM;
 				if(cM > 3)
 				{
 					cell.args.exploding = true;
 					cell.args.value     = 0;
+					cell.args.owner     = cC;
 				}
 			});
 		}
@@ -250,10 +277,16 @@ export class Board extends View
 			Config.backend + '/games/' + this.args.gameId + '/join'
 			, {_t: (new Date()).getTime()}
 		).then((response)=>{
-			console.log(response);
+			this.socket.publish(`game:${this.args.gameId}`, JSON.stringify({
+				type: 'join'
+			}));
 			this.refresh(resp=>this.updateBoard(resp.body));
 		}).catch(error=>{
-			console.error(error);
+			
+			this.socket.publish(`game:${this.args.gameId}`, JSON.stringify({
+				type: 'join'
+			}));
+
 			this.refresh(resp=>this.updateBoard(resp.body));
 		});
 	}

@@ -18,7 +18,7 @@
 		}
 	}
 	, "public": "/app/public"
-	, "logLevel": "query"
+	, "logLevel": "error"
 	, "jwtSecret": "0x3D07E202911E9BAE80242AC140002"
 	, "kalisti": {
 		"channels": {

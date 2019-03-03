@@ -87,13 +87,17 @@ body {
 	box-shadow: inset 0 0 10px #000000;
 
 	transition: padding 0.2s ease-out;
+
+	position: relative;
+
+	overflow: visible;
 }
 
 .cell[data-owner="0"][data-value="1"] {background: rgba(255,0,0,0.2);}
 .cell[data-owner="0"][data-value="2"] {background: rgba(255,0,0,0.4);}
 .cell[data-owner="0"][data-value="3"] {background: rgba(255,0,0,0.6);}
 
-.cell[data-owner="1"][data-owner="1"][data-value="1"] {background: rgba(0,0,255,0.2);}
+.cell[data-owner="1"][data-value="1"] {background: rgba(0,0,255,0.2);}
 .cell[data-owner="1"][data-value="2"] {background: rgba(0,0,255,0.4);}
 .cell[data-owner="1"][data-value="3"] {background: rgba(0,0,255,0.8);}
 
@@ -105,7 +109,7 @@ body {
 .cell[data-owner="0"][data-value="-2"] {background: rgba(255,0,0,0.4);}
 .cell[data-owner="0"][data-value="-3"] {background: rgba(255,0,0,0.6);}
 
-.cell[data-owner="1"][data-owner="-1"][data-value="1"] {background: rgba(0,0,255,0.2);}
+.cell[data-owner="1"][data-value="-1"] {background: rgba(0,0,255,0.2);}
 .cell[data-owner="1"][data-value="-2"] {background: rgba(0,0,255,0.4);}
 .cell[data-owner="1"][data-value="-3"] {background: rgba(0,0,255,0.8);}
 
@@ -113,27 +117,31 @@ body {
 .cell[data-owner="2"][data-value="-2"] {background: rgba(0,255,0,0.3);}
 .cell[data-owner="2"][data-value="-3"] {background: rgba(0,255,0,0.6);}
 
-.cell[data-owner="0"][data-lit="true"],
+.cell[data-value="4"]{
+	filter: brightness(250%) contrast(150%);
+	background-color: #CCC;
+}
+
+.cell[data-owner="0"][data-value="4"][data-lit="true"],
 .cell[data-owner="0"][data-exploding="true"] {
-	background: rgba(255,200,200,1);
+	background: rgba(255,200,200,0.8);
 }
-.cell[data-owner="1"][data-lit="true"],
+.cell[data-owner="1"][data-value="4"][data-lit="true"],
 .cell[data-owner="1"][data-exploding="true"] {
-	background: rgba(200,200,255,1);	
+	background: rgba(200,200,255,0.8);	
 }
-.cell[data-owner="2"][data-lit="true"],
+.cell[data-owner="2"][data-value="4"][data-lit="true"],
 .cell[data-owner="2"][data-exploding="true"] {
-	background: rgba(200,255,200,1);
+	background: rgba(200,255,200,0.8);
 }
 
 .cell[data-exploding="true"] {
 	border-radius: 5px;
 	color: #AAA;
 	margin:2px;
-	padding:7.5px;
 	border: none;
 	/*text-shadow: 9px 7px 6px rgba(0,0,0,0.5);*/
-	transition: all 0.45s ease-in;
+	transition: all 0.15s ease-out;
 }
 
 .cell.chained:not([data-exploding="true"]) {
@@ -149,15 +157,34 @@ body {
 
 .cell:not(.chained) {
 	filter: brightness(250%) contrast(150%);
-	transition: all 0.15s ease-in;
+	/*transition: all 0.15s ease-in;*/
+}
+.cell {
+	transition:
+		background-color 0.5s ease-out
+		, filter 0.5s ease-out
+		, padding 0.1s 0.1s ease-in;
 }
 
-.cell.chained {
+.cell[data-exploding="true"] {
+	padding:15px;
+}
+
+.cell.chained[data-exploding="false"] {
 	opacity: 0.75;
 	animation: flicker 0.25s infinite;
+/*	transition:
+		background-color 0.5s ease-in
+		, filter 0.5s ease-in
+		, padding 0.1s 0.1s ease-in;*/
+}
+
+.cell.chained[data-exploding="false"] .particles{
+	color: black;
+}
+
+.cell.chained[data-exploding="false"][data-value="0"]{
 	background-color: grey;
-	color: black !important;
-	transition: all 0.15s ease-out;
 }
 
 .lobby-welcome {
@@ -308,3 +335,57 @@ input[type="button"] {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 }
+
+.cell .score-pop {
+	position: absolute;
+	left: 0px;
+	width: 100%;
+	font-size: 0.75em;
+	line-height: 1em;
+	transition: 0s;
+	bottom: 0%;
+	white-space: nowrap;
+	text-align: center;
+	z-index: 999;
+}
+
+.cell.changed .score-pop {
+	bottom: 25%;
+	opacity: 1;
+	pointer-events: none;
+	/*transition: all 0s ease-out;*/
+}
+
+.cell.not .score-pop {
+	white-space: nowrap;
+	bottom: 250%;
+	opacity: 0;
+	pointer-events: none;
+	transition: all 0.85s ease-out;
+	font-weight: bold;
+}
+
+.cell .score-pop span {
+	text-shadow: 2px 2px 0px #000 !important;
+	text-align: center;
+}
+
+.cell .score-pop span[data-owner="0"]{
+	color: #FCC;
+}
+.cell .score-pop span[data-owner="1"]{
+	color: #CCF;
+}
+.cell .score-pop span[data-owner="2"]{
+	color: #CFC;
+}
+
+
+/*}
+.cell[data-owner="1"][data-value="4"][data-lit="true"],
+.cell[data-owner="1"][data-exploding="true"] {
+	background: rgba(200,200,255,0.8);	
+}
+.cell[data-owner="2"][data-value="4"][data-lit="true"],
+.cell[data-owner="2"][data-exploding="true"] {
+	background: rgba(200,255,200,0.8*/

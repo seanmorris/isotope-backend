@@ -32,7 +32,7 @@ export class RootView extends View
 				let token = JSON.parse(tokenSource);
 
 				this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {
-					if(m && m.substring(0,7) === '"authed' && o == 'server')
+					if(m && m.substring(0,9) === '"authed &' && o == 'server')
 					{
 						return Promise.resolve();
 					}
