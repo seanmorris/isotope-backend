@@ -426,6 +426,7 @@ div.particles {
 	width:     35%;
 	height:    35%;
 	overflow:  visible;
+	pointer-events: none;
 }
 
 .particles .svg.ball:nth-child(3n) {

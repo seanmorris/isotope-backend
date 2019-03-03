@@ -16,7 +16,10 @@ export class Ball extends View
 			this.args._size = `${v}px`;
 		});
 
-		this.args.color = '#FFF';
+		this.args.color = this.args.color || '#FFF';
+
+		this.args.fillColor   = this.args.color;
+		this.args.strokeColor = this.args.color;
 
 		this.args.bindTo('color', (v)=>{
 			this.args.fillColor   = v;
