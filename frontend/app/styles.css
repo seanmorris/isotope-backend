@@ -250,6 +250,13 @@ body {
 	font-size: 1.25em;
 }
 
+.scoreboard button{
+	background: black;
+	color: white;
+	border: none;
+	border-radius: 5px;
+}
+
 label,
 label>input,
 label>select,
