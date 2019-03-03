@@ -66,7 +66,7 @@ export class Ball extends View
 			{
 				if(this.args.nucleus >= 3)
 				{
-					this.args.blur   = Math.sin(time*4)*4+6;
+					this.args.blur   = Math.sin(time*4)*2+6;
 					this.args.radius = Math.abs(Math.sin(time))*2+8;
 				}
 				else

@@ -25,6 +25,20 @@ export class Board extends View
 		this.args.over = false;
 		this.args.full = true;
 		this.args.move = 0;
+		this.args.button = {};
+		this.args.button.disabled = 'disabled';
+
+		this.args.flicker = '';
+
+		this.args.bindTo('flicker', (v)=>{
+			if(!v)
+			{
+				return;
+			}
+			this.onTimeout(250,()=>{
+				this.args.flicker = '';
+			});
+		});
 
 		this.playerNames = [
 			'Red'
@@ -118,13 +132,20 @@ export class Board extends View
 
 		this.args.currentPlayer = this.playerNames[body.currentPlayer];
 
-		this.args.yourTurn = false;
-
 		UserRepository.getCurrentUser(false).then((response)=>{
 			// console.log(body.players[body.currentPlayer].publicId, response.body.publicId);
 			if(body.players[body.currentPlayer].publicId === response.body.publicId)
 			{
+				if(!this.args.yourTurn)
+				{
+					this.args.flicker  = 'flicker';
+				}
 				this.args.yourTurn = true;
+			}
+			else
+			{
+				this.args.yourTurn        = false
+				this.args.button.disabled = 'disabled';
 			}
 		}).catch((response)=>{
 			if(response.messages)
