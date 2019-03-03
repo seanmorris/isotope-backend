@@ -36,17 +36,15 @@
 			<span cv-if = "roundsLeft">
 
 				<span cv-if ="!lastRound">
-					[[roundsLeft]] Rounds left
+					[[roundsLeft]] Rounds left<br />
+
+					<button cv-on = "click:pass(event)">complete turn</button>
 				</span>
 
 				<span cv-if ="lastRound">
 					Last round.
 				</span>
 			</span>
-
-			<br />
-
-			<button cv-on = "click:pass(event)">complete turn</button>
 
 		</div>
 	</div>

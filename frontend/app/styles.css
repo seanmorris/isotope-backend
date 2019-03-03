@@ -142,7 +142,7 @@ body {
 	margin:2px;
 	border: none;
 	text-shadow: 9px 7px 6px rgba(0,0,0,0.5);
-	transition: all 0.15s ease-out;
+	/*transition: all 0.15s ease-out;*/
 }
 
 .cell.chained:not([data-exploding="true"]) {
@@ -162,27 +162,29 @@ body {
 }
 .cell {
 	transition:
-		background-color 0.5s 0.1s ease-out
-		, filter 0.5s 0.1s ease-out
-		, padding 0.1s 0.1s ease-in;
+		background-color 0.1s ease-out
+		, filter 0.1s ease-out
+		, padding 0.1s 0.25s ease-in;
 }
 
-.cell[data-value="0"][data-exploding="true"] {
-	font-size: 1.5em;
+.cell[data-exploding="true"] {
+	transition:
+		background-color 0.1s ease-in
+		, filter 0.1s ease-in
+		, padding 0.25s ease-in;	
+}
+
+.cell[data-value="4"][data-exploding="true"] {
+	/*font-size: 1.5em;*/
+	transition:
+		background-color 0.5s 0.1s ease-out
+		, filter 0.5s 0.1s ease-out
+		, padding 0.1s 0.25s ease-in;
 }
 
 .cell[data-exploding="true"] .score-pop{
 	/*font-size: 2.5em;*/
 	text-shadow: 0px 0px 6px rgba(0,0,0,0.5);
-}
-
-.cell.chained[data-exploding="false"] {
-	/*opacity: 0.75;*/
-	animation: flicker 0.25s infinite;
-/*	transition:
-		background-color 0.5s ease-in
-		, filter 0.5s ease-in
-		, padding 0.1s 0.1s ease-in;*/
 }
 
 .cell .particles{
@@ -429,7 +431,7 @@ div.particles {
 	pointer-events: none;
 }
 
-.particles .svg.ball:nth-child(3n) {
+.cell[data-value="3"] .particles .svg.ball:nth-child(3n) {
 	flex-basis: 100%;
 }
 

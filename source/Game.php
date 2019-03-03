@@ -185,12 +185,14 @@ class Game extends \SeanMorris\PressKit\Model
 						$this->submoves[$i] = 3;
 					}
 
-					if($this->submoves[$this->currentPlayer] <= 0)
-					{
+					$this->moves++;
+
+					if($this->moves < $this->maxMoves
+						&& $this->submoves[$this->currentPlayer] <= 0
+					){
 						$this->submoves[$this->currentPlayer] = 1;
 					}
 
-					$this->moves++;
 				}
 
 

@@ -8,8 +8,9 @@ export class Ball extends View
 		super(args);
 
 		this.template   = require('./ball.tmp');
-		
+
 		this.args.size   = 100;
+
 		this.args._size  = `${this.args.size}px`;
 
 		this.args.bindTo('size', (v)=>{
@@ -32,7 +33,7 @@ export class Ball extends View
 
 		this.args.index   = this.args.index   || 0;
 		this.args.nucleus = this.args.nucleus || 1;
-		
+
 		this.args.blur = 4;
 
 		this.args.offset  = (
@@ -40,24 +41,45 @@ export class Ball extends View
 			 / this.args.nucleus
 		);
 
-		this.onInterval(15, ()=>{
-			let speed = 0.1;
+		let rand = Math.random() / 2000;
+
+		this.onInterval(60, ()=>{
+			let speed = 0.25;
 
 			if(this.args.nucleus > 1)
 			{
-				speed = 0.5;
+				speed = 0.333;
 			}
 
 			if(this.args.nucleus > 2)
 			{
-				speed = this.args.nucleus;
+				speed = 0.666;
 			}
+
+			speed += rand;
 
 			let seconds = (new Date).getTime() / (1000 / speed);
 
-			let time = (seconds + this.args.offset) * Math.PI;
+			let time = (seconds - this.args.offset) * Math.PI;
 
-			this.args.blur = Math.abs(Math.sin(time))*4+4
+			if(this.args.color == '#FFF')
+			{
+				if(this.args.nucleus >= 3)
+				{
+					this.args.blur   = Math.sin(time*4)*4+6;
+					this.args.radius = Math.abs(Math.sin(time))*2+8;
+				}
+				else
+				{
+					this.args.blur   = Math.sin(time*3)*2+8;
+					this.args.radius = Math.abs(Math.sin(time))*2+6;
+				}
+			}
+			else
+			{
+				this.args.blur   = Math.sin(time/2)*2+4;
+				this.args.radius = 8;
+			}
 		});
 	}
 }

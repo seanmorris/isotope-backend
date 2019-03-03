@@ -232,12 +232,16 @@ export class Board extends View
 				cell.args.value   = cM;
 				cell.args.owner   = cC;
 				cell.args.setback = false;
+				cell.args.exploding = true;
+				if(cM > 3)
+				{
+					cell.args.chained   = 'chained';
+				}
 			});
 
 			this.onTimeout((t+1)*speed, ()=>{
 				cell.args.chained   = 'chained';
 				cell.args.mass      = cM;
-				cell.args.exploding = true;
 				if(cM > 3)
 				{
 					cell.args.value     = 0;
