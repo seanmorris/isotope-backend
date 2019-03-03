@@ -161,8 +161,8 @@ body {
 }
 .cell {
 	transition:
-		background-color 0.5s ease-out
-		, filter 0.5s ease-out
+		background-color 0.5s 0.1s ease-out
+		, filter 0.5s 0.1s ease-out
 		, padding 0.1s 0.1s ease-in;
 }
 
@@ -301,7 +301,7 @@ label input {
 
 .turn-indicator {
 	font-family: monospace;
-	font-size: 4rem;
+	font-size: 2rem;
 	color:white;
 	text-shadow: 0px 4px 0px #000;
 	text-align: center;
