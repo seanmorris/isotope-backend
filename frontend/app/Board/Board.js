@@ -223,6 +223,18 @@ export class Board extends View
 
 	chain(chain)
 	{
+		for(let x = 0; x < this.args.width; x++)
+		{
+			for(let y = 0; y < this.args.height; y++)
+			{
+				let cell = this.cell(x, y);
+				if(cell)
+				{
+					cell.args.chained = '';
+				}
+			}
+		}
+
 		for(let i in chain)
 		{
 			let x    = chain[i][0];
@@ -253,17 +265,11 @@ export class Board extends View
 			this.onTimeout(t*speed, ()=>{
 				cell.args.setback   = false;
 				cell.args.exploding = true;
-				if(cM > 3)
-				{
-					// cell.args.mass    = cM;
-					// cell.args.value   = cM;
-					cell.args.chained = 'chained';
-				}
+				cell.args.chained   = 'chained';
 				cell.args.value     = cM;
 			});
 
 			this.onTimeout((t+1)*speed, ()=>{
-				cell.args.chained   = 'chained';
 				cell.args.owner     = cC;
 				cell.args.mass      = cM;
 				if(cM > 3)
