@@ -15,7 +15,8 @@
         "seanmorris/presskit": "dev-master",
         "simpletest/simpletest": "^1.1",
         "seanmorris/kalisti": "dev-master",
-        "seanmorris/subspace": "dev-master"
+        "seanmorris/subspace": "dev-master",
+        "php-amqplib/php-amqplib": "^2.8"
     },
     "autoload": {
 		"psr-4": {

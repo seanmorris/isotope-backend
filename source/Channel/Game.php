@@ -1,6 +1,6 @@
 <?php
 namespace SeanMorris\Isotope\Channel;
-class Game extends \SeanMorris\Kalisti\Channel
+class Game extends \SeanMorris\SubSpace\Kalisti\Channel
 {
 	protected $game, $gameId;
 
@@ -15,6 +15,36 @@ class Game extends \SeanMorris\Kalisti\Channel
 		$this->getGame();
 	}
 
+	public function tick()
+	{
+		if(!$this->game)
+		{
+			return;
+		}
+
+		\SeanMorris\Isotope\Queue\GameJoined::check(function($message){
+			if(!$message
+				|| !$message['game']
+				|| $message['game']->publicId !== $this->gameId
+			){
+				return;
+			}
+
+			$game = $this->getGame();
+
+			foreach($this->subscribers as $origin)
+			{
+				$origin->onMessage(
+					json_encode($game->toApi(2))
+					, $output
+					, $origin
+					, $this
+					, $originalChannel
+				);
+			}
+		}, get_class($this->game) . '.' . $this->gameId);
+	}
+
 	public function send($content, &$output, $origin, $originalChannel = NULL)
 	{
 		$output = false;
@@ -26,14 +56,14 @@ class Game extends \SeanMorris\Kalisti\Channel
 
 		switch($received['type'] ?? NULL)
 		{
-			case 'join':
-				$output = $this->join($origin, $originalChannel);
+			// case 'join':
+			// 	$output = $this->join($origin, $originalChannel);
+			// 	break;
+			case 'move':
+				$output = $this->move($origin, $originalChannel, $received);
 				break;
 			case 'pass':
 				$output = $this->pass($origin, $originalChannel);
-				break;
-			case 'move':
-				$output = $this->move($origin, $originalChannel, $received);
 				break;
 		}
 
@@ -58,9 +88,9 @@ class Game extends \SeanMorris\Kalisti\Channel
 			return 'Unknown error 0x01.';
 		}
 
-		foreach($this->subscribers as $origin)
+		foreach($this->subscribers as $subscriber)
 		{
-			$origin->onMessage(
+			$subscriber->onMessage(
 				json_encode($this->game->toApi(2))
 				, $output
 				, $origin
@@ -94,9 +124,9 @@ class Game extends \SeanMorris\Kalisti\Channel
 			return 'Unknown error 0x02.';
 		}
 
-		foreach($this->subscribers as $origin)
+		foreach($this->subscribers as $subscriber)
 		{
-			$origin->onMessage(
+			$subscriber->onMessage(
 				json_encode($this->game->toApi(2))
 				, $output
 				, $origin
@@ -106,60 +136,6 @@ class Game extends \SeanMorris\Kalisti\Channel
 		}
 
 		return 'Moved.';
-	}
-
-	protected function join($origin, $originalChannel)
-	{
-		$game = $this->getGame();
-
-		\SeanMorris\Ids\Relationship::clearCache();
-
-		$players = $game->getSubjects('players');
-
-		if(count($players) >= $game->maxPlayers)
-		{
-			foreach($this->subscribers as $origin)
-			{
-				$origin->onMessage(
-					json_encode($this->game->toApi(2))
-					, $output
-					, $origin
-					, $this
-					, $originalChannel
-				);
-			}
-
-			return 'Game full.';
-		}
-
-		if($user = $origin->contextGet('__persistent'))
-		{
-			foreach($players as $player)
-			{
-				if($user->publicId == $player->publicId)
-				{
-					return 'Already joined.';
-				}
-			}
-
-			if($game->addPlayer($user))
-			{
-				foreach($this->subscribers as $origin)
-				{
-					$origin->onMessage(
-						json_encode($this->game->toApi(2))
-						, $output
-						, $origin
-						, $this
-						, $originalChannel
-					);
-				}
-
-				return 'Joined.';
-			}
-		}
-
-		return 'Unknown error 0x03.';
 	}
 
 	protected function getGame()

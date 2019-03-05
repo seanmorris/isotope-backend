@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a023ef70f119f0ad35332e73641ddb7e",
+    "content-hash": "56086115daae6d05c74a69c2c0dcd544",
     "packages": [
         {
             "name": "hautelook/phpass",
@@ -51,11 +51,81 @@
             "time": "2012-08-31T00:00:00+00:00"
         },
         {
+            "name": "php-amqplib/php-amqplib",
+            "version": "v2.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-amqplib/php-amqplib.git",
+                "reference": "7df8553bd8b347cf6e919dd4a21e75f371547aa0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/7df8553bd8b347cf6e919dd4a21e75f371547aa0",
+                "reference": "7df8553bd8b347cf6e919dd4a21e75f371547aa0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "php": ">=5.4.0"
+            },
+            "replace": {
+                "videlalvaro/php-amqplib": "self.version"
+            },
+            "require-dev": {
+                "phpdocumentor/phpdocumentor": "^2.9",
+                "phpunit/phpunit": "^4.8",
+                "scrutinizer/ocular": "^1.1",
+                "squizlabs/php_codesniffer": "^2.5"
+            },
+            "suggest": {
+                "ext-sockets": "Use AMQPSocketConnection"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpAmqpLib\\": "PhpAmqpLib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Alvaro Videla",
+                    "role": "Original Maintainer"
+                },
+                {
+                    "name": "John Kelly",
+                    "email": "johnmkelly86@gmail.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Raúl Araya",
+                    "email": "nubeiro@gmail.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Formerly videlalvaro/php-amqplib.  This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
+            "homepage": "https://github.com/php-amqplib/php-amqplib/",
+            "keywords": [
+                "message",
+                "queue",
+                "rabbitmq"
+            ],
+            "time": "2018-10-23T18:48:24+00:00"
+        },
+        {
             "name": "seanmorris/access",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:seanmorris/access.git",
+                "url": "https://github.com/seanmorris/access.git",
                 "reference": "00c961239cd40c162fa0097ebd39360054fd7e67"
             },
             "dist": {
@@ -131,7 +201,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:seanmorris/ids.git",
+                "url": "https://github.com/seanmorris/ids.git",
                 "reference": "c2082db591de34f85c188f29efb4235e91d6e69e"
             },
             "dist": {
@@ -200,7 +270,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:seanmorris/message.git",
+                "url": "https://github.com/seanmorris/message.git",
                 "reference": "73c1b67f72dedba14c572e6e80c2c4fdd7ac8d3e"
             },
             "dist": {
@@ -230,12 +300,12 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:seanmorris/presskit.git",
+                "url": "https://github.com/seanmorris/PressKit.git",
                 "reference": "a78b4fd414cdd6a53226ad7fa0bb3e14eb37d5ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/presskit/zipball/a78b4fd414cdd6a53226ad7fa0bb3e14eb37d5ef",
+                "url": "https://api.github.com/repos/seanmorris/PressKit/zipball/a78b4fd414cdd6a53226ad7fa0bb3e14eb37d5ef",
                 "reference": "a78b4fd414cdd6a53226ad7fa0bb3e14eb37d5ef",
                 "shasum": ""
             },

@@ -311,8 +311,10 @@ class Game extends \SeanMorris\PressKit\Model
 		{
 			if(!$user->id)
 			{
-				$generatedName = sprintf('%s::%d', $this->publicId
-					, rand(0, PHP_INT_MAX)
+				$generatedName = sprintf(
+					'%s::%s'
+					, uniqid()
+					, $this->publicId
 				);
 
 				$user->consume([

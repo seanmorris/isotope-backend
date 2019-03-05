@@ -1,6 +1,6 @@
 <?php
 namespace SeanMorris\Isotope\Channel;
-class BlackHole extends \SeanMorris\Kalisti\Channel
+class BlackHole extends \SeanMorris\SubSpace\Kalisti\Channel
 {
 	public function send($content, &$output, $origin, $originalChannel = NULL)
 	{

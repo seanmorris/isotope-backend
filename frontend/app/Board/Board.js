@@ -51,7 +51,7 @@ export class Board extends View
 		// console.log(args.authed);
 
 		args.authed.then(()=>{
-			// console.log(args.authed);
+			console.log(this.args.gameId);
 
 			this.socket.send('motd');
 
@@ -304,17 +304,13 @@ export class Board extends View
 			Config.backend + '/games/' + this.args.gameId + '/join'
 			, {_t: (new Date()).getTime()}
 		).then((response)=>{
-			this.socket.publish(`game:${this.args.gameId}`, JSON.stringify({
-				type: 'join'
-			}));
-			this.refresh(resp=>this.updateBoard(resp.body));
+
+			// this.refresh(resp=>this.updateBoard(resp.body));
+
 		}).catch(error=>{
 			
-			this.socket.publish(`game:${this.args.gameId}`, JSON.stringify({
-				type: 'join'
-			}));
+			// this.refresh(resp=>this.updateBoard(resp.body));
 
-			this.refresh(resp=>this.updateBoard(resp.body));
 		});
 	}
 }

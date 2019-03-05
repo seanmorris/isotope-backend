@@ -5,7 +5,8 @@
 	</div>
 	
 	<div class = "scoreboard">
-		<div cv-if = "!full"><br />
+		<div cv-if = "!full">
+			<br />
 			<button cv-on = "click:join(event)">Join</button>
 		</div>
 		<div cv-if = "full">
@@ -13,9 +14,11 @@
 			<span cv-if = "roundsLeft">
 
 				<span cv-if = "yourTurn">
+					<br />
 					<button cv-on = "click:pass(event)">complete turn</button>
 				</span>
 				<span cv-if = "!yourTurn">
+					<br />
 					<button disabled>complete turn</button>
 				</span>
 
