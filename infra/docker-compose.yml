@@ -106,8 +106,8 @@ services:
       RABBITMQ_DEFAULT_PASS: "rabbitmq"
       RABBITMQ_DEFAULT_VHOST: "/"
     ports:
-      - "15672:19994"
-      - "5672:9994"
+      - "19994:15672"
+      - "9994:5672"
     labels:
       NAME: "rabbitmq1"
     volumes:
