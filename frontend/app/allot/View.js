@@ -126,8 +126,9 @@ export class View extends BaseView
 
 		let showRows = Math.ceil(viewportHeight / this.args.rowHeight) + 1;
 
-		this.args.topRow = parseInt(this.args.position / this.args.rowHeight);
-		this.args.offset = -this.args.position % this.args.rowHeight;
+		this.args.topRow  = parseInt(this.args.position / this.args.rowHeight);
+		this.args.offset  = -this.args.position % this.args.rowHeight;
+		this.args.percent = parseInt(this.args.position / this.args.height * 100);
 
 		for(let i = 0; i < showRows; i++)
 		{
