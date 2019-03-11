@@ -147,6 +147,11 @@ export class Cell extends View
 
 	click()
 	{
+		if(this.args.board.moving)
+		{
+			return;
+		}
+
 		this.sendMove();
 	}
 

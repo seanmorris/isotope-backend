@@ -5,38 +5,42 @@
 	</div>
 	
 	<div class = "scoreboard">
+
 		<div cv-if = "!full">
-			<br />
 			<button cv-on = "click:join(event)">Join</button>
 		</div>
+
 		<div cv-if = "full">
 
 			<span cv-if = "roundsLeft">
 
-				<span cv-if = "yourTurn">
-					<br />
-					<button cv-on = "click:pass(event)">complete turn</button>
-				</span>
-				<span cv-if = "!yourTurn">
-					<br />
-					<button disabled>complete turn</button>
-				</span>
-
-				<br />
-
 				<span cv-if ="!lastRound">
-					[[roundsLeft]] Rounds left<br />
+					<span class = "turn" cv-if = "yourTurn">
+						<button cv-on = "click:pass(event)">complete turn</button>
+					</span>
+					<span class = "turn" cv-if = "!yourTurn">
+						<button disabled>complete turn</button>
+					</span>
 
+					<br />
+				
+					<div class = "rounds-left">
+						[[roundsLeft]] Rounds left
+					</div>
 				</span>
-
 				<span cv-if ="lastRound">
-					Last round.
+					<div class = "rounds-left">
+						Last round.
+					</div>
 				</span>
+
 			</span>
 
-			<div cv-if = "over">
-				Game Over!
-			</div>
+			<span cv-if = "over">
+				<div class = "rounds-left">
+					Game Over!
+				</div>
+			</span>
 
 			<div class = "color-[[currentPlayer]]">
 

@@ -41,7 +41,7 @@ export class Ball extends View
 			 / this.args.nucleus
 		);
 
-		let rand = Math.random() / 2000;
+		let rand = Math.random() / 1000;
 
 		this.onInterval(60, ()=>{
 			let speed = 0.25;
@@ -66,18 +66,18 @@ export class Ball extends View
 			{
 				if(this.args.nucleus >= 3)
 				{
-					this.args.blur   = Math.sin(time*4)*2+6;
-					this.args.radius = Math.abs(Math.sin(time))*2+8;
+					this.args.blur   = (Math.sin(time*7)*2+7).toFixed(3);
+					this.args.radius = (Math.abs(Math.sin(time*3))*2+7).toFixed(3);
 				}
 				else
 				{
-					this.args.blur   = Math.sin(time*3)*2+8;
-					this.args.radius = Math.abs(Math.sin(time))*2+6;
+					this.args.blur   = (Math.sin(time*3)*2+8).toFixed(3);
+					this.args.radius = (Math.abs(Math.sin(time))*2+6).toFixed(3);
 				}
 			}
 			else
 			{
-				this.args.blur   = Math.sin(time/2)*2+4;
+				this.args.blur   = (Math.sin(time*0.75)*2+4).toFixed(3);
 				this.args.radius = 8;
 			}
 		});

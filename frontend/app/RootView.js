@@ -54,6 +54,7 @@ export class RootView extends View
 			, register:       Register
 			, 'my-account':   Profile
 			, create:         Create
+			, allot:          require('allot/View').View
 			, false:          '404!'
 		};
 
@@ -62,14 +63,7 @@ export class RootView extends View
 			<div class = "header">
 				<a cv-link = "/">Isotope</a>
 			</div>
-			<div
-				class = "main-box"
-				style = "
-					width: 100%;
-					max-width: 900px;
-					margin: auto;
-					position: relative;"
-			>
+			<div class = "main-box">
 				[[content]]
 			</div>
 		`;

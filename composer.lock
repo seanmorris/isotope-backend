@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56086115daae6d05c74a69c2c0dcd544",
+    "content-hash": "d69c0f124d322b615265d7542821f410",
     "packages": [
         {
             "name": "hautelook/phpass",
@@ -52,20 +52,21 @@
         },
         {
             "name": "php-amqplib/php-amqplib",
-            "version": "v2.8.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-amqplib/php-amqplib.git",
-                "reference": "7df8553bd8b347cf6e919dd4a21e75f371547aa0"
+                "reference": "c0b132eb3d487d30c757e00c8dc52b5b1007744d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/7df8553bd8b347cf6e919dd4a21e75f371547aa0",
-                "reference": "7df8553bd8b347cf6e919dd4a21e75f371547aa0",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/c0b132eb3d487d30c757e00c8dc52b5b1007744d",
+                "reference": "c0b132eb3d487d30c757e00c8dc52b5b1007744d",
                 "shasum": ""
             },
             "require": {
                 "ext-bcmath": "*",
+                "ext-sockets": "*",
                 "php": ">=5.4.0"
             },
             "replace": {
@@ -76,9 +77,6 @@
                 "phpunit/phpunit": "^4.8",
                 "scrutinizer/ocular": "^1.1",
                 "squizlabs/php_codesniffer": "^2.5"
-            },
-            "suggest": {
-                "ext-sockets": "Use AMQPSocketConnection"
             },
             "type": "library",
             "extra": {
@@ -109,6 +107,11 @@
                     "name": "Raúl Araya",
                     "email": "nubeiro@gmail.com",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "Luke Bakken",
+                    "email": "luke@bakken.io",
+                    "role": "Maintainer"
                 }
             ],
             "description": "Formerly videlalvaro/php-amqplib.  This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
@@ -118,7 +121,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2018-10-23T18:48:24+00:00"
+            "time": "2019-03-08T20:12:56+00:00"
         },
         {
             "name": "seanmorris/access",
@@ -202,12 +205,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/ids.git",
-                "reference": "c2082db591de34f85c188f29efb4235e91d6e69e"
+                "reference": "7fea090623ff699c6939962b1694e0e07a94a4cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/ids/zipball/c2082db591de34f85c188f29efb4235e91d6e69e",
-                "reference": "c2082db591de34f85c188f29efb4235e91d6e69e",
+                "url": "https://api.github.com/repos/seanmorris/ids/zipball/7fea090623ff699c6939962b1694e0e07a94a4cc",
+                "reference": "7fea090623ff699c6939962b1694e0e07a94a4cc",
                 "shasum": ""
             },
             "require-dev": {
@@ -229,20 +232,24 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "time": "2019-02-28T23:48:46+00:00"
+            "support": {
+                "source": "https://github.com/seanmorris/ids/tree/master",
+                "issues": "https://github.com/seanmorris/ids/issues"
+            },
+            "time": "2019-03-05T15:34:54+00:00"
         },
         {
-            "name": "seanmorris/kalisti",
+            "name": "seanmorris/kallisti",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/kalisti.git",
-                "reference": "db118c7689ab7f621f6efc7cbe63a2255a64ac26"
+                "reference": "bce6fcc70fad6b8404b4489b93a5bb619573cabc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/kalisti/zipball/db118c7689ab7f621f6efc7cbe63a2255a64ac26",
-                "reference": "db118c7689ab7f621f6efc7cbe63a2255a64ac26",
+                "url": "https://api.github.com/repos/seanmorris/kalisti/zipball/bce6fcc70fad6b8404b4489b93a5bb619573cabc",
+                "reference": "bce6fcc70fad6b8404b4489b93a5bb619573cabc",
                 "shasum": ""
             },
             "require-dev": {
@@ -251,8 +258,8 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "SeanMorris\\Kalisti\\Test\\": "test/",
-                    "SeanMorris\\Kalisti\\": "source/"
+                    "SeanMorris\\Kallisti\\Test\\": "test/",
+                    "SeanMorris\\Kallisti\\": "source/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -262,8 +269,8 @@
                     "email": "inquire@seanmorr.is"
                 }
             ],
-            "description": "Channel based messaging interface",
-            "time": "2019-01-26T05:01:25+00:00"
+            "description": "Chaos Management Engine",
+            "time": "2019-03-10T06:54:05+00:00"
         },
         {
             "name": "seanmorris/message",
@@ -330,19 +337,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/subspace-server.git",
-                "reference": "8622b3f85da814f3d20d10e97cc31f573e0234a7"
+                "reference": "f7f4856a19bf9021dc316cf48ad6d0c24dd6ff0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/subspace-server/zipball/8622b3f85da814f3d20d10e97cc31f573e0234a7",
-                "reference": "8622b3f85da814f3d20d10e97cc31f573e0234a7",
+                "url": "https://api.github.com/repos/seanmorris/subspace-server/zipball/f7f4856a19bf9021dc316cf48ad6d0c24dd6ff0f",
+                "reference": "f7f4856a19bf9021dc316cf48ad6d0c24dd6ff0f",
                 "shasum": ""
             },
             "require": {
                 "seanmorris/access": "dev-master",
                 "seanmorris/form": "dev-master",
                 "seanmorris/ids": "dev-master",
-                "seanmorris/kalisti": "dev-master",
+                "seanmorris/kallisti": "dev-master",
                 "seanmorris/message": "dev-master",
                 "seanmorris/presskit": "dev-master"
             },
@@ -363,8 +370,8 @@
                     "email": "contact@seanmorr.is"
                 }
             ],
-            "description": "Kalisti websocket server.",
-            "time": "2019-01-26T05:01:40+00:00"
+            "description": "Kallisti websocket server.",
+            "time": "2019-03-10T16:00:42+00:00"
         },
         {
             "name": "seanmorris/theme",
@@ -486,8 +493,9 @@
         "seanmorris/form": 20,
         "seanmorris/message": 20,
         "seanmorris/presskit": 20,
-        "seanmorris/kalisti": 20,
-        "seanmorris/subspace": 20
+        "seanmorris/kallisti": 20,
+        "seanmorris/subspace": 20,
+        "php-amqplib/php-amqplib": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

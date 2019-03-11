@@ -40,6 +40,17 @@ services:
     depends_on:
       - database.isotope.seanmorr.is
 
+  task.isotope.seanmorr.is:
+    build:
+      context: ../
+      dockerfile: infra/worker.Dockerfile
+    image: r.cfcr.io/seanmorris/task.isotope.seanmorr.is
+    restart: "no"
+    volumes:
+      - ../:/app
+    # depends_on:
+    #   - database.isotope.seanmorr.is
+
   updater.isotope.seanmorr.is:
     build:
       context: ../

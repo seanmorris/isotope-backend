@@ -1,6 +1,6 @@
 <?php
 namespace SeanMorris\Isotope\Channel;
-class Game extends \SeanMorris\SubSpace\Kalisti\Channel
+class Game extends \SeanMorris\SubSpace\Kallisti\Channel
 {
 	protected $game, $gameId;
 

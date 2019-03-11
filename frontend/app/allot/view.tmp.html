@@ -1,0 +1,42 @@
+<div class = "allot">
+	<div
+		tabindex = "0"
+		class    = "allot-scroller"
+		cv-on    = "scroll:scrollHandler(event)"
+		cv-ref   = "scroller:curvature/base/Tag"
+		style    = "
+			--shimHeight: [[shimHeight]]px;
+			--rowHeight:  [[rowHeight]]px;
+			--position:   [[position]]px;
+			--offset:     [[offset]]px;
+		"
+	>
+		<div class = "allot-content">
+			<div class = "allot-header">
+				<div class = "allot-row">[[header]]</div>
+			</div>
+			<div class = "allot-body"  cv-each = "rows:row:r">
+				<div
+					class            = "allot-row"
+					style            = "
+						--allot-index:   [[row.args.index]];
+						--allot-percent: [[row.args.percent]];
+					"
+				>[[row]]</div>
+			</div>
+		</div>
+		<div class = "allot-shim"></div>
+	</div>
+</div>
+
+<div class = "allot-indicator">
+	Top Row [[topRow]] | Scrolled: [[position]] / [[height]]px | 
+	<button cv-on = "click:reverse(event)"> reverse </button>
+	<button cv-on = "click:sort(event, 'index')">id</button>
+	<button cv-on = "click:sort(event, 'title')">x</button>
+	<button cv-on = "click:sort(event, 'time')">time</button>
+	|
+	
+	<button cv-on = "click:unshift(event, 'time')">+|</button>
+	<button cv-on = "click:shift(event, 'time')">-|</button>
+</div>

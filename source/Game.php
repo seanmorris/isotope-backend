@@ -193,10 +193,14 @@ class Game extends \SeanMorris\PressKit\Model
 
 					$this->moves++;
 
-					if($this->submoves[$this->currentPlayer] <= 0)
+					if($this->maxMoves > floor($this->moves / $this->maxPlayers))
 					{
-						$this->submoves[$this->currentPlayer] = 1;
+						if($this->submoves[$this->currentPlayer] <= 0)
+						{
+							$this->submoves[$this->currentPlayer] = 1;
+						}
 					}
+
 				}
 
 				$this->chain = [];
@@ -250,18 +254,24 @@ class Game extends \SeanMorris\PressKit\Model
 		$prevMass = $board->data[$x][$y]->mass;
 		$prevClaim = $board->data[$x][$y]->claimed;
 
-		$this->scores[$i] += $prevMass
-			? abs($prevMass)
-			: 1;
+		if($prevMass)
+		{
+			$this->scores[$i] += abs($prevMass);
+		}
+		else if($prevClaim === NULL)
+		{
+			$this->scores[$i] += 1;
+		}
 
 		$board->data[$x][$y]->mass += $negative ? -1 : 1;
 
 		if(isset($board->data[$x][$y]->claimed)
 			&& $board->data[$x][$y]->claimed != $i
 		){
-			$this->scores[$board->data[$x][$y]->claimed] -= ($board->data[$x][$y]->mass
-				? abs($board->data[$x][$y]->mass)
-				: 1
+			$this->scores[$board->data[$x][$y]->claimed] -= (
+				$board->data[$x][$y]->mass
+					? abs($board->data[$x][$y]->mass)
+					: 1
 			);
 		}
 

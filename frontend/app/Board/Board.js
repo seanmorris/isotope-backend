@@ -223,6 +223,8 @@ export class Board extends View
 
 	chain(chain)
 	{
+		this.moving = true;
+
 		for(let x = 0; x < this.args.width; x++)
 		{
 			for(let y = 0; y < this.args.height; y++)
@@ -234,6 +236,8 @@ export class Board extends View
 				}
 			}
 		}
+
+		let promises = [];
 
 		for(let i in chain)
 		{
@@ -260,16 +264,23 @@ export class Board extends View
 
 			cell.args.link    = t;
 
-			let speed = 650;
+			let speed = 450;
 
-			this.onTimeout(t*speed, ()=>{
-				cell.args.setback   = false;
-				cell.args.exploding = true;
-				cell.args.chained   = 'chained';
-				cell.args.value     = cM;
-			});
+			promises.push(new Promise((accept)=>{
+				this.onTimeout(t*speed, ()=>{
+					cell.args.setback   = false;
+					cell.args.exploding = true;
+					cell.args.value     = cM;
+					if(cM > 3 || pM == 0)
+					{
+						cell.args.chained   = 'chained';
+					}
+					accept();
+				});
+			}));
 
 			this.onTimeout((t+1)*speed, ()=>{
+				cell.args.chained   = 'chained';
 				cell.args.owner     = cC;
 				cell.args.mass      = cM;
 				if(cM > 3)
@@ -278,11 +289,10 @@ export class Board extends View
 				}
 			});
 		}
-	}
 
-	setMoving(moving)
-	{
-		this.moving = moving;
+		Promise.all(promises).then(()=>{
+			this.moving = false;
+		});
 	}
 
 	refresh(callback)
@@ -302,21 +312,11 @@ export class Board extends View
 
 	join()
 	{
-		// this.socket.publish(`game:${this.args.gameId}`, JSON.stringify({
-		// 	type: 'join'
-		// }));
-
 		Repository.request(
 			Config.backend + '/games/' + this.args.gameId + '/join'
 			, {_t: (new Date()).getTime()}
-		).then((response)=>{
-
-			// this.refresh(resp=>this.updateBoard(resp.body));
-
-		}).catch(error=>{
-			
-			// this.refresh(resp=>this.updateBoard(resp.body));
-
+		).catch(error=>{
+			console.error(error);
 		});
 	}
 }
