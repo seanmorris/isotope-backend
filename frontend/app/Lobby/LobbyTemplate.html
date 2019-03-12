@@ -2,22 +2,33 @@
 	<div class = "lobby-welcome">
 		<div class = "lobby-content">
 			<h1>Welcome!</h1>
+
+			<div class = "list-container">
+				[[list]]
+			</div>
+
 			<p cv-if = "searching">Searching for games[[elipses]]</p>
 			<div cv-if = "!searching">
 				<div cv-if = "gamesFound">
+
 					[[gamesFound]] games found:
-					<div cv-each = "games:game:g">
+
+
+					<!-- <div cv-each = "games:game:g">
 						<p cv-with = "game">
 							<a cv-link = "game/[[publicId]]">[[publicId]]</a>
 						</p>
-					</div>
+					</div> -->
 				</div>
+				
 				<div cv-if = "!gamesFound">
 					No games found. <span cv-if = "!currentUserId">Are you logged in?</span>
 				</div>
+
 			</div>
+
 			<button cv-on = "click:findGame(event)">refresh</button>
-			<pre cv-prerender = "never">This is a test.</pre>
+
 		</div>
 		<div class = "lobby-content">
 			<span cv-if = "!currentUserId">

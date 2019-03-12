@@ -20,7 +20,7 @@ body {
 
 .main-box {
 	width:    100%;
-	height:   100%;
+	/*height:   100%;*/
 	margin:   auto;
 	position: relative;
 	display:  flex;
@@ -478,4 +478,9 @@ div.turn-indicator, div.turn, div.scores, div.rounds-left {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+div.list-container {
+	position: relative;
+	height:   16em;
 }

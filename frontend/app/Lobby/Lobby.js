@@ -3,6 +3,7 @@ import { Config         } from 'Config';
 import { UserRepository } from 'curvature/access/UserRepository';
 import { Repository     } from 'curvature/base/Repository';
 import { View           } from 'curvature/base/View';
+import { View as Allot  } from '../allot/View';
 
 export class Lobby extends View
 {
@@ -13,29 +14,46 @@ export class Lobby extends View
 		this.args.elipses = '...';
 		this.template     = require('./LobbyTemplate.html');
 
-		this.args.games       = 0;
+		this.args.games       = [];
 		this.args.gamesFound  = 0;
 		this.args.searching   = false;
 
 		this.args.currentUserId = null;
 
+		this.args.list = new Allot({
+			rowHeight: 32
+			, header:  [
+				'board'
+				, 'players'
+				, 'moves'
+				, ''
+			]
+		});
+
 		this.args.bindTo('games', (v)=>{
-			// console.log(v);
 			if(!v)
 			{
 				return;
 			}
-			// console.log(v.length);
+
 			this.args.gamesFound = v.length;
+
+			this.args.list.source(v.map(vv=>{
+				return {cells:[
+					`${vv.boardData.width} x ${vv.boardData.height}`
+					, `${vv.players.length} / ${vv.maxPlayers}`
+					, `${Math.floor(vv.moves/vv.maxPlayers)} / ${vv.maxMoves}`
+					, `<a href = "/game/${vv.publicId}"> go </a>`
+				]};
+			}));
+
+			this.args.list.refreshDefault();
 		});
 
 		this.onInterval(150, ()=>{
 			this.incrementElipses();
 		});
 
-		// if(!Cookie.get('prerenderer'))
-		// {
-		// }
 		UserRepository.getCurrentUser(1).then((resp)=>{
 			this.args.currentUserId = resp.body.publicId;
 		});
@@ -43,6 +61,11 @@ export class Lobby extends View
 		this.findGame().then(()=>{
 			document.dispatchEvent(new Event('renderComplete'));
 		});
+	}
+
+	postRender()
+	{
+		this.args.list.refreshDefault();
 	}
 
 	incrementElipses()

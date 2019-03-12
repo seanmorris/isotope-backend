@@ -11,25 +11,19 @@
 			--offset:     [[offset]]px;
 		"
 	>
+		<div class = "allot-shim"></div>
 		<div class = "allot-content">
 			<div class = "allot-header">
-				<div class = "allot-row">[[header]]</div>
+				[[header]]
 			</div>
-			<div class = "allot-body"  cv-each = "rows:row:r">
-				<div
-					class            = "allot-row"
-					style            = "
-						--allot-index:   [[row.args.index]];
-						--allot-percent: [[row.args.percent]];
-					"
-				>[[row]]</div>
+			<div class = "allot-body" cv-each = "rows:row:r">
+				[[row]]
 			</div>
 		</div>
-		<div class = "allot-shim"></div>
 	</div>
 </div>
 
-<div class = "allot-indicator">
+<!-- <div class = "allot-indicator">
 	Top Row [[topRow]] | Scrolled: [[position]] / [[height]]px | 
 	<button cv-on = "click:reverse(event)"> reverse </button>
 	<button cv-on = "click:sort(event, 'index')">id</button>
@@ -40,3 +34,4 @@
 	<button cv-on = "click:unshift(event, 'time')">+|</button>
 	<button cv-on = "click:shift(event, 'time')">-|</button>
 </div>
+ -->

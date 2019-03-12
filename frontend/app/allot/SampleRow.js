@@ -7,12 +7,18 @@ export class SampleRow extends BaseView
 		super(args);
 
 		this.args.index = this.args.index || 0;
+		this.args.cells = this.args.cells || [];
 		this.args.time  = this.args.time  || 0;
 
+		let cellSource = this.args.cells.map((v,k)=>{
+			return `<div>[[$cells.${k}]]</div>`
+		}).join('');
+
 		this.template   = `
-			<div>[[index]]</div>
-			<div>[[_title]]</div>
-			<div>[[time]]</div>
+			<div
+				class   = "allot-row"
+				style   = "--allot-index: [[index]]; --allot-percent: [[percent]];"
+			>${cellSource}</div>
 		`;
 
 		// this.preserve = true;

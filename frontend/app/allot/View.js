@@ -7,56 +7,59 @@ import { View as BaseView } from 'curvature/base/View';
 
 export class View extends BaseView
 {
-	static source(set)
+	static source(symbol, set)
 	{
+		if(!this._source)
+		{
+			this._source = [];
+		}
+
 		if(set)
 		{
-			this._source = set;
+			this._source[symbol] = set;
 		};
 
-		return this._source;
+		return this._source[symbol];
 	}
 
-	constructor(args)
+	constructor(args, source)
 	{
 		super(args);
 
-		this.template  = require('./view.tmp');
+		this.template = require('./view.tmp');
 
+		this.args.rowHeight = this.args.rowHeight || 320;
+		this.args.offset    = 0;
+		this.args.topRow    = 0;
+		this.args.rows      = this.args.rows || [];
+		this.args.header    = this.args.header
+			? new SampleRow({cells: this.args.header})
+			: null;
 
-		this.args.rowHeight  = 120;
-		this.args.offset     = 0;
-		this.args.topRow     = 0;
+		this.sourceSymbol   = Symbol();
 
-		this.args.rows   = [];
+		View.source(this.sourceSymbol, source || []);
 
-		let source = [];
+		// View.source(this.sourceSymbol, Array(1000*10).fill(0).map((v,k)=>{
+		// 	let rand = parseInt(Math.random()*50);
+		// 	let args = {
+		// 		cells: [
+		// 			String(1+k).padStart(6,'0')
+		// 			// , 'x'.repeat(rand)
+		// 			, 'x'
+		// 			, (new Date).getTime()
+		// 		]
+		// 	};
 
-		Object.defineProperty(this, 'source', {
-			get:            () => source
-			, set:          () => {}
-			, enumerable:   false
-			, configurable: false
-			, arbitrary:    true
-		});
-
-		Object.getOwnPropertyDescriptors(this).source.get.lol = 'wow';
-
-		View.source(Array(1000*500).fill(0).map((v,k)=>{
-			let rand = parseInt(Math.random()*50);
-
-			return {
-				index:        String(k).padStart(5,'0')
-				, title:      rand
-				, time:       (new Date).getTime()
-				, _title:     rand + ' ' + 'x'.repeat(rand)
-			};
-		}));
+		// 	return args;
+		// }));
 
 		this.mapper = (v,k) => {
 			let row = new SampleRow(v);
 
-			row.args.percent = k / View.source().length;
+			row.preserve = true;
+
+			row.args.percent = k / View.source(this.sourceSymbol).length;
 
 			return row;
 		};
@@ -64,30 +67,42 @@ export class View extends BaseView
 		this.cacher = () => {
 			return false;
 		};
+	}
 
-		this.args.header = new SampleRow;
-		
-		this.args.header.args.index  = 'id';
-		this.args.header.args._title = 'title';
-		this.args.header.args.time   = 'time';
+	source(source)
+	{
+		View.source(this.sourceSymbol, source || []);
+
+		this.args.shimHeight = View.source(this.sourceSymbol).length * this.args.rowHeight;
 	}
 
 	postRender()
 	{
+		let attachListener = (event)=>{
+			if(event.target !== this.tags.scroller.element)
+			{
+				return;
+			}
+			
+			this.refresh(
+				this.tags.scroller.element.scrollTop
+				, this.tags.scroller.element.clientHeight
+			);
+		};
+
 		this.refresh(
 			this.tags.scroller.element.scrollTop
-			, this.tags.scroller.element.scrollHeight
 			, this.tags.scroller.element.clientHeight
 		);
 
-		this.args.shimHeight = View.source().length * this.args.rowHeight;
+		this.tags.scroller.element.addEventListener('cvDomAttached', attachListener);
+
+		this.args.shimHeight = View.source(this.sourceSymbol).length * this.args.rowHeight;
 
 		if(this.args.header)
 		{
 			this.args.shimHeight += this.args.rowHeight;
 		}
-
-		console.log(this.source, Object.getOwnPropertyDescriptors(this).source.get.lol);
 	}
 
 	scrollHandler(event)
@@ -96,7 +111,6 @@ export class View extends BaseView
 
 		this.refresh(
 			event.target.scrollTop
-			, event.target.scrollHeight
 			, event.target.clientHeight
 		);
 
@@ -112,35 +126,42 @@ export class View extends BaseView
 
 	refreshDefault()
 	{
+		if(!this.tags.scroller)
+		{
+			return;
+		}
+
 		this.refresh(
 			this.tags.scroller.element.scrollTop
-			, this.tags.scroller.element.scrollHeight
 			, this.tags.scroller.element.clientHeight
 		);
 	}
 
-	refresh(top, height, viewportHeight)
+	refresh(top, viewportHeight)
 	{
-		this.args.position = parseInt(top);
-		this.args.height   = parseInt(height);
+		this.args.position = Math.floor(top);
 
 		let showRows = Math.ceil(viewportHeight / this.args.rowHeight) + 1;
 
-		this.args.topRow  = parseInt(this.args.position / this.args.rowHeight);
-		this.args.offset  = -this.args.position % this.args.rowHeight;
-		this.args.percent = parseInt(this.args.position / this.args.height * 100);
+		if(!this.args.header)
+		{
+		}
+			showRows++;
+
+		this.args.topRow = parseInt(this.args.position / this.args.rowHeight);
+		this.args.offset = -this.args.position % this.args.rowHeight;
 
 		for(let i = 0; i < showRows; i++)
 		{
 			let ia = i + this.args.topRow;
 
-			if(ia >= View.source().length)
+			if(ia >= View.source(this.sourceSymbol).length)
 			{
 				this.args.rows.splice(i,1).map(x=>x.remove());
 				continue;
 			}
 
-			this.args.rows[i] = this.mapper(View.source()[ia], ia) || '';
+			this.args.rows[i] = this.mapper(View.source(this.sourceSymbol)[ia], ia) || '';
 		}
 
 		this.args.rows.splice(showRows - 1).map(x=>x.remove());
@@ -149,7 +170,7 @@ export class View extends BaseView
 
 	reverse(event)
 	{
-		View.source().reverse();
+		View.source(this.sourceSymbol).reverse();
 		this.refreshDefault();
 	}
 
@@ -159,7 +180,7 @@ export class View extends BaseView
 		let k    = -1;
 
 		this.args.source.unshift({
-			index:        String(k).padStart(5,'0')
+			index:        String(k).padStart(6,'0')
 			, title:      rand
 			, time:       (new Date).getTime()
 			, _title:     rand + ' ' + 'x'.repeat(rand)
@@ -175,7 +196,7 @@ export class View extends BaseView
 
 	sort(event, column)
 	{
-		View.source().sort((a,b)=>{
+		View.source(this.sourceSymbol).sort((a,b)=>{
 			return a[column] - b[column]
 		});
 

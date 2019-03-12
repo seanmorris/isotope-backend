@@ -10,8 +10,8 @@ class GameRoute extends \SeanMorris\PressKit\Controller
 		, $listColumns = ['id']
 	;
 	protected static
-		$listBy = 'byModerated'
-		, $pageSize = 10
+		$listBy       = 'byModerated'
+		, $pageSize   = 100
 		, $modelRoute = 'SeanMorris\Isotope\Route\GameSubRoute'
 		, $forms = [
 			'edit' => 'SeanMorris\Isotope\Form\GameForm'

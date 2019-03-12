@@ -19,14 +19,14 @@
 }
 
 .allot-content {
-	position:     relative;
+	position:     absolute;
 	top:          calc(var(--offset) + var(--position));
 	left:         0px;
 	box-sizing:   border-box;
 }
 
 .allot-cursor {
-	position: absolute;
+	position: sticky;
 	top:      0px;
 	left:     0px;
 
@@ -39,7 +39,9 @@
 }
 
 .allot-shim {
-	height:       var(--shimHeight);
+	position:  absolute;
+	height:    var(--shimHeight);
+	width:     100%;
 }
 
 .allot-row {
@@ -67,7 +69,8 @@
 	position:     sticky;
 	top:          0px;
 	z-index:      1000;
-	background-color: red;
+	background-color: #FFF;
+	border-bottom:    #000 1px solid;
 }
 
 .allot-header > .allot-row:empty {
@@ -80,12 +83,14 @@
 
 .allot-row {
 	display:        table-row;
-	background:     rgba(
+	background:     #FFF;
+	/*background:     rgba(
 		255
 		, calc(255 - calc(var(--allot-percent) * 255))
 		, calc(255 - calc(var(--allot-percent) * 255))
 		, 1
-	);
+	);*/
+	white-space: nowrap;
 }
 
 .allot-row > div {
@@ -95,4 +100,10 @@
 	vertical-align: middle;
 
 	font-size:      6px;
+}
+
+.allot-row a[name] {
+	display:  block;
+	position: relative;
+	top:      calc(-1.5 * var(--rowHeight));
 }
