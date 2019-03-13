@@ -19,18 +19,18 @@ class Game extends \SeanMorris\SubSpace\Kallisti\Channel
 	{
 		if(!$this->game)
 		{
-			return;
+			$game = $this->getGame();
 		}
 
 		\SeanMorris\Isotope\Queue\GameJoined::check(function($message){
+			$game = $this->getGame();
+
 			if(!$message
 				|| !$message['game']
 				|| $message['game']->publicId !== $this->gameId
 			){
 				return;
 			}
-
-			$game = $this->getGame();
 
 			foreach($this->subscribers as $origin)
 			{
@@ -39,7 +39,7 @@ class Game extends \SeanMorris\SubSpace\Kallisti\Channel
 					, $output
 					, $origin
 					, $this
-					, $originalChannel
+					, $this
 				);
 			}
 		}, get_class($this->game) . '.' . $this->gameId);

@@ -51,15 +51,11 @@ export class Board extends View
 		// console.log(args.authed);
 
 		args.authed.then(()=>{
-			console.log(this.args.gameId);
-
 			this.socket.send('motd');
 
 			this.socket.subscribe(
 				`message:game:${this.args.gameId}`
 				, (e, m, c, o, i, oc, p) => {
-					console.log('MESSAGE');
-					// console.log(m);
 					this.updateBoard(JSON.parse(m));
 				}
 			);
@@ -264,7 +260,7 @@ export class Board extends View
 
 			cell.args.link    = t;
 
-			let speed = 450;
+			let speed = 420;
 
 			promises.push(new Promise((accept)=>{
 				this.onTimeout(t*speed, ()=>{
@@ -275,19 +271,19 @@ export class Board extends View
 					{
 						cell.args.chained   = 'chained';
 					}
+				});
+				this.onTimeout((t+1)*speed, ()=>{
+					cell.args.chained   = 'chained';
+					cell.args.owner     = cC;
+					cell.args.mass      = cM;
+					if(cM > 3)
+					{
+						cell.args.value = 0;
+					}
 					accept();
 				});
 			}));
 
-			this.onTimeout((t+1)*speed, ()=>{
-				cell.args.chained   = 'chained';
-				cell.args.owner     = cC;
-				cell.args.mass      = cM;
-				if(cM > 3)
-				{
-					cell.args.value = 0;
-				}
-			});
 		}
 
 		Promise.all(promises).then(()=>{

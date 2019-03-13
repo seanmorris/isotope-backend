@@ -69,7 +69,7 @@ export class Cell extends View
 			{
 				return;
 			}
-			console.log(this.args.value);
+
 			setTimeout(()=>{
 				this.args.lit = false;
 			}, 350 * ((this.args.value >= 3) ? 4 : 1));
@@ -107,7 +107,6 @@ export class Cell extends View
 			}
 			setTimeout(()=>{
 				this.args.exploding = false;
-				console.log(this.args.value);
 			}, 350);
 		});
 

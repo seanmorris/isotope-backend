@@ -43,7 +43,7 @@ export class Lobby extends View
 					`${vv.boardData.width} x ${vv.boardData.height}`
 					, `${vv.players.length} / ${vv.maxPlayers}`
 					, `${Math.floor(vv.moves/vv.maxPlayers)} / ${vv.maxMoves}`
-					, `<a href = "/game/${vv.publicId}"> go </a>`
+					, `<a href = "/game/${vv.publicId}"><button>go </button></a>`
 				]};
 			}));
 
@@ -58,7 +58,7 @@ export class Lobby extends View
 			this.args.currentUserId = resp.body.publicId;
 		});
 		
-		this.findGame().then(()=>{
+		this.findGames().then(()=>{
 			document.dispatchEvent(new Event('renderComplete'));
 		});
 	}
@@ -80,10 +80,14 @@ export class Lobby extends View
 		}
 	}
 
-	findGame(event = null)
+	findGames(event = null)
 	{
 		event && event.preventDefault();
+
 		this.args.searching = true;
+		this.args.games     = [];
+
+		this.args.list.refresh();
 
 		let args = event ? {t: Date.now()} : null;
 
@@ -100,7 +104,7 @@ export class Lobby extends View
 	{
 		event.preventDefault();
 		UserRepository.logout();
-		this.findGame();
+		this.findGames();
 		this.args.currentUserId = null;
 	}
 }

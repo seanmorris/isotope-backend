@@ -45,6 +45,8 @@ export class RootView extends View
 			});
 		});
 
+		UserRepository.getCurrentUser();
+
 		this.routes = {
 			'':               Lobby
 			, home:           Lobby

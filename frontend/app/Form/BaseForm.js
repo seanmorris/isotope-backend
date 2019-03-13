@@ -35,7 +35,7 @@ export class BaseForm extends View
 			){
 				document.dispatchEvent(new Event('renderComplete'));
 
-				console.log('Cannot render form with ', resp);
+				console.error('Cannot render form with ', resp);
 				Router.go('/');
 				return;
 			}
@@ -83,8 +83,6 @@ export class BaseForm extends View
 				{
 					query = form.args.flatValue;
 
-					console.log(uri);
-
 					Repository.request(
 						Config.backend + uri
 						, {api: 'json'}
@@ -92,8 +90,6 @@ export class BaseForm extends View
 					).then((response)=>{
 						this.onResponse(response);
 					});
-
-					console.log(query);
 				}
 			});
 		});
