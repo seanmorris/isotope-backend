@@ -67,7 +67,7 @@
             "require": {
                 "ext-bcmath": "*",
                 "ext-sockets": "*",
-                "php": ">=5.4.0"
+                "php": ">=5.6"
             },
             "replace": {
                 "videlalvaro/php-amqplib": "self.version"
@@ -128,13 +128,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/seanmorris/access.git",
-                "reference": "00c961239cd40c162fa0097ebd39360054fd7e67"
+                "url": "git@github.com:seanmorris/access.git",
+                "reference": "f559e4f8c942679ae8d929cb3680db290943edc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/access/zipball/00c961239cd40c162fa0097ebd39360054fd7e67",
-                "reference": "00c961239cd40c162fa0097ebd39360054fd7e67",
+                "url": "https://api.github.com/repos/seanmorris/access/zipball/f559e4f8c942679ae8d929cb3680db290943edc0",
+                "reference": "f559e4f8c942679ae8d929cb3680db290943edc0",
                 "shasum": ""
             },
             "require": {
@@ -157,7 +157,7 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "time": "2019-03-01T08:36:23+00:00"
+            "time": "2019-07-21T21:27:52+00:00"
         },
         {
             "name": "seanmorris/form",
@@ -204,13 +204,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/seanmorris/ids.git",
-                "reference": "8fc4cb67ef2143b855f4f096c9003943d8296a67"
+                "url": "git@github.com:seanmorris/ids.git",
+                "reference": "1b03211134de6462338ee35aa731580473e85f5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/ids/zipball/8fc4cb67ef2143b855f4f096c9003943d8296a67",
-                "reference": "8fc4cb67ef2143b855f4f096c9003943d8296a67",
+                "url": "https://api.github.com/repos/seanmorris/ids/zipball/1b03211134de6462338ee35aa731580473e85f5c",
+                "reference": "1b03211134de6462338ee35aa731580473e85f5c",
                 "shasum": ""
             },
             "require-dev": {
@@ -232,24 +232,20 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "support": {
-                "source": "https://github.com/seanmorris/ids/tree/master",
-                "issues": "https://github.com/seanmorris/ids/issues"
-            },
-            "time": "2019-03-11T07:21:40+00:00"
+            "time": "2019-08-11T15:46:55+00:00"
         },
         {
             "name": "seanmorris/kallisti",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/seanmorris/kalisti.git",
-                "reference": "bce6fcc70fad6b8404b4489b93a5bb619573cabc"
+                "url": "https://github.com/seanmorris/kallisti.git",
+                "reference": "d59d9e1457ad132dc6748bbbbdb514dc311e53a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/kalisti/zipball/bce6fcc70fad6b8404b4489b93a5bb619573cabc",
-                "reference": "bce6fcc70fad6b8404b4489b93a5bb619573cabc",
+                "url": "https://api.github.com/repos/seanmorris/kallisti/zipball/d59d9e1457ad132dc6748bbbbdb514dc311e53a9",
+                "reference": "d59d9e1457ad132dc6748bbbbdb514dc311e53a9",
                 "shasum": ""
             },
             "require-dev": {
@@ -270,14 +266,14 @@
                 }
             ],
             "description": "Chaos Management Engine",
-            "time": "2019-03-10T06:54:05+00:00"
+            "time": "2019-07-21T23:15:36+00:00"
         },
         {
             "name": "seanmorris/message",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/seanmorris/message.git",
+                "url": "git@github.com:seanmorris/message.git",
                 "reference": "73c1b67f72dedba14c572e6e80c2c4fdd7ac8d3e"
             },
             "dist": {
@@ -307,14 +303,22 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/seanmorris/PressKit.git",
-                "reference": "a78b4fd414cdd6a53226ad7fa0bb3e14eb37d5ef"
+                "url": "git@github.com:seanmorris/presskit.git",
+                "reference": "9433ba7b02ebf0c53396ba6ea6ca597e32ebaf21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/PressKit/zipball/a78b4fd414cdd6a53226ad7fa0bb3e14eb37d5ef",
-                "reference": "a78b4fd414cdd6a53226ad7fa0bb3e14eb37d5ef",
+                "url": "https://api.github.com/repos/seanmorris/presskit/zipball/9433ba7b02ebf0c53396ba6ea6ca597e32ebaf21",
+                "reference": "9433ba7b02ebf0c53396ba6ea6ca597e32ebaf21",
                 "shasum": ""
+            },
+            "require": {
+                "seanmorris/access": "dev-master",
+                "seanmorris/form": "dev-master",
+                "seanmorris/ids": "dev-master",
+                "seanmorris/kallisti": "dev-master",
+                "seanmorris/message": "dev-master",
+                "seanmorris/theme": ">=1"
             },
             "type": "library",
             "autoload": {
@@ -329,7 +333,7 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "time": "2019-03-01T08:35:47+00:00"
+            "time": "2019-08-11T18:51:49+00:00"
         },
         {
             "name": "seanmorris/subspace",
@@ -337,12 +341,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/subspace-server.git",
-                "reference": "f7f4856a19bf9021dc316cf48ad6d0c24dd6ff0f"
+                "reference": "42cd730b0881220bbbfdfa9748f18467b46a2014"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/subspace-server/zipball/f7f4856a19bf9021dc316cf48ad6d0c24dd6ff0f",
-                "reference": "f7f4856a19bf9021dc316cf48ad6d0c24dd6ff0f",
+                "url": "https://api.github.com/repos/seanmorris/subspace-server/zipball/42cd730b0881220bbbfdfa9748f18467b46a2014",
+                "reference": "42cd730b0881220bbbfdfa9748f18467b46a2014",
                 "shasum": ""
             },
             "require": {
@@ -371,7 +375,7 @@
                 }
             ],
             "description": "Kallisti websocket server.",
-            "time": "2019-03-10T16:00:42+00:00"
+            "time": "2019-05-28T11:08:36+00:00"
         },
         {
             "name": "seanmorris/theme",

@@ -16,6 +16,7 @@
 	left:         0px;
 	right:        0px;
 	bottom:       0px;
+	background-color: white;
 }
 
 .allot-content {
@@ -58,7 +59,7 @@
 .allot-content {
 	display:      table;
 	width:        100%;
-	/*table-layout: fixed;*/
+	table-layout: fixed;
 }
 
 .allot-header {

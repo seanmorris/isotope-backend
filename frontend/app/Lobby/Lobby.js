@@ -21,7 +21,7 @@ export class Lobby extends View
 		this.args.currentUserId = null;
 
 		this.args.list = new Allot({
-			rowHeight: 32
+			rowHeight: 42
 			, header:  [
 				'board'
 				, 'players'

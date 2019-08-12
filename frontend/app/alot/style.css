@@ -1,0 +1,47 @@
+.alot-scroll {
+	overflow: auto;
+	position: absolute;
+	top:      0px;
+	left:     0px;
+	right:    0px;
+	bottom:   0px;
+}
+
+.alot-grid {
+	display:  grid;
+	position: relative;
+	grid-template-columns: auto;
+}
+
+.alot-shim {
+	position:   absolute;
+	top:        0px;
+	left:       0px;
+	z-index:    1;
+	box-sizing: border-box;
+}
+
+.alot-cell {
+	box-sizing:      border-box;
+	position:        relative;
+}
+
+/*===*/
+.alot-cell {
+	padding-left:    1em;
+	padding-right:	 1em;
+	display:         flex;
+	/*justify-content: center;*/
+	align-items:     center;
+}
+
+.clock {
+	transition: all 1s ease-in;
+}
+
+.clock.visible {
+	color:red;
+}
+.clock.not-visible {
+	color:black;
+}

@@ -57,6 +57,7 @@ export class RootView extends View
 			, 'my-account':   Profile
 			, create:         Create
 			, allot:          require('allot/View').View
+			, alot:           require('alot/View').View
 			, false:          '404!'
 		};
 

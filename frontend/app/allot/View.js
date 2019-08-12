@@ -2,6 +2,7 @@
 // import { Repository } from 'curvature/base/Repository';
 
 import { SampleRow } from './SampleRow';
+import { Clock     } from './Clock';
 
 import { View as BaseView } from 'curvature/base/View';
 
@@ -28,7 +29,7 @@ export class View extends BaseView
 
 		this.template = require('./view.tmp');
 
-		this.args.rowHeight = this.args.rowHeight || 320;
+		this.args.rowHeight = this.args.rowHeight || 128;
 		this.args.offset    = 0;
 		this.args.topRow    = 0;
 		this.args.rows      = this.args.rows || [];
@@ -37,22 +38,38 @@ export class View extends BaseView
 			: null;
 
 		this.sourceSymbol   = Symbol();
+		this.indexSymbol    = Symbol();
+		this.prevSymbol     = Symbol();
 
-		View.source(this.sourceSymbol, source || []);
+		// View.source(this.sourceSymbol, source || []);
 
-		// View.source(this.sourceSymbol, Array(1000*10).fill(0).map((v,k)=>{
-		// 	let rand = parseInt(Math.random()*50);
-		// 	let args = {
-		// 		cells: [
-		// 			String(1+k).padStart(6,'0')
-		// 			// , 'x'.repeat(rand)
-		// 			, 'x'
-		// 			, (new Date).getTime()
-		// 		]
-		// 	};
+		this.args.newRows   = [];
 
-		// 	return args;
-		// }));
+		this.args.newRows.bindTo((v,k)=>{
+			if(this.args.newRows.length)
+			{
+				console.log(this.args.newRows.filter(z=>z).join(','));
+			}
+
+			while(this.args.newRows.length)
+			{
+				this.args.newRows.pop();
+			}
+			
+		},{wait:100});
+
+		View.source(this.sourceSymbol, Array(1000*10).fill(0).map((v,k)=>{
+			let rand = parseInt(Math.random()*50);
+			let args = {
+				cells: {
+					id:     String(1+k).padStart(6,'0')
+					, x:    new Clock
+					, time: 0
+				}
+			};
+
+			return args;
+		}));
 
 		this.mapper = (v,k) => {
 			let row = new SampleRow(v);
@@ -62,10 +79,6 @@ export class View extends BaseView
 			row.args.percent = k / View.source(this.sourceSymbol).length;
 
 			return row;
-		};
-
-		this.cacher = () => {
-			return false;
 		};
 	}
 
@@ -139,6 +152,18 @@ export class View extends BaseView
 
 	refresh(top, viewportHeight)
 	{
+		if(this._refresher)
+		{
+			clearTimeout(this._refresher);
+		}
+
+		this._refresher = setTimeout(()=>{
+			this._refresh(top, viewportHeight)
+		}, 0);
+	}
+
+	_refresh(top, viewportHeight)
+	{
 		this.args.position = Math.floor(top);
 
 		let showRows = Math.ceil(viewportHeight / this.args.rowHeight) + 1;
@@ -146,25 +171,81 @@ export class View extends BaseView
 		if(!this.args.header)
 		{
 		}
-			showRows++;
+
+		showRows++;
 
 		this.args.topRow = parseInt(this.args.position / this.args.rowHeight);
 		this.args.offset = -this.args.position % this.args.rowHeight;
+
+		// let existing = [];
+
+		// for(let i in this.args.rows)
+		// {
+		// 	if(this.args.rows[i])
+		// 	{
+		// 		existing[i] = this.args.rows[i];
+		// 		existing[i][this.prevSymbol] = i;
+		// 	}
+		// }
+
+		// this.args.rows = [];
+
+		while(this.args.rows.length)
+		{
+			if(!this.args.rows[0])
+			{
+				this.args.rows.shift();
+				continue;
+			}
+
+			if(this.args.rows[0][this.indexSymbol] < this.args.topRow)
+			{
+				this.args.rows.shift().remove();
+				continue;
+			}
+
+			break;
+		}
+
+		while(this.args.rows.length)
+		{
+			if(!this.args.rows[this.args.rows.length-1])
+			{
+				this.args.rows.pop();
+				continue;
+			}
+
+			if(this.args.rows[this.args.rows.length-1][this.indexSymbol] >= (this.args.topRow + showRows))
+			{
+				this.args.rows.pop().remove();
+				continue;
+			}
+
+			break;
+		}
+
+		// this.args.rows.splice(showRows).map(x=>x.remove());
 
 		for(let i = 0; i < showRows; i++)
 		{
 			let ia = i + this.args.topRow;
 
-			if(ia >= View.source(this.sourceSymbol).length)
+			if(ia+1 > View.source(this.sourceSymbol).length)
 			{
-				this.args.rows.splice(i,1).map(x=>x.remove());
 				continue;
 			}
 
-			this.args.rows[i] = this.mapper(View.source(this.sourceSymbol)[ia], ia) || '';
-		}
+			if(!this.args.rows[i])
+			{
+				this.args.newRows.push(ia);
+			}
 
-		this.args.rows.splice(showRows - 1).map(x=>x.remove());
+			this.args.rows[i] = this.mapper(
+				View.source(this.sourceSymbol)[ia], ia
+			);
+
+			this.args.rows[i][this.indexSymbol] = ia;
+		}
 
 	}
 
@@ -182,7 +263,7 @@ export class View extends BaseView
 		this.args.source.unshift({
 			index:        String(k).padStart(6,'0')
 			, title:      rand
-			, time:       (new Date).getTime()
+			, time:       0
 			, _title:     rand + ' ' + 'x'.repeat(rand)
 		});
 

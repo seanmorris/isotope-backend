@@ -484,3 +484,8 @@ div.list-container {
 	position: relative;
 	height:   16em;
 }
+
+.allot-row button {
+	padding: 0.25em;
+	margin: 0.5em;
+}

@@ -1,0 +1,61 @@
+<style type = "text/css" cv-if = "header">
+	.alot-cell:nth-child(-n+[[columns]]) {
+		background: red;
+		position:   sticky;
+		top:        0px;
+		z-index:    1;
+	}
+
+	.alot-cell:nth-child(n+[[columnsP]]) {
+		background: white;
+	}
+</style>
+<style type = "text/css" cv-if = "!header">
+	.alot-cell {
+		background: white;
+	}
+</style>
+
+<style type = "text/css">
+	.alot-grid {
+		grid-template-columns: [[autos]];
+		top:                   [[offset]]px;
+	}
+	
+	/*.alot-cell:nth-child(-n+[[columns]]) {
+		background: red;
+		position:   sticky;
+		top:        0px;
+		z-index:    1;
+	}*/
+
+	/*.alot-cell:nth-child(n+[[columnsP]]) {
+		background: white;
+	}*/
+	.alot-cell {
+		top:   [[cellOffset]]px;
+	}
+
+	.alot-shim {
+		height: [[shimHeight]]px;
+	}
+
+	.alot-cell {
+		height: [[rowHeight]]px;
+	}
+</style>
+
+<div
+	class  = "alot-scroll"
+	tabindex = "0"
+	cv-on  = "
+		scroll:scrollHandler(event);
+		cvDomAttached:attachHandler(event);
+	"
+	cv-ref = "scroll:curvature/base/Tag"
+>
+	<div class = "alot-shim">&nbsp;</div>
+	<div class = "alot-grid" cv-each ="cells:cell:c">
+		<div class = "alot-cell" data-cell-id = "[[c]]">[[cell]]</div>
+	</div>
+</div>
