@@ -91,11 +91,6 @@ class GameSubRoute extends \SeanMorris\PressKit\Route\ModelSubRoute
 					)
 				);
 
-				\SeanMorris\Isotope\Queue\GameJoined::broadcast([
-					'player' => $user
-					, 'game' => $game
-				], get_class($game). '.' . $game->publicId);
-
 				throw new \SeanMorris\Ids\Http\Http303(
 					$router->path()->pop()->pathString()
 				);
@@ -113,7 +108,7 @@ class GameSubRoute extends \SeanMorris\PressKit\Route\ModelSubRoute
 		\SeanMorris\Isotope\Queue\GameJoined::broadcast([
 			'player' => $user
 			, 'game' => $game
-		], get_class($game). '.' . $game->publicId);
+		], get_class($game) . '.' . $game->publicId);
 
 		throw new \SeanMorris\Ids\Http\Http303(
 			$router->path()->pop()->pathString()

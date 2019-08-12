@@ -20,15 +20,15 @@ export class Lobby extends View
 
 		this.args.currentUserId = null;
 
-		this.args.list = new Allot({
-			rowHeight: 42
-			, header:  [
-				'board'
-				, 'players'
-				, 'moves'
-				, ''
-			]
-		});
+		// this.args.list = new Allot({
+		// 	rowHeight: 42
+		// 	, header:  [
+		// 		'board'
+		// 		, 'players'
+		// 		, 'moves'
+		// 		, ''
+		// 	]
+		// });
 
 		this.args.bindTo('games', (v)=>{
 			if(!v)
@@ -38,16 +38,16 @@ export class Lobby extends View
 
 			this.args.gamesFound = v.length;
 
-			this.args.list.source(v.map(vv=>{
-				return {cells:[
-					`${vv.boardData.width} x ${vv.boardData.height}`
-					, `${vv.players.length} / ${vv.maxPlayers}`
-					, `${Math.floor(vv.moves/vv.maxPlayers)} / ${vv.maxMoves}`
-					, `<a href = "/game/${vv.publicId}"><button>go </button></a>`
-				]};
-			}));
+			// this.args.list.source(v.map(vv=>{
+			// 	return {cells:[
+			// 		`${vv.boardData.width} x ${vv.boardData.height}`
+			// 		, `${vv.players.length} / ${vv.maxPlayers}`
+			// 		, `${Math.floor(vv.moves/vv.maxPlayers)} / ${vv.maxMoves}`
+			// 		, `<a href = "/game/${vv.publicId}"><button>go </button></a>`
+			// 	]};
+			// }));
 
-			this.args.list.refreshDefault();
+			// this.args.list.refreshDefault();
 		});
 
 		this.onInterval(150, ()=>{
@@ -65,7 +65,7 @@ export class Lobby extends View
 
 	postRender()
 	{
-		this.args.list.refreshDefault();
+		// this.args.list.refreshDefault();
 	}
 
 	incrementElipses()
@@ -87,7 +87,7 @@ export class Lobby extends View
 		this.args.searching = true;
 		this.args.games     = [];
 
-		this.args.list.refresh();
+		// this.args.list.refresh();
 
 		let args = event ? {t: Date.now()} : null;
 

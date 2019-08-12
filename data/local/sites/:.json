@@ -1,6 +1,7 @@
 {
 	"entrypoint" : "SeanMorris\\Isotope\\Route\\RootRoute"
 	, "socketEntryPoint": "SeanMorris\\Isotope\\Route\\SocketRoute"
+	, "canonical": "localhost"
 	, "corsDomains": [
 		"http://thruput:9999"
 		, "http://thruput"

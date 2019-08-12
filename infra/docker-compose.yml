@@ -119,19 +119,6 @@ services:
       - ../:/app
       - ../data/local/composer/:/root/.composer/
 
-  game-joined-queue.rabbit.isotope.seanmorr.is:
-    build:
-      context: ../
-      dockerfile: infra/worker.Dockerfile
-    image: r.cfcr.io/seanmorris/worker.isotope.seanmorr.is
-    restart: always
-    volumes:
-      - ../:/app
-    depends_on:
-      - rabbit.isotope.seanmorr.is
-    command: "idilic queueDaemon SeanMorris\\\\Isotope\\\\Queue\\\\GameJoined"
-
-
   rabbit.isotope.seanmorr.is:
     image: "rabbitmq:3-management"
     restart: always
@@ -147,8 +134,6 @@ services:
       NAME: "rabbitmq1"
     volumes:
       - "../data/global/rabbitMq/enabled_plugins:/etc/rabbitmq/enabled_plugins"
-      #- "./rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro"
-      #- "./autocluster-0.4.1.ez:/usr/lib/rabbitmq/lib/rabbitmq_server-3.5.5/plugins/autocluster-0.4.1.ez"
 
 volumes:
   schema.isotope.seanmorr.is:
