@@ -4,26 +4,26 @@ exports.files = {
   stylesheets: {joinTo: 'app.css'}
 };
 
-// const { exec } = require('child_process');
+const { exec } = require('child_process');
 
-// exports.hooks  = {};
+exports.hooks  = {};
 
-// exports.hooks.preCompile = () => {
-//   console.log("About to compile...");
+exports.hooks.preCompile = () => {
+  console.log("About to compile...");
 
-//   exec(
-//     `cd ../curvature \\
-//       && npm link \\
-//       && cd ../frontend \\
-//       && npm link curvature`
-//     , (err, stdout, stderr)=>{
-//       console.log(stdout);
-//       console.log(stderr);
+  exec(
+    `cd ../curvature \\
+      && npm link \\
+      && cd ../frontend \\
+      && npm link curvature`
+    , (err, stdout, stderr)=>{
+      console.log(stdout);
+      console.log(stderr);
 
-//       return Promise.resolve();
-//     }
-//   );
-// };
+      return Promise.resolve();
+    }
+  );
+};
 
 exports.plugins = {
   babel: {presets: ['latest']},

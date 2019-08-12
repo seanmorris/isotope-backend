@@ -6,6 +6,9 @@ RUN rm -rfv /var/www/html && ln -s /app/public /var/www/html \
 
 RUN a2enmod rewrite
 
+
+RUN docker-php-ext-install sockets
+
 RUN ln -s /app/vendor/seanmorris/ids/source/Idilic/idilic /usr/local/bin/idilic
 
 CMD ["idilic", "info"]

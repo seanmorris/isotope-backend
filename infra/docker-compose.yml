@@ -26,6 +26,7 @@ services:
       - "80:80"
     volumes:
       - ../:/app
+      - /tmp:/tmp
     depends_on:
       - database.isotope.seanmorr.is
 
@@ -39,6 +40,17 @@ services:
       - ../:/app
     depends_on:
       - database.isotope.seanmorr.is
+
+  watcher.isotope.seanmorr.is:
+    build:
+      context: ../
+      dockerfile: infra/watcher.Dockerfile
+    image: r.cfcr.io/seanmorris/watcher.isotope.seanmorr.is
+    restart: always
+    ports:
+      - "9485:9485"
+    volumes:
+      - ../:/app
 
   task.isotope.seanmorr.is:
     build:
@@ -79,7 +91,7 @@ services:
   socket.isotope.seanmorr.is:
     build:
       context: ../
-      dockerfile: vendor/seanmorris/subspace/infra/socket.Dockerfile
+      dockerfile: infra/socket.Dockerfile
     image: r.cfcr.io/seanmorris/socket.isotope.seanmorr.is
     restart: always
     ports:
@@ -106,6 +118,18 @@ services:
     volumes:
       - ../:/app
       - ../data/local/composer/:/root/.composer/
+
+  game-joined-queue.rabbit.isotope.seanmorr.is:
+    build:
+      context: ../
+      dockerfile: infra/worker.Dockerfile
+    image: r.cfcr.io/seanmorris/worker.isotope.seanmorr.is
+    restart: always
+    volumes:
+      - ../:/app
+    depends_on:
+      - rabbit.isotope.seanmorr.is
+    command: "idilic queueDaemon SeanMorris\\\\Isotope\\\\Queue\\\\GameJoined"
 
 
   rabbit.isotope.seanmorr.is:

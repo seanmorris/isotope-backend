@@ -128,7 +128,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:seanmorris/access.git",
+                "url": "https://github.com/seanmorris/access.git",
                 "reference": "f559e4f8c942679ae8d929cb3680db290943edc0"
             },
             "dist": {
@@ -204,7 +204,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:seanmorris/ids.git",
+                "url": "https://github.com/seanmorris/ids.git",
                 "reference": "1b03211134de6462338ee35aa731580473e85f5c"
             },
             "dist": {
@@ -273,7 +273,7 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:seanmorris/message.git",
+                "url": "https://github.com/seanmorris/message.git",
                 "reference": "73c1b67f72dedba14c572e6e80c2c4fdd7ac8d3e"
             },
             "dist": {
@@ -303,12 +303,12 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:seanmorris/presskit.git",
+                "url": "https://github.com/seanmorris/PressKit.git",
                 "reference": "9433ba7b02ebf0c53396ba6ea6ca597e32ebaf21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/presskit/zipball/9433ba7b02ebf0c53396ba6ea6ca597e32ebaf21",
+                "url": "https://api.github.com/repos/seanmorris/PressKit/zipball/9433ba7b02ebf0c53396ba6ea6ca597e32ebaf21",
                 "reference": "9433ba7b02ebf0c53396ba6ea6ca597e32ebaf21",
                 "shasum": ""
             },

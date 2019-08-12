@@ -48,10 +48,13 @@ export class Board extends View
 
 		this.socket = Socket.get(Config.socketUri);
 
-		// console.log(args.authed);
 
 		args.authed.then(()=>{
+			console.log(this.socket.socket.readyState);
+
 			this.socket.send('motd');
+
+			console.log(this.socket.socket.readyState);
 
 			this.socket.subscribe(
 				`message:game:${this.args.gameId}`

@@ -1,5 +1,6 @@
 {
 	"entrypoint" : "SeanMorris\\Isotope\\Route\\RootRoute"
+	, "socketEntryPoint": "SeanMorris\\Isotope\\Route\\SocketRoute"
 	, "corsDomains": [
 		"http://thruput:9999"
 		, "http://thruput"
@@ -38,5 +39,5 @@
 			, "pass": "rabbitmq"
 		}
 	}
-	, "logLevel": "query"
+	, "logLevel": "info"
 }
