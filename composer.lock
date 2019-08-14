@@ -73,10 +73,9 @@
                 "videlalvaro/php-amqplib": "self.version"
             },
             "require-dev": {
-                "ext-curl": "*",
-                "nategood/httpful": "^0.2.20",
                 "phpdocumentor/phpdocumentor": "^2.9",
                 "phpunit/phpunit": "^4.8",
+                "scrutinizer/ocular": "^1.1",
                 "squizlabs/php_codesniffer": "^2.5"
             },
             "type": "library",
@@ -158,10 +157,6 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "support": {
-                "source": "https://github.com/seanmorris/access/tree/master",
-                "issues": "https://github.com/seanmorris/access/issues"
-            },
             "time": "2019-07-21T21:27:52+00:00"
         },
         {
@@ -210,12 +205,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/ids.git",
-                "reference": "1b03211134de6462338ee35aa731580473e85f5c"
+                "reference": "88e7e5b2292c9a44a8b1c4ab8611867f6216f926"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/ids/zipball/1b03211134de6462338ee35aa731580473e85f5c",
-                "reference": "1b03211134de6462338ee35aa731580473e85f5c",
+                "url": "https://api.github.com/repos/seanmorris/ids/zipball/88e7e5b2292c9a44a8b1c4ab8611867f6216f926",
+                "reference": "88e7e5b2292c9a44a8b1c4ab8611867f6216f926",
                 "shasum": ""
             },
             "require-dev": {
@@ -241,7 +236,7 @@
                 "source": "https://github.com/seanmorris/ids/tree/master",
                 "issues": "https://github.com/seanmorris/ids/issues"
             },
-            "time": "2019-08-11T15:46:55+00:00"
+            "time": "2019-08-12T22:42:09+00:00"
         },
         {
             "name": "seanmorris/kallisti",
@@ -298,16 +293,13 @@
                     "SeanMorris\\Message\\": "source/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "authors": [
                 {
                     "name": "Sean Morris",
                     "email": "sean@sean-morris.com"
                 }
             ],
-            "support": {
-                "source": "https://github.com/seanmorris/message/tree/master",
-                "issues": "https://github.com/seanmorris/message/issues"
-            },
             "time": "2018-05-07T18:57:24+00:00"
         },
         {

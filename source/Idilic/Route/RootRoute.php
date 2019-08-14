@@ -28,8 +28,6 @@ class RootRoute implements \SeanMorris\Ids\Routable
 
 			\SeanMorris\Isotope\Queue\GameJoined::check(function($message, $raw){
 
-				var_dump($message);
-
 				return (object) [
 					'time'      => time()
 					, 'message' => $message

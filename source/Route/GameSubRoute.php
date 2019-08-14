@@ -85,6 +85,12 @@ class GameSubRoute extends \SeanMorris\PressKit\Route\ModelSubRoute
 		{
 			if($user->publicId == $player->publicId)
 			{
+
+				\SeanMorris\Isotope\Queue\GameJoined::broadcast([
+					'player' => $user
+					, 'game' => $game
+				], get_class($game) . '.' . $game->publicId);
+
 				$messages->addFlash(
 					new \SeanMorris\Message\ErrorMessage(
 						'Already joined.'
