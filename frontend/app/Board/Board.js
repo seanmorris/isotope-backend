@@ -48,7 +48,6 @@ export class Board extends View
 
 		this.socket = Socket.get(Config.socketUri);
 
-
 		args.authed.then(()=>{
 			console.log(this.socket.socket.readyState);
 
@@ -92,14 +91,18 @@ export class Board extends View
 		});
 
 		this.template = require('./BoardTemplate.html');
-
-		// this.onInterval(1000, ()=>{
-		// 	this.refresh(resp=>this.updateBoard(resp));
-		// });
 	}
 
 	updateBoard(body)
 	{
+		this.args.playersCount = body.maxPlayers;
+
+		if(body.players)
+		{
+			this.args.playersCount -= body.players.length;
+			this.args.playersPlural = !(this.args.playersCount == 1);
+		}
+
 		for(let x = 0; x < this.args.width; x++)
 		{
 			for(let y = 0; y < this.args.height; y++)

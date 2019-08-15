@@ -8,6 +8,7 @@
 
 		<div cv-if = "!full">
 			<button cv-on = "click:join(event)">Join</button>
+			<p>Waiting for [[playersCount]] player<span cv-if = "playersPlural">s</span>.</p>
 		</div>
 
 		<div cv-if = "full">

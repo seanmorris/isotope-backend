@@ -73,6 +73,10 @@ restart-fg:
 	&& ${DOCKER_COMMAND} down \
 	&& ${DOCKER_COMMAND} up
 
+restart-socket:
+	cd infra/ \
+	&& ${DOCKER_COMMAND} restart socket.isotope.seanmorr.is
+
 composer-install:
 	cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm \

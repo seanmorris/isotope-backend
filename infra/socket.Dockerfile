@@ -1,3 +1,3 @@
 FROM basic-socket:latest
 
-RUN docker-php-ext-install sockets
+RUN docker-php-ext-install sockets bcmath
