@@ -36,8 +36,10 @@ build:
 	&& ${DOCKER_COMMAND} build worker.isotope.seanmorr.is \
 	&& ${DOCKER_COMMAND} -f docker-compose.base.yml build watcher.isotope.seanmorr.is \
 	&& cd .. \
-	&& make build-js COMPOSE_FILE=docker-compose.base.yml \
-	&& make build-js COMPOSE_FILE=docker-compose.base.yml \
+	&& ( \
+		[ "${STAGE_ENV}" != "development" ] || \
+		make build-js COMPOSE_FILE=docker-compose.base.yml \
+	) \
 	&& cd infra/ \
 	&& ${DOCKER_COMMAND} build \
 
