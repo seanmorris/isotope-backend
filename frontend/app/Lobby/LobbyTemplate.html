@@ -1,45 +1,69 @@
-<div class = "board-wrap">
-	<div class = "lobby-welcome">
-		<div class = "lobby-content">
-			<h1>Welcome!</h1>
-
-			<div class = "list-container">
-				
-			</div>
-
-			<p cv-if = "searching">Searching for games[[elipses]]</p>
-			<div cv-if = "!searching">
-				<div cv-if = "gamesFound">
-
-					[[gamesFound]] games found:
-
-
-					<!-- <div cv-each = "games:game:g">
-						<p cv-with = "game">
-							<a cv-link = "game/[[publicId]]">[[publicId]]</a>
-						</p>
-					</div> -->
-				</div>
-				
-				<div cv-if = "!gamesFound">
-					No games found. <span cv-if = "!currentUserId">Are you logged in?</span>
-				</div>
-
-			</div>
-
-			<button cv-on = "click:findGames(event)">refresh</button>
-
-		</div>
-		<div class = "lobby-content">
-			<span cv-if = "!currentUserId">
-				<button cv-link = 'login'>login</button>
-				| <button cv-link = 'register'>register</button>
-			</span>
-			<span cv-if = "currentUserId">
-				<button cv-link = 'my-account'>my account</button>
-				| <button href = 'logout' cv-on = 'click:logout(event)'>logout</button>
-				| <button cv-link = 'create'>new game</button>
-			</span>
-		</div>
-	</div>
+<div class="board-wrap">
+    <div class="lobby-welcome">
+        <div class="lobby-content">
+            <div class="rule">
+                <h1>Welcome!</h1>
+                <p cv-if="searching">Searching for games[[elipses]]</p>
+                <div cv-if="!searching">
+                    <div cv-if="gamesFound">
+                        [[gamesFound]] games found:
+                    </div>
+                    <div cv-if="!gamesFound">
+                        No games found. <span cv-if="!currentUserId">Are you logged in?</span>
+                    </div>
+                </div>
+            </div>
+            <div class="game-list">
+                <div class="game-table">
+                    <div class="game-table-header game-table-rows">
+                        <div>
+                            <div>Board</div>
+                            <div>Players</div>
+                            <div>Moves</div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="game-table-body game-table-rows" cv-each="games:game:g">
+                        <div>
+                            <div>[[game.boardData.width]]x[[game.boardData.height]]</div>
+                            <div>[[game.playerCount]]/[[game.maxPlayers]]</div>
+                            <div>[[game.moves]]/[[game.maxMoves]]</div>
+                            <div>
+                                <a cv-link="game/[[game.publicId]]">
+                                    <span cv-if="game.__full">
+                                        <span cv-if="game.__mine">
+                                            Resume
+                                        </span>
+                                        <span cv-if="!game.__mine">
+                                            Spectate
+                                        </span>
+                                    </span>
+                                    <span cv-if="!game.__full">
+                                        <span cv-if="game.__mine">
+                                            Resume
+                                        </span>
+                                        <span cv-if="!game.__mine">
+                                            Play
+                                        </span>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button cv-on="click:findGames(event)">&lt;</button>
+            <button cv-on="click:findGames(event)">refresh</button>
+            <button cv-on="click:findGames(event)">&gt;</button>
+            <span cv-if="!currentUserId">
+                <button cv-link='login'>login</button>
+                | <button cv-link='register'>register</button>
+            </span>
+            <span cv-if="currentUserId">
+                <button cv-link='my-account'>my account</button>
+                | <button href='logout' cv-on='click:logout(event)'>logout</button>
+                | <button cv-link='create'>new game</button>
+            </span>
+        </div>
+    </div>
 </div>

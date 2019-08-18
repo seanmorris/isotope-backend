@@ -48,8 +48,8 @@ export class RootView extends View
 		UserRepository.getCurrentUser();
 
 		this.routes = {
-			'':               Lobby
-			, home:           Lobby
+			'':               a=>new Lobby(Object.assign(a,{authed}))
+			, home:           a=>new Lobby(Object.assign(a,{authed}))
 			, game:           a=>new Board(Object.assign(a,{authed}))
 			, 'game/%gameId': a=>new Board(Object.assign(a,{authed}))
 			, login:          Login

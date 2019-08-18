@@ -73,15 +73,16 @@
                 "videlalvaro/php-amqplib": "self.version"
             },
             "require-dev": {
-                "phpdocumentor/phpdocumentor": "^2.9",
-                "phpunit/phpunit": "^4.8",
-                "scrutinizer/ocular": "^1.1",
+                "ext-curl": "*",
+                "nategood/httpful": "^0.2.20",
+                "phpdocumentor/phpdocumentor": "dev-master",
+                "phpunit/phpunit": "^5.7|^6.5|^7.0",
                 "squizlabs/php_codesniffer": "^2.5"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.8-dev"
+                    "dev-master": "2.10-dev"
                 }
             },
             "autoload": {
@@ -100,18 +101,18 @@
                 },
                 {
                     "name": "John Kelly",
-                    "email": "johnmkelly86@gmail.com",
-                    "role": "Maintainer"
+                    "role": "Maintainer",
+                    "email": "johnmkelly86@gmail.com"
                 },
                 {
                     "name": "Raúl Araya",
-                    "email": "nubeiro@gmail.com",
-                    "role": "Maintainer"
+                    "role": "Maintainer",
+                    "email": "nubeiro@gmail.com"
                 },
                 {
                     "name": "Luke Bakken",
-                    "email": "luke@bakken.io",
-                    "role": "Maintainer"
+                    "role": "Maintainer",
+                    "email": "luke@bakken.io"
                 }
             ],
             "description": "Formerly videlalvaro/php-amqplib.  This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
@@ -157,6 +158,10 @@
                     "email": "sean@sean-morris.com"
                 }
             ],
+            "support": {
+                "source": "https://github.com/seanmorris/access/tree/master",
+                "issues": "https://github.com/seanmorris/access/issues"
+            },
             "time": "2019-07-21T21:27:52+00:00"
         },
         {
@@ -293,13 +298,16 @@
                     "SeanMorris\\Message\\": "source/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "authors": [
                 {
                     "name": "Sean Morris",
                     "email": "sean@sean-morris.com"
                 }
             ],
+            "support": {
+                "source": "https://github.com/seanmorris/message/tree/master",
+                "issues": "https://github.com/seanmorris/message/issues"
+            },
             "time": "2018-05-07T18:57:24+00:00"
         },
         {
@@ -464,8 +472,8 @@
                 },
                 {
                     "name": "Marcus Baker",
-                    "email": "marcus@lastcraft.com",
-                    "role": "Original project lead"
+                    "role": "Original project lead",
+                    "email": "marcus@lastcraft.com"
                 },
                 {
                     "name": "Jason Sweat",

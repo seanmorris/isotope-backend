@@ -1,0 +1,93 @@
+version: '2.4'
+
+services:
+
+  backend.isotope.seanmorr.is:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: backend.isotope.seanmorr.is
+    ports:
+      - "80:80"
+    volumes:
+      - ../:/app
+      - /tmp:/tmp
+    depends_on:
+      - database.isotope.seanmorr.is
+
+  worker.isotope.seanmorr.is:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: worker.isotope.seanmorr.is
+    volumes:
+      - ../:/app
+    depends_on:
+      - database.isotope.seanmorr.is
+
+  watcher.isotope.seanmorr.is:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: watcher.isotope.seanmorr.is
+
+  updater.isotope.seanmorr.is:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: updater.isotope.seanmorr.is
+    restart: on-failure
+    volumes:
+      - ../:/app
+    depends_on:
+      - database.isotope.seanmorr.is
+
+  socket.isotope.seanmorr.is:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: socket.isotope.seanmorr.is
+    ports:
+      - '9998:9998'
+    volumes:
+      - ../:/app
+    depends_on:
+      - database.isotope.seanmorr.is
+
+  compose.isotope.seanmorr.is:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: compose.isotope.seanmorr.is
+    restart: on-failure
+
+  database.isotope.seanmorr.is:
+    extends:
+      file: docker-compose.base.yml
+      service: database.isotope.seanmorr.is
+
+  rabbit.isotope.seanmorr.is:
+    image: 'rabbitmq:3-management'
+    restart: always
+    environment:
+      RABBITMQ_ERLANG_COOKIE: 'O234234QALRPCLNMEQG'
+      RABBITMQ_DEFAULT_USER:  'rabbitmq'
+      RABBITMQ_DEFAULT_PASS:  'rabbitmq'
+      RABBITMQ_DEFAULT_VHOST: '/'
+    ports:
+      - '19994:15672'
+      - '9994:5672'
+    labels:
+      NAME: 'rabbitmq1'
+    volumes:
+      - '../data/global/rabbitMq/enabled_plugins:/etc/rabbitmq/enabled_plugins'
+
+volumes:
+  schema.isotope.seanmorr.is:
+    driver: 'local'

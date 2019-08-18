@@ -9,20 +9,24 @@ const { exec } = require('child_process');
 exports.hooks  = {};
 
 exports.hooks.preCompile = () => {
-  console.log("About to compile...");
+  console.log(`About to compile ${process.env.STAGE_ENV} ...`);
 
-  exec(
-    `cd ../curvature \\
-      && npm link \\
-      && cd ../frontend \\
-      && npm link curvature`
-    , (err, stdout, stderr)=>{
-      console.log(stdout);
-      console.log(stderr);
+  if(process.env.STAGE_ENV === 'development')
+  {
+    exec(
+      `cd ../curvature \\
+        && npm link \\
+        && cd ../frontend \\
+        && npm link curvature`
+      , (err, stdout, stderr)=>{
+        console.log(stdout);
+        console.log(stderr);
 
-      return Promise.resolve();
-    }
-  );
+        return Promise.resolve();
+      }
+    );
+  }
+
 };
 
 exports.plugins = {

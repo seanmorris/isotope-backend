@@ -1,0 +1,136 @@
+version: '2.4'
+
+services:
+
+  backend.isotope.seanmorr.is:
+    image: "${REPO}/backend.isotope.seanmorr.is:${TAG}"
+    build:
+      context: ../
+      dockerfile: infra/backend.Dockerfile
+      args:
+        REPO: ${REPO}
+    env_file:
+        - ../.env
+    restart: always
+
+  worker.isotope.seanmorr.is:
+    image: "${REPO}/worker.isotope.seanmorr.is:${TAG}"
+    build:
+      context: ../
+      dockerfile: infra/worker.Dockerfile
+    env_file:
+      - ../.env
+    restart: on-failure
+
+  watcher.isotope.seanmorr.is:
+    image: "${REPO}/watcher.isotope.seanmorr.is:${TAG}"
+    build:
+      context: ../
+      dockerfile: infra/watcher.Dockerfile
+      target: development
+    env_file:
+        - ../.env
+    restart: always
+    volumes:
+      - ../:/app
+
+  task.isotope.seanmorr.is:
+    image: "${REPO}/task.isotope.seanmorr.is:${TAG}"
+    build:
+      target: development
+      context: ../
+      dockerfile: infra/worker.Dockerfile
+    env_file:
+        - ../.env
+    restart: "no"
+    volumes:
+      - ../:/app
+
+  updater.isotope.seanmorr.is:
+    image: "${REPO}/updater.isotope.seanmorr.is:${TAG}"
+    build:
+      context: ../
+      dockerfile: infra/updater.Dockerfile
+    env_file:
+        - ../.env
+    restart: on-failure
+
+  socket.isotope.seanmorr.is:
+    image: "${REPO}/socket.isotope.seanmorr.is:${TAG}"
+    build:
+      context: ../
+      dockerfile: infra/socket.Dockerfile
+    env_file:
+        - ../.env
+    restart: always
+    ports:
+      - "9998:9998"
+
+  compose.isotope.seanmorr.is:
+    build:
+      context: ../
+      dockerfile: infra/compose.Dockerfile
+      target: development
+      args:
+        REPO: ${REPO}
+    image: "${REPO}/compose.isotope.seanmorr.is:${TAG}"
+    env_file:
+        - ../.env
+    restart: on-failure
+    volumes:
+      - ../:/app
+      - ../data/local/composer/:/root/.composer/
+
+  database.isotope.seanmorr.is:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - "9996:3306"
+    volumes:
+      - schema.isotope.seanmorr.is:/var/lib/mysql
+    env_file:
+        - ../.env
+    environment:
+      MYSQL_ROOT_PASSWORD: 'supersecret'
+      MYSQL_USER: 'isotope'
+      MYSQL_PASSWORD: 'iso_secret'
+      MYSQL_DATABASE: 'isotope'
+    command: ['mysqld', '--character-set-server=utf8mb4']
+
+  rabbit.isotope.seanmorr.is:
+    image: "rabbitmq:3-management"
+    restart: always
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "O234234QALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    env_file:
+        - ../.env
+    ports:
+      - "19994:15672"
+      - "9994:5672"
+    labels:
+      NAME: "rabbitmq1"
+    volumes:
+      - "../data/global/rabbitMq/enabled_plugins:/etc/rabbitmq/enabled_plugins"
+
+volumes:
+  schema.isotope.seanmorr.is:
+    driver: "local"
+
+  # jenkins:
+  #   image: ${REPO}/seanmorris/isotope-jenkins:master
+  #   restart: always
+  #   ports:
+  #     - "9995:8080"
+  #   volumes:
+  #     - jenkins:/var/jenkins_home
+  # frontend.isotope.seanmorr.is:
+  #   image: thruput.isotope.seanmorr.is
+  #   restart: always
+  #   ports:
+  #     - "9999:80"
+  #   depends_on:
+  #     - isotope.seanmorr.is
+  #     - backend.isotope.seanmorr.is

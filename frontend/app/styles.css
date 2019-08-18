@@ -224,7 +224,8 @@ body {
 .lobby-welcome {
 	text-align: left;
 	background: #888;
-	min-width: 400px;
+	width:      400px;
+	/*min-width:  400px;*/
 }
 
 .toast {
@@ -462,6 +463,71 @@ div.particles {
 	top:       50%;
 	left:      50%;
 	transform: translate(-50%,-50%);
+}
+
+.lobby-content .game-list {
+	height:     16em;
+	display:    flex;
+	overflow-y: scroll;
+	background: white;
+	border:     2px outset #ccc;
+	margin:     0.75em;
+}
+
+.lobby-content .game-table {
+	display:      table;
+	table-layout: fixed;
+	/*min-width:    100%;*/
+	width:        100%;
+}
+
+.lobby-content .game-table .game-table-header {
+	display:  table-header-group;
+}
+
+.lobby-content .game-table .game-table-header > div > div{
+	position:   sticky;
+	top:        0px;
+	background: white; 
+}
+
+.lobby-content .game-table .game-table-body {
+	display: table-row-group;
+}
+
+.lobby-content .game-table .game-table-rows > div{
+	display: table-row;
+}
+
+.lobby-content .game-table .game-table-header > div > div {
+	border-bottom: 1px solid #333; 
+}
+
+.lobby-content .game-table .game-table-body > div:hover {
+	background: #CCC;
+}
+
+.lobby-content .game-table .game-table-body > div:last-child > div {
+	border-bottom: 1px solid #333;
+}
+
+.lobby-content .game-table .game-table-rows > div > div {
+	display:    table-cell;
+	padding:    0.5em;
+	text-align: center;
+}
+
+.lobby-content .game-table .game-table-rows > div > div > a{
+	display: block;
+}
+
+.lobby-content .game-table .game-table-rows > div > div:not(:first-child) {
+	border-left: 1px solid #333;
+}
+
+.lobby-content .rule {
+	margin-left: 0.75em;
+	margin-right: 0.75em;
 }
 
 .board-wrap button {

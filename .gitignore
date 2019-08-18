@@ -1,2 +1,5 @@
+.env
 vendor*
 vendor/*
+data/local/
+curvature/

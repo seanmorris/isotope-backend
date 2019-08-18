@@ -4,7 +4,7 @@ class RootRoute extends \SeanMorris\PressKit\Controller
 {
 	public
 		$title    = 'Isotope'
-		, $theme  = 'SeanMorris\Isotope\Theme\Theme'
+		// , $theme  = 'SeanMorris\Isotope\Theme\Theme'
 		, $routes = [
 			'games'  => 'SeanMorris\Isotope\Route\GameRoute'
 			, 'user' => 'SeanMorris\Access\Route\AccessRoute'

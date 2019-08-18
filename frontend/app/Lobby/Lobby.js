@@ -4,6 +4,7 @@ import { UserRepository } from 'curvature/access/UserRepository';
 import { Repository     } from 'curvature/base/Repository';
 import { View           } from 'curvature/base/View';
 import { View as Allot  } from '../allot/View';
+import { Socket         } from 'subspace-client/Socket';
 
 export class Lobby extends View
 {
@@ -19,6 +20,8 @@ export class Lobby extends View
 		this.args.searching   = false;
 
 		this.args.currentUserId = null;
+
+		this.socket = Socket.get(Config.socketUri);
 
 		// this.args.list = new Allot({
 		// 	rowHeight: 42
@@ -57,7 +60,7 @@ export class Lobby extends View
 		UserRepository.getCurrentUser(1).then((resp)=>{
 			this.args.currentUserId = resp.body.publicId;
 		});
-		
+
 		this.findGames().then(()=>{
 			document.dispatchEvent(new Event('renderComplete'));
 		});
@@ -95,8 +98,72 @@ export class Lobby extends View
 			Config.backend + '/games'
 			, args
 		).then(resp=>{
+
+			if(Array.isArray(this.args.games))
+			{
+				this.args.games.map(g => {
+					this.socket.unsubscribe(`message:game:${g.publicId}`);
+				});
+			}
+
 			this.args.games     = resp.body;
 			this.args.searching = false;
+
+			if(Array.isArray(this.args.games))
+			{
+				this.args.games.map(g => {
+					const game = g.___ref___;
+
+					game.__full      = g.players.length == g.maxPlayers;
+					game.playerCount = g.players.length;
+					game.moves       = parseInt(game.moves / game.maxPlayers);
+
+					game.__mine      = false;
+
+					if(g.players)
+					{
+						UserRepository.getCurrentUser(false).then(r=>{
+							game.__mine = !!game.players.filter(p => {
+								if(!r || !r.body)
+								{
+									return false;
+								}
+								return p.publicId == r.body.publicId;
+							}).length;
+						});
+					}
+
+					this.args.authed.then(()=>{
+						this.socket.subscribe(
+							`message:game:${g.publicId}`
+							, (e, m, c, o, i, oc, p) => {
+
+								const update = JSON.parse(m);
+
+								game.playerCount = update.players.length;
+								game.moves       = parseInt(update.moves / update.maxPlayers);;
+								game.__full      = update.players.length == update.maxPlayers;
+
+								game.__mine      = false;
+
+								if(update.players)
+								{
+									UserRepository.getCurrentUser(false).then(r=>{
+										game.__mine = !!update.players.filter(p => {
+											return p.publicId == r.body.publicId;
+										}).length;
+									});
+								}
+							}
+						);
+					});
+
+
+					this.cleanup.push(()=>{
+						this.socket.unsubscribe(`message:game:${game.publicId}`);
+					});
+				});
+			}
 		});
 	}
 

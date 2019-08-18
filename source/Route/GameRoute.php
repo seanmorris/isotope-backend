@@ -6,12 +6,12 @@ class GameRoute extends \SeanMorris\PressKit\Controller
 		$title = 'Lobby'
 		, $modelClass = 'SeanMorris\Isotope\Game'
 		, $formTheme = 'SeanMorris\Form\Theme\Theme'
-		, $theme = 'SeanMorris\Isotope\Theme\Theme'
+		// , $theme = 'SeanMorris\Isotope\Theme\Theme'
 		, $listColumns = ['id']
 	;
 	protected static
 		$listBy       = 'byModerated'
-		, $pageSize   = 100
+		, $pageSize   = 10
 		, $modelRoute = 'SeanMorris\Isotope\Route\GameSubRoute'
 		, $forms = [
 			'edit' => 'SeanMorris\Isotope\Form\GameForm'

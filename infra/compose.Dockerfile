@@ -1,4 +1,4 @@
-FROM r.cfcr.io/seanmorris/worker.isotope.seanmorr.is:latest
+FROM r.cfcr.io/seanmorris/worker.isotope.seanmorr.is:latest AS development
 MAINTAINER Sean Morris <sean@seanmorr.is>
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 	&& php composer-setup.php \
