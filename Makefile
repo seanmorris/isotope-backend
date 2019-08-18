@@ -9,23 +9,14 @@ PACKAGE      ?=SeanMorris/Isotope
 REPO         ?=r.cfcr.io/seanmorris
 TAG          ?=latest
 
-# DOCKER_HOST_IP=`docker network inspect bridge --format="{{ (index .IPAM.Config 0).Gateway}}"`
-# DOCKER_COMMAND= export DOCKER_HOST_IP=${DOCKER_HOST_IP} \
-# 	&& docker-compose -f ${COMPOSE_FILE} \
-# 	 -p ${PROJECT_NAME}
-
-DOCKER_COMMAND= export REPO=${REPO} TAG=${TAG} `cat ../.env | tr '\n' ' '` \
+DOCKER_HOST_IP=`docker network inspect bridge --format="{{ (index .IPAM.Config 0).Gateway}}"`
+DOCKER_COMMAND= export DOCKER_HOST_IP=${DOCKER_HOST_IP} REPO=${REPO} TAG=${TAG} `cat ../.env | tr '\n' ' '` \
 	&& docker-compose -f ${COMPOSE_FILE} -p ${PROJECT_NAME}
 
-# it:
-# 	cd infra/; \
-# 	${DOCKER_COMMAND} run  --rm \
-# 		updater.isotope.seanmorr.is composer install; \
-# 	${DOCKER_COMMAND} run  --rm \
-# 		worker.isotope.seanmorr.is brunch build -p;
-
 build:
-	touch .env \
+	@ echo "Building ${PROJECT_NAME} ${STAGE_ENV}..." \
+	&& sleep 2 \
+	&& touch .env \
 	&& cd infra/ \
 	&& ${DOCKER_COMMAND} build worker.isotope.seanmorr.is \
 	&& ${DOCKER_COMMAND} -f docker-compose.base.yml run --rm \
@@ -37,14 +28,14 @@ build:
 	&& ${DOCKER_COMMAND} -f docker-compose.base.yml build watcher.isotope.seanmorr.is \
 	&& cd .. \
 	&& ( \
-		[ "${STAGE_ENV}" != "development" ] || \
+		[ "${STAGE_ENV}" == "development" ] || \
 		make build-js COMPOSE_FILE=docker-compose.base.yml \
 	) \
 	&& cd infra/ \
 	&& ${DOCKER_COMMAND} build \
 
 clean:
-	cd infra/; \
+	@ cd infra/; \
 	${DOCKER_COMMAND} -f docker-compose.base.yml run --rm \
 		task.isotope.seanmorr.is rm -rf ../vendor; \
 	${DOCKER_COMMAND} -f docker-compose.base.yml run --rm \
@@ -135,6 +126,7 @@ apply-schema:
 	cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm \
 		worker.isotope.seanmorr.is idilic applySchemas 1
+
 CMD?=info
 
 idilic:

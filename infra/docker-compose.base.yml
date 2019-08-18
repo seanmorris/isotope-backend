@@ -7,8 +7,6 @@ services:
     build:
       context: ../
       dockerfile: infra/backend.Dockerfile
-      args:
-        REPO: ${REPO}
     env_file:
         - ../.env
     restart: always
@@ -31,6 +29,8 @@ services:
     env_file:
         - ../.env
     restart: always
+    ports:
+      - "9485:9485"
     volumes:
       - ../:/app
 
