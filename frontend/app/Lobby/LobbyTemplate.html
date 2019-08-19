@@ -52,9 +52,10 @@
                     </div>
                 </div>
             </div>
-            <button cv-on="click:findGames(event)">&lt;</button>
+            <button cv-on="click:previousPage(event)">&lt;</button>
             <button cv-on="click:findGames(event)">refresh</button>
-            <button cv-on="click:findGames(event)">&gt;</button>
+            <button cv-on="click:nextPage(event)">&gt;</button>
+            <br />
             <span cv-if="!currentUserId">
                 <button cv-link='login'>login</button>
                 | <button cv-link='register'>register</button>

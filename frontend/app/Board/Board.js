@@ -6,15 +6,15 @@ import { ToastAlert } from 'curvature/toast/ToastAlert';
 
 import { Row  } from './Row';
 
-import { Socket } from 'subspace-client/Socket';
-
 import { UserRepository } from 'curvature/access/UserRepository';
 
 export class Board extends View
 {
-	constructor(args)
+	constructor(args, root)
 	{
 		super(args);
+
+		this.root = root;
 
 		let size = 9;
 
@@ -46,26 +46,34 @@ export class Board extends View
 			, 'Green'
 		];
 
-		this.socket = Socket.get(Config.socketUri);
+		this.root.args.bindTo('authed', v =>{
 
-		args.authed.then(()=>{
-			console.log(this.socket.socket.readyState);
+			if(!v)
+			{
+				return;
+			}
 
-			this.socket.send('motd');
+			v.then(()=>{
+				// console.log(this.socket.socket.readyState);
 
-			console.log(this.socket.socket.readyState);
+				root.socket.send('motd');
 
-			this.socket.subscribe(
-				`message:game:${this.args.gameId}`
-				, (e, m, c, o, i, oc, p) => {
-					this.updateBoard(JSON.parse(m));
-				}
-			);
+				// console.log(this.socket.socket.readyState);
 
-			this.cleanup.push(()=>{
-				this.socket.unsubscribe(`message:game:${this.args.gameId}`);
+				root.socket.subscribe(
+					`message:game:${this.args.gameId}`
+					, (e, m, c, o, i, oc, p) => {
+						this.updateBoard(JSON.parse(m));
+					}
+				);
+
+				this.cleanup.push(()=>{
+					root.socket.unsubscribe(`message:game:${this.args.gameId}`);
+				});
 			});
+
 		});
+
 
 		this.refresh(resp=>{
 			this.args.height = resp.body.boardData.height;
@@ -79,7 +87,7 @@ export class Board extends View
 						board:  this
 						, width: this.args.width
 						, y:     i
-					}))
+					}, this.root))
 				}
 			}
 
@@ -243,15 +251,18 @@ export class Board extends View
 
 		for(let i in chain)
 		{
-			let x    = chain[i][0];
-			let y    = chain[i][1];
-			let t    = chain[i][2];
-			let cM   = chain[i][3];
-			let cC   = chain[i][4];
-			let pM   = chain[i][5];
-			let pC   = chain[i][6];
+			let x      = chain[i][0];
+			let y      = chain[i][1];
+			let t      = chain[i][2];
+			let cM     = chain[i][3];
+			let cC     = chain[i][4];
+			let pM     = chain[i][5];
+			let pC     = chain[i][6];
+			let earned = chain[i][7];
 
 			let cell = this.cell(x, y);
+
+			cell.args.earned = earned;
 
 			if(!cell.args.setback)
 			{
@@ -307,7 +318,7 @@ export class Board extends View
 
 	pass()
 	{
-		this.socket.publish(`game:${this.args.gameId}`, JSON.stringify({
+		this.root.socket.publish(`game:${this.args.gameId}`, JSON.stringify({
 			type: 'pass'
 		}));
 	}

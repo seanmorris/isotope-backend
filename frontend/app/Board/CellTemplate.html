@@ -12,7 +12,7 @@
 		</div>
 		<div class = "score-pop">
 			
-			<span 
+			<!-- <span 
 				cv-if      = "previousMass"
 				data-owner = "[[owner]]"
 			>+[[previousMass]]</span>
@@ -20,7 +20,12 @@
 			<span 
 				cv-if      = "lostMass"
 				data-owner = "[[previousOwner]]"
-			>[[lostMass]]</span>
+			>[[lostMass]]</span> -->
+
+			<span 
+				cv-if      = "earned"
+				data-owner = "[[owner]]"
+			>+[[earned]]</span>
 
 		</div>
 	</div>

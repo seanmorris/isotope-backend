@@ -2,15 +2,18 @@ import { Config         } from 'Config';
 // import { Cookie         } from 'curvature/base/Cookie';
 import { UserRepository } from 'curvature/access/UserRepository';
 import { Repository     } from 'curvature/base/Repository';
+import { Router         } from 'curvature/base/Router';
 import { View           } from 'curvature/base/View';
 import { View as Allot  } from '../allot/View';
 import { Socket         } from 'subspace-client/Socket';
 
 export class Lobby extends View
 {
-	constructor(args)
+	constructor(args, root)
 	{
 		super(args);
+
+		this.root = root;
 
 		this.args.elipses = '...';
 		this.template     = require('./LobbyTemplate.html');
@@ -19,9 +22,11 @@ export class Lobby extends View
 		this.args.gamesFound  = 0;
 		this.args.searching   = false;
 
+		this.args.page = 0;
+
 		this.args.currentUserId = null;
 
-		this.socket = Socket.get(Config.socketUri);
+		this.socket = root.socket;
 
 		// this.args.list = new Allot({
 		// 	rowHeight: 42
@@ -88,24 +93,26 @@ export class Lobby extends View
 		event && event.preventDefault();
 
 		this.args.searching = true;
-		this.args.games     = [];
+		this.args.games     = this.args.games || [];
 
 		// this.args.list.refresh();
 
-		let args = event ? {t: Date.now()} : null;
+		if(Array.isArray(this.args.games))
+		{
+			this.args.games.map(g => {
+				this.socket.unsubscribe(`message:game:${g.publicId}`);
+			});
+		}
+
+		let args = {
+			page: this.args.page
+			, t:   Date.now()
+		};
 
 		return Repository.request(
 			Config.backend + '/games'
 			, args
 		).then(resp=>{
-
-			if(Array.isArray(this.args.games))
-			{
-				this.args.games.map(g => {
-					this.socket.unsubscribe(`message:game:${g.publicId}`);
-				});
-			}
-
 			this.args.games     = resp.body;
 			this.args.searching = false;
 
@@ -133,29 +140,38 @@ export class Lobby extends View
 						});
 					}
 
-					this.args.authed.then(()=>{
-						this.socket.subscribe(
-							`message:game:${g.publicId}`
-							, (e, m, c, o, i, oc, p) => {
+					this.root.args.bindTo('authed', v =>{
 
-								const update = JSON.parse(m);
+						if(!v)
+						{
+							return;
+						}
 
-								game.playerCount = update.players.length;
-								game.moves       = parseInt(update.moves / update.maxPlayers);;
-								game.__full      = update.players.length == update.maxPlayers;
+						v.then(()=>{
+							this.socket.subscribe(
+								`message:game:${g.publicId}`
+								, (e, m, c, o, i, oc, p) => {
 
-								game.__mine      = false;
+									const update = JSON.parse(m);
 
-								if(update.players)
-								{
-									UserRepository.getCurrentUser(false).then(r=>{
-										game.__mine = !!update.players.filter(p => {
-											return p.publicId == r.body.publicId;
-										}).length;
-									});
+									game.playerCount = update.players.length;
+									game.moves       = parseInt(update.moves / update.maxPlayers);;
+									game.__full      = update.players.length == update.maxPlayers;
+
+									game.__mine      = false;
+
+									if(update.players)
+									{
+										UserRepository.getCurrentUser(false).then(r=>{
+											game.__mine = !!update.players.filter(p => {
+												return p.publicId == r.body.publicId;
+											}).length;
+										});
+									}
 								}
-							}
-						);
+							);
+						});
+
 					});
 
 
@@ -173,5 +189,25 @@ export class Lobby extends View
 		UserRepository.logout();
 		this.findGames();
 		this.args.currentUserId = null;
+	}
+
+	previousPage(event)
+	{
+		if(this.args.page > 0)
+		{
+			this.args.page--;
+			Router.setQuery('page', this.args.page);
+		}
+		this.findGames(event);
+	}
+
+	nextPage(event)
+	{
+		if(this.args.games.length)
+		{
+			this.args.page++;
+			Router.setQuery('page', this.args.page);
+		}
+		this.findGames(event);
 	}
 }

@@ -13,45 +13,24 @@ import { UserRepository } from 'curvature/access/UserRepository';
 
 import { Socket } from 'subspace-client/Socket';
 
+import { StatusBar } from './statusBar/StatusBar';
+
 export class RootView extends View
 {
 	constructor(args = {})
 	{
 		super(args);
 
-		this.args.toast = Toast.instance();
+		this.args.toast     = Toast.instance();
+		this.args.statusBar = new StatusBar;
 
-		this.socket = Socket.get(Config.socketUri);
-
-		let authed;
-
-		UserRepository.onChange((user)=>{
-			authed = fetch('/auth?api', {credentials: 'same-origin'}).then((response)=>{
-				return response.text();
-			}).then((tokenSource)=>{
-				let token = JSON.parse(tokenSource);
-
-				this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {
-					if(m && m.substring(0,9) === '"authed &' && o == 'server')
-					{
-						return Promise.resolve();
-					}
-					else
-					{
-					}
-				});
-
-				return this.socket.send(`auth ${token.body.string}`);
-			});
-		});
-
-		UserRepository.getCurrentUser();
+		this.args.statusBar.args.state = 1;
 
 		this.routes = {
-			'':               a=>new Lobby(Object.assign(a,{authed}))
-			, home:           a=>new Lobby(Object.assign(a,{authed}))
-			, game:           a=>new Board(Object.assign(a,{authed}))
-			, 'game/%gameId': a=>new Board(Object.assign(a,{authed}))
+			'':               a => new Lobby(a, this)
+			, home:           a => new Lobby(a, this)
+			, game:           a => new Board(a, this)
+			, 'game/%gameId': a => new Board(a, this)
 			, login:          Login
 			, register:       Register
 			, 'my-account':   Profile
@@ -69,8 +48,60 @@ export class RootView extends View
 			<div class = "main-box">
 				[[content]]
 			</div>
+			[[statusBar]]
 		`;
 
+		this.refreshSocket();
+	}
+
+	refreshSocket()
+	{
+		console.log('refresh');
+
+		this.socket = Socket.get(Config.socketUri, true);
+
+		this.socket.subscribe('open', (event) => {
+			if(this.reconnecting)
+			{
+				clearInterval(this.reconnecting);
+			}
+
+			this.args.statusBar.args.state = 0;
+		});
+
+		this.args.authed = new Promise((accept)=>{
+			this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {
+				if(m && m.substring(0,9) === '"authed &' && o == 'server')
+				{
+					return accept();
+				}
+				else
+				{
+				}
+			});
+		});
+
+
+		this.socket.subscribe('close', (event) => {
+			console.log('Disconnected!');
+
+			this.args.statusBar.args.state = 2;
+
+			this.reconnecting = setInterval(()=>{
+				this.refreshSocket();
+			}, 3000);
+		});
+
+		UserRepository.getCurrentUser(true).then(response => {
+			return fetch('/auth?api', {credentials: 'same-origin'}).then((response)=>{
+				return response.text();
+			});
+		}).then((tokenSource)=>{
+			let token = JSON.parse(tokenSource);
+
+			// console.log(this.socket.socket.OPEN, this.socket.socket.readyState, `auth ${token.body.string}`);
+
+			return this.socket.send(`auth ${token.body.string}`);
+		});	
 	}
 }
-

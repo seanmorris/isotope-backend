@@ -5,13 +5,13 @@ import { ToastAlert } from 'curvature/toast/ToastAlert';
 import { View       } from 'curvature/base/View';
 import { Ball       } from './Ball';
 
-import { Socket } from 'subspace-client/Socket';
-
 export class Cell extends View
 {
-	constructor(args)
+	constructor(args, root)
 	{
 		super(args);
+
+		this.root = root;
 
 		this.template   = require('./CellTemplate.html');
 		this.delay      = 350;
@@ -40,8 +40,6 @@ export class Cell extends View
 		this.args.mass          = null;
 		this.args.lostMass      = 0;
 		this.args.changed       = 'not';
-
-		this.socket = Socket.get(Config.socketUri);
 
 		let icon = this.icons.neutral;
 
@@ -156,7 +154,7 @@ export class Cell extends View
 
 	sendMove()
 	{
-		this.socket.publish(`game:${this.args.board.args.gameId}`, JSON.stringify({
+		this.root.socket.publish(`game:${this.args.board.args.gameId}`, JSON.stringify({
 			type: 'move'
 			, x: this.args.x
 			, y: this.args.y

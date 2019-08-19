@@ -251,29 +251,32 @@ class Game extends \SeanMorris\PressKit\Model
 
 		$board = $this->boardData;
 
-		$prevMass = $board->data[$x][$y]->mass;
+		$prevMass  = $board->data[$x][$y]->mass;
 		$prevClaim = $board->data[$x][$y]->claimed;
+		$points    = 0;
 
 		if($prevMass)
 		{
-			$this->scores[$i] += abs($prevMass);
+			$points = abs($prevMass);
 		}
-		else if($prevClaim === NULL)
+		else
 		{
-			$this->scores[$i] += 1;
+			$points = 1;
 		}
+
+		$this->scores[$i] += $points;
 
 		$board->data[$x][$y]->mass += $negative ? -1 : 1;
 
-		if(isset($board->data[$x][$y]->claimed)
-			&& $board->data[$x][$y]->claimed != $i
-		){
-			$this->scores[$board->data[$x][$y]->claimed] -= (
-				$board->data[$x][$y]->mass
-					? abs($board->data[$x][$y]->mass)
-					: 1
-			);
-		}
+		// if(isset($board->data[$x][$y]->claimed)
+		// 	&& $board->data[$x][$y]->claimed != $i
+		// ){
+		// 	$this->scores[$board->data[$x][$y]->claimed] -= (
+		// 		$board->data[$x][$y]->mass
+		// 			? abs($board->data[$x][$y]->mass)
+		// 			: 1
+		// 	);
+		// }
 
 		$board->data[$x][$y]->claimed = $i;
 
@@ -283,7 +286,7 @@ class Game extends \SeanMorris\PressKit\Model
 			, $board->data[$x][$y]->claimed
 			, $prevMass
 			, $prevClaim
-			, 
+			, $points
 		];
 
 		if($board->data[$x][$y]->mass > 3)

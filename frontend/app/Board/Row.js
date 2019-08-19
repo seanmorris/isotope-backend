@@ -4,7 +4,7 @@ import { Cell } from './Cell';
 
 export class Row extends View
 {
-	constructor(args)
+	constructor(args, root)
 	{
 		super(args);
 
@@ -18,7 +18,7 @@ export class Row extends View
 					board: this.args.board
 					, x:   i
 					, y:   this.args.y
-				}));
+				}, root));
 			}
 		}
 
