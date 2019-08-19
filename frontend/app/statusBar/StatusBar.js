@@ -15,6 +15,10 @@ export class StatusBar extends View
 		this.args.state = 0;
 
 		this.args.bindTo('state', v => {
+			if(this.timeout)
+			{
+				clearTimeout(this.timeout);
+			}
 			this.args.circle  = new Circle;
 			// console.trace(v);
 			switch(v)
@@ -22,7 +26,7 @@ export class StatusBar extends View
 				case 0:
 					this.args.circle.args.repeatCount = '1';
 					this.args.status  = 'Connected';
-					this.onTimeout(1500, ()=>{
+					this.timeout = this.onTimeout(1500, ()=>{
 						this.args.yOffset = 100;
 					});
 					// status
@@ -30,14 +34,14 @@ export class StatusBar extends View
 				case 1:
 					this.args.circle.args.repeatCount = 'indefinite';
 					this.args.status  = 'Connecting...';
-					this.onTimeout(500, ()=>{
+					this.timeout = this.onTimeout(500, ()=>{
 						this.args.yOffset = 0;
 					});
 					break;
 				case 2:
 					this.args.circle.args.repeatCount = 'indefinite';
 					this.args.status  = 'Reconnecting...';
-					this.onTimeout(500, ()=>{
+					this.timeout = this.onTimeout(500, ()=>{
 						this.args.yOffset = 0;
 					});
 					break;

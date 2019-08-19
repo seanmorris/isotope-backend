@@ -5,7 +5,6 @@ import { Repository     } from 'curvature/base/Repository';
 import { Router         } from 'curvature/base/Router';
 import { View           } from 'curvature/base/View';
 import { View as Allot  } from '../allot/View';
-import { Socket         } from 'subspace-client/Socket';
 
 export class Lobby extends View
 {
@@ -100,7 +99,7 @@ export class Lobby extends View
 		if(Array.isArray(this.args.games))
 		{
 			this.args.games.map(g => {
-				this.socket.unsubscribe(`message:game:${g.publicId}`);
+				this.root.socket.unsubscribe(`message:game:${g.publicId}`);
 			});
 		}
 
@@ -118,7 +117,12 @@ export class Lobby extends View
 
 			if(Array.isArray(this.args.games))
 			{
-				this.args.games.map(g => {
+				if(this.authBound)
+				{
+					this.authBound.map(a=>a());
+				}
+
+				this.authBound = this.args.games.map(g => {
 					const game = g.___ref___;
 
 					game.__full      = g.players.length == g.maxPlayers;
@@ -140,7 +144,7 @@ export class Lobby extends View
 						});
 					}
 
-					this.root.args.bindTo('authed', v =>{
+					const authBound = this.root.args.bindTo('authed', v =>{
 
 						if(!v)
 						{
@@ -148,7 +152,7 @@ export class Lobby extends View
 						}
 
 						v.then(()=>{
-							this.socket.subscribe(
+							this.root.socket.subscribe(
 								`message:game:${g.publicId}`
 								, (e, m, c, o, i, oc, p) => {
 
@@ -163,6 +167,11 @@ export class Lobby extends View
 									if(update.players)
 									{
 										UserRepository.getCurrentUser(false).then(r=>{
+											if(!r)
+											{
+												game.__mine = false;
+												return;
+											}
 											game.__mine = !!update.players.filter(p => {
 												return p.publicId == r.body.publicId;
 											}).length;
@@ -171,13 +180,16 @@ export class Lobby extends View
 								}
 							);
 						});
-
 					});
 
+					const clean = ()=>{
+						authBound()
+						this.root.socket.unsubscribe(`message:game:${game.publicId}`);
+					};
 
-					this.cleanup.push(()=>{
-						this.socket.unsubscribe(`message:game:${game.publicId}`);
-					});
+					this.cleanup.push(clean);
+
+					return clean;
 				});
 			}
 		});

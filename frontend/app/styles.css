@@ -566,14 +566,15 @@ div.list-container {
 	box-sizing:   border-box;
 	color:        white;
 	font-size:    1.25em;
-}
 
-.status-bar {
 	position:   fixed;
 	left:       50%;
 	bottom:     0%;
 	transform:  translate(-50%, var(--yOffset));
 	transition: transform 0.33s ease-out;
+
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
 }
 
 .status-bar svg {

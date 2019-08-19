@@ -56,7 +56,10 @@ export class RootView extends View
 
 	refreshSocket()
 	{
-		console.log('refresh');
+		if(this.socket)
+		{
+			this.socket.close();
+		}
 
 		this.socket = Socket.get(Config.socketUri, true);
 
@@ -69,9 +72,24 @@ export class RootView extends View
 			this.args.statusBar.args.state = 0;
 		});
 
+		this.socket.subscribe('close', (event) => {
+			console.log('Disconnected!');
+
+			if(this.reconnecting)
+			{
+				clearInterval(this.reconnecting);
+			}
+
+			this.args.statusBar.args.state = 2;
+
+			this.reconnecting = setInterval(()=>{
+				this.refreshSocket();
+			}, 3000);
+		});
+
 		this.args.authed = new Promise((accept)=>{
 			this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {
-				if(m && m.substring(0,9) === '"authed &' && o == 'server')
+				if(m && m.substring(0,7) === '"authed' && o == 'server')
 				{
 					return accept();
 				}
@@ -81,17 +99,6 @@ export class RootView extends View
 			});
 		});
 
-
-		this.socket.subscribe('close', (event) => {
-			console.log('Disconnected!');
-
-			this.args.statusBar.args.state = 2;
-
-			this.reconnecting = setInterval(()=>{
-				this.refreshSocket();
-			}, 3000);
-		});
-
 		UserRepository.getCurrentUser(true).then(response => {
 			return fetch('/auth?api', {credentials: 'same-origin'}).then((response)=>{
 				return response.text();
@@ -99,9 +106,7 @@ export class RootView extends View
 		}).then((tokenSource)=>{
 			let token = JSON.parse(tokenSource);
 
-			// console.log(this.socket.socket.OPEN, this.socket.socket.readyState, `auth ${token.body.string}`);
-
 			return this.socket.send(`auth ${token.body.string}`);
-		});	
+		});
 	}
 }
