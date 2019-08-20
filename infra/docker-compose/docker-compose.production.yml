@@ -1,0 +1,63 @@
+version: '2.4'
+
+services:
+
+  backend:
+    build:
+      target: production
+    extends:
+      file: docker-compose.base.yml
+      service: backend
+    ports:
+      - "80:80"
+    volumes:
+      - /tmp:/tmp
+    depends_on:
+      - database
+
+  # worker:
+  #   build:
+  #     target: production
+  #   extends:
+  #     file: docker-compose.base.yml
+  #     service: worker
+  #   depends_on:
+  #     - database
+
+  updater:
+    build:
+      target: production
+    extends:
+      file: docker-compose.base.yml
+      service: updater
+    restart: on-failure
+    depends_on:
+      - database
+    command: ['idilic', 'applySchemas', '1']
+
+  socket:
+    build:
+      target: production
+    extends:
+      file: docker-compose.base.yml
+      service: socket
+    ports:
+      - '9998:9998'
+    depends_on:
+      - database
+
+  database:
+    extends:
+      file: docker-compose.base.yml
+      service: database
+    volumes:
+      - schema:/var/lib/mysql
+
+  # rabbit:
+  #   extends:
+  #     file: docker-compose.base.yml
+  #     service: rabbit
+
+volumes:
+  schema:
+    driver: 'local'

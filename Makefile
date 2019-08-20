@@ -11,21 +11,22 @@ TAG          ?=latest
 
 DOCKER_HOST_IP=`docker network inspect bridge --format="{{ (index .IPAM.Config 0).Gateway}}"`
 DOCKER_COMMAND= export DOCKER_HOST_IP=${DOCKER_HOST_IP} REPO=${REPO} TAG=${TAG} `cat ../.env | tr '\n' ' '` \
-	&& docker-compose -f ${COMPOSE_FILE} -p ${PROJECT_NAME}
+	&& docker-compose -f docker-compose/${COMPOSE_FILE} -p ${PROJECT_NAME}
 
 build:
 	@ echo "Building ${PROJECT_NAME} ${STAGE_ENV}..." \
 	&& sleep 2 \
 	&& touch .env \
 	&& cd infra/ \
-	&& ${DOCKER_COMMAND} build worker.isotope.seanmorr.is \
-	&& ${DOCKER_COMMAND} -f docker-compose.base.yml run --rm \
-		compose.isotope.seanmorr.is composer install \
+	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml build worker \
+	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml build compose \
+	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml run --rm \
+		compose composer install \
 	&& docker build ../vendor/seanmorris/subspace/infra/ \
 		-f ../vendor/seanmorris/subspace/infra/socket.Dockerfile \
 		-t basic-socket:latest \
-	&& ${DOCKER_COMMAND} build worker.isotope.seanmorr.is \
-	&& ${DOCKER_COMMAND} -f docker-compose.base.yml build watcher.isotope.seanmorr.is \
+	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml build worker \
+	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml build watcher \
 	&& cd .. \
 	&& ( \
 		[ "${STAGE_ENV}" == "development" ] || \
@@ -36,12 +37,12 @@ build:
 
 clean:
 	@ cd infra/; \
-	${DOCKER_COMMAND} -f docker-compose.base.yml run --rm \
-		task.isotope.seanmorr.is rm -rf ../vendor; \
-	${DOCKER_COMMAND} -f docker-compose.base.yml run --rm \
-		task.isotope.seanmorr.is rm -rf ../frontend/node_modules; \
-	${DOCKER_COMMAND} -f docker-compose.base.yml run --rm \
-		task.isotope.seanmorr.is rm -f ../frontend/public/app.* index.html; \
+	${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml run --rm \
+		task rm -rf ../vendor; \
+	${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml run --rm \
+		task rm -rf ../frontend/node_modules; \
+	${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml run --rm \
+		task rm -f ../frontend/public/app.* index.html; \
 	cd ..; \
 	make clear-log
 
@@ -51,7 +52,7 @@ host-ip:
 link:
 	cd infra/; \
 	${DOCKER_COMMAND} run --rm \
-		worker.isotope.seanmorr.is idilic link
+		worker idilic link
 
 curv:
 	cd curvature/; \
@@ -93,21 +94,21 @@ restart-fg:
 
 restart-socket:
 	cd infra/ \
-	&& ${DOCKER_COMMAND} restart socket.isotope.seanmorr.is
+	&& ${DOCKER_COMMAND} restart socket
 
 restart-watcher:
 	cd infra/ \
-	&& ${DOCKER_COMMAND} restart watcher.isotope.seanmorr.is
+	&& ${DOCKER_COMMAND} restart watcher
 
 composer-install:
 	cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm \
-		compose.isotope.seanmorr.is composer install
+		compose composer install
 
 composer-update:
 	cd infra/ \
 	&& ${DOCKER_COMMAND}  run --rm \
-		compose.isotope.seanmorr.is composer update
+		compose composer update
 
 watch-log:
 	cd temporary/ \
@@ -120,34 +121,34 @@ clear-log:
 store-schema:
 	cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm \
-		worker.isotope.seanmorr.is idilic storeSchema ${PACKAGE}
+		worker idilic storeSchema ${PACKAGE}
 
 apply-schema:
 	cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm \
-		worker.isotope.seanmorr.is idilic applySchemas 1
+		worker idilic applySchemas 1
 
 CMD?=info
 
 idilic:
 	cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm \
-		 worker.isotope.seanmorr.is idilic ${CMD}
+		 worker idilic ${CMD}
 
 build-js:
 	cd infra/ \
-	&& ${DOCKER_COMMAND} run --rm watcher.isotope.seanmorr.is npm install \
-	&& ${DOCKER_COMMAND} run --rm watcher.isotope.seanmorr.is brunch build -p
+	&& ${DOCKER_COMMAND} run --rm watcher npm install \
+	&& ${DOCKER_COMMAND} run --rm watcher brunch build -p
 
 watch-js:
 	cd infra/ \
-	&& ${DOCKER_COMMAND} run --rm watcher.isotope.seanmorr.is npm install \
-	&& ${DOCKER_COMMAND} run --rm -p 9485:9485 watcher.isotope.seanmorr.is brunch watch -s
+	&& ${DOCKER_COMMAND} run --rm watcher npm install \
+	&& ${DOCKER_COMMAND} run --rm -p 9485:9485 watcher brunch watch -s
 
 generate-ssl:
 	cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm -p 443:443 -p 80:80 \
-		certbot.isotope.seanmorr.is \
+		certbot \
 		certonly --standalone --preferred-challenges http \
 		-d thewhtrbt.com \
 		--agree-tos -m sean@seanmorr.is
@@ -155,5 +156,19 @@ generate-ssl:
 renew-ssl:
 	cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm \
-		certbot.isotope.seanmorr.is \
+		certbot \
 		renew
+
+cluster-apply:
+	kubectl apply -f infra/kubernetes/mysql.deployment.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/mysql.service.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/http.deployment.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/http.service.k8s.yml
+	#&& kubectl apply -f infra/kubernetes/updater.job.k8s.yml
+
+cluster-delete:
+	kubectl delete -f infra/kubernetes/mysql.deployment.k8s.yml \
+	; kubectl delete -f infra/kubernetes/mysql.service.k8s.yml \
+	; kubectl delete -f infra/kubernetes/http.deployment.k8s.yml \
+	; kubectl delete -f infra/kubernetes/http.service.k8s.yml
+	#; kubectl apply -f infra/kubernetes/updater.job.k8s.yml

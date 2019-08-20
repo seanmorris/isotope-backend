@@ -1,0 +1,32 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: socket
+  labels:
+    app: socket
+spec:
+  selector:
+    matchLabels:
+      app: socket
+      tier: frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: socket
+        tier: frontend
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: socket
+          image: r.cfcr.io/seanmorris/socket.isotope.seanmorr.is:latest
+          resources:
+            requests:
+              cpu: 10m
+              memory: 128Mi
+          env:
+            - name: GET_HOSTS_FROM
+              value: dns
+          ports:
+            - containerPort: 9998

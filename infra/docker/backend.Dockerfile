@@ -6,12 +6,10 @@ RUN rm -rfv /var/www/html \
 	&& docker-php-ext-install pdo pdo_mysql bcmath sockets \
 	&& a2enmod rewrite
 
+WORKDIR /app/public
+
 CMD ["apache2-foreground"]
 
 FROM development AS production
 
 COPY ./ /app
-
-RUN rm -rfv /var/www/html \
-	&& a2enmod rewrite \
-	&& ln -s /app/public /var/www/html

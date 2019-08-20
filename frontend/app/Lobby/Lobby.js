@@ -38,7 +38,7 @@ export class Lobby extends View
 		// });
 
 		this.args.bindTo('games', (v)=>{
-			if(!v)
+			if(!v || !(v instanceof Promise))
 			{
 				return;
 			}

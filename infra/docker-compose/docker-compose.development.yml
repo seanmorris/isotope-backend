@@ -1,0 +1,81 @@
+version: '2.4'
+
+services:
+
+  backend:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: backend
+    ports:
+      - "80:80"
+    volumes:
+      - ../../:/app
+      - /tmp:/tmp
+    depends_on:
+      - database
+
+  worker:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: worker
+    volumes:
+      - ../../:/app
+    depends_on:
+      - database
+
+  watcher:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: watcher
+
+  updater:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: updater
+    restart: on-failure
+    volumes:
+      - ../../:/app
+    depends_on:
+      - database
+
+  socket:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: socket
+    ports:
+      - '9998:9998'
+    volumes:
+      - ../../:/app
+    depends_on:
+      - database
+
+  compose:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: compose
+
+  database:
+    extends:
+      file: docker-compose.base.yml
+      service: database
+
+  rabbit:
+     extends:
+      file: docker-compose.base.yml
+      service: rabbit
+
+volumes:
+  schema.isotope.seanmorr.is:
+    driver: 'local'

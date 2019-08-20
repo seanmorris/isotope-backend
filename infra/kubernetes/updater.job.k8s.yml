@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: updater
+spec:
+  template:
+    spec:      
+      imagePullSecrets:
+        - name: regcred     
+      containers:
+        - name: updater
+          image: r.cfcr.io/seanmorris/updater.isotope.seanmorr.is:latest
+          command: ['idilic', 'applySchemas', '1']
+      restartPolicy: OnFailure
+  backoffLimit: 4

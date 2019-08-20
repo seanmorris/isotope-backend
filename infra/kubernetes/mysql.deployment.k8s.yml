@@ -1,0 +1,43 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: database
+  labels:
+    app: database
+spec:
+  selector:
+    matchLabels:
+      app: database
+      role: master
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: database
+        role: master
+        tier: backend
+    spec:
+      containers:
+        - name: database
+          image: mysql:5.7
+          args:    ['--character-set-server=utf8mb4']
+          resources:
+            requests:
+              cpu: 10m
+              memory: 128Mi
+          env:
+            - name: GET_HOSTS_FROM
+              value: dns
+
+            - name: MYSQL_ROOT_PASSWORD
+              value: supersecret
+            - name: MYSQL_USER
+              value: isotope
+            - name: MYSQL_PASSWORD
+              value: iso_secret
+            - name: MYSQL_DATABASE
+              value: isotope
+
+          ports:
+            - containerPort: 3306

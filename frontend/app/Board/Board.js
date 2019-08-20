@@ -53,7 +53,7 @@ export class Board extends View
 
 		this.root.args.bindTo('authed', v =>{
 
-			if(!v)
+			if(!v || !(v instanceof Promise))
 			{
 				return;
 			}
