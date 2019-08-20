@@ -1,39 +1,12 @@
 <div class="board-wrap [[flicker]]">
-    <div class="board" cv-each="rows:row:r">
-        [[row]]
-    </div>
     <div class="scoreboard">
         <div cv-if="!full">
             <button cv-on="click:join(event)">Join</button>
             <p>Waiting for [[playersCount]] player<span cv-if="playersPlural">s</span>.</p>
         </div>
         <div cv-if="full">
-            <span cv-if="roundsLeft">
-                <span cv-if="!lastRound">
-                    <span class="turn" cv-if="yourTurn">
-                        <button cv-on="click:pass(event)">complete turn</button>
-                    </span>
-                    <span class="turn" cv-if="!yourTurn">
-                        <button disabled>complete turn</button>
-                    </span>
-                    <br />
-                    <div class="rounds-left">
-                        [[roundsLeft]] Rounds left
-                    </div>
-                </span>
-                <span cv-if="lastRound">
-                    <div class="rounds-left">
-                        Last round.
-                    </div>
-                </span>
-            </span>
-            <span cv-if="over">
-                <div class="rounds-left">
-                    Game Over!
-                </div>
-            </span>
-            <div class="color-[[currentPlayer]]">
-                <div cv-if="!over">
+            <div class="rounds-left" cv-if = "!over">
+                <div class="color-[[currentPlayer]]">
                     <span cv-if="currentPlayer">
                         <span cv-if="!yourTurn">
                             <b>[[currentPlayer]]</b> Player's Turn
@@ -43,13 +16,56 @@
                         </span>
                     </span>
                 </div>
-                <div class="turn-indicator" cv-each="submoves:submove:s">
-                    <div>[[submove]]</div>
-                </div>
-                <div class="scores" cv-each="scores:score:s">
-                    <span>[[score]]</span>
-                </div>
             </div>
+            <div class="rounds-left">
+                <span cv-if = "!over">
+                    <div class="rounds-left">
+                        [[roundsLeft]] Rounds left
+                    </div>
+                </span>
+                <span cv-if = "over">
+                    <b>Game over!</b>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="board" cv-each="rows:row:r">
+        [[row]]
+    </div>
+    <div class="scoreboard">
+        <div cv-if="full">
+            <div class="turn-indicator" cv-each="submoves:submove:s">
+                <div>[[submove]]</div>
+            </div>
+            <div class="scores" cv-each="scores:score:s">
+                <span>[[score]]</span>
+            </div>
+
+            <span cv-if="roundsLeft">
+                
+                <span cv-if="!lastRound">
+                    <span class="turn" cv-if="yourTurn">
+                        <button cv-on="click:pass(event)">complete turn</button>
+                    </span>
+                    <span class="turn" cv-if="!yourTurn">
+                        <button disabled>complete turn</button>
+                    </span>
+                </span>
+                
+                <span cv-if="lastRound">
+                    <button disabled>complete turn</button>
+                    <div class="rounds-left">
+                        Last round.
+                    </div>
+                </span>
+
+                <span class = "replenish _[[replenish]]">
+                    <p>Completing your turn now will replenish <b>[[replenish]]</b> particle<span cv-if = "replenishPlural">s</span> in your reserves for the next turn.</p>
+
+                    <p><span cv-if = "replenishPlural">Using all three will leave you with a single particle.</span><span cv-if = "!replenishPlural">&nbsp;</span></p>
+                </span>
+
+            </span>
         </div>
     </div>
 </div>

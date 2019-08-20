@@ -4,6 +4,7 @@
 	, "canonical": "isotope"
 	, "corsDomains": [
 		"http://localhost"
+		, "http://isotope.local.seanmorr.is"
 	]
 	, "devmode" : false
 	, "databases" : {

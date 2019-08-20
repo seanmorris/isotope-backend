@@ -267,10 +267,21 @@ body {
 
 .scoreboard {
 	/*background: #888;*/
-	width: 200px;
+	width: 400px;
 	text-align: center;
 	/*color: white;*/
 	font-size: 1.25em;
+}
+
+.scoreboard .replenish {
+	font-size: 0.80em;
+	letter-spacing: -0.75px;
+	display: block;
+}
+
+.scoreboard .replenish._,
+.scoreboard .replenish._0 {
+	opacity: 0;
 }
 
 .scoreboard button{
@@ -278,6 +289,10 @@ body {
 	color: white;
 	border: none;
 	border-radius: 5px;
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-top: 1em;
+	padding-bottom: 1em;
 }
 
 label,

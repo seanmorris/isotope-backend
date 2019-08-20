@@ -70,6 +70,28 @@ export class RootView extends View
 			}
 
 			this.args.statusBar.args.state = 0;
+
+			this.args.authed = new Promise((accept)=>{
+				this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {
+					if(m && m.substring(0,7) === '"authed' && o == 'server')
+					{
+						return accept();
+					}
+					else
+					{
+					}
+				});
+			});
+
+			UserRepository.onChange(response => {
+				return fetch('/auth?api', {credentials: 'same-origin'}).then((response)=>{
+					return response.text();
+				}).then((tokenSource)=>{
+					let token = JSON.parse(tokenSource);
+
+					return this.socket.send(`auth ${token.body.string}`);
+				});
+			});
 		});
 
 		this.socket.subscribe('close', (event) => {
@@ -84,29 +106,7 @@ export class RootView extends View
 
 			this.reconnecting = setInterval(()=>{
 				this.refreshSocket();
-			}, 3000);
-		});
-
-		this.args.authed = new Promise((accept)=>{
-			this.socket.subscribe(`message`, (e, m, c, o, i, oc, p) => {
-				if(m && m.substring(0,7) === '"authed' && o == 'server')
-				{
-					return accept();
-				}
-				else
-				{
-				}
-			});
-		});
-
-		UserRepository.getCurrentUser(true).then(response => {
-			return fetch('/auth?api', {credentials: 'same-origin'}).then((response)=>{
-				return response.text();
-			});
-		}).then((tokenSource)=>{
-			let token = JSON.parse(tokenSource);
-
-			return this.socket.send(`auth ${token.body.string}`);
+			}, 5000);
 		});
 	}
 }

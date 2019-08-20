@@ -27,6 +27,11 @@ export class Board extends View
 		this.args.move = 0;
 		this.args.button = {};
 		this.args.button.disabled = 'disabled';
+		this.args.replenish = 0;
+
+		this.args.bindTo('replenish', (v)=>{
+			this.args.replenishPlural = v != 1;
+		});
 
 		this.args.flicker = '';
 
@@ -134,7 +139,7 @@ export class Board extends View
 		{
 			this.cell(body.chain[0][0], body.chain[0][1]).args.chained = 'chained';
 		}
-		
+
 		if(body.chain.length >= 1)
 		{
 			this.cell(body.chain[0][0], body.chain[0][1]).args.lit = true;
@@ -143,7 +148,6 @@ export class Board extends View
 		this.args.currentPlayer = this.playerNames[body.currentPlayer];
 
 		UserRepository.getCurrentUser(false).then((response)=>{
-			// console.log(body.players[body.currentPlayer].publicId, response.body.publicId);
 			if(body.players[body.currentPlayer].publicId === response.body.publicId)
 			{
 				if(!this.args.yourTurn)
@@ -151,11 +155,22 @@ export class Board extends View
 					this.args.flicker  = 'flicker';
 				}
 				this.args.yourTurn = true;
+
+				console.log(body.submoves, body.currentPlayer);
+
+				if(this.args.lastRound || this.args.roundsLeft == 0)
+				{
+					this.args.replenish = 0;
+					return;
+				}
+
+				this.args.replenish = 3 - (body.submoves[body.currentPlayer]);
 			}
 			else
 			{
 				this.args.yourTurn        = false
 				this.args.button.disabled = 'disabled';
+				this.args.replenish       = 0;
 			}
 		}).catch((response)=>{
 			if(response.messages)
@@ -201,10 +216,12 @@ export class Board extends View
 		if(this.args.roundsLeft == 1)
 		{
 			this.args.lastRound = true;
+			this.args.replenish  = 0;
 		}
 		else if(this.args.roundsLeft < 0)
 		{
 			this.args.roundsLeft = 0;
+			this.args.replenish  = 0;
 		}
 
 		this.args.maxMoves = body.maxMoves;
