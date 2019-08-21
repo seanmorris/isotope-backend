@@ -6,7 +6,7 @@ metadata:
     app: socket
     tier: backend
 spec:
-  type: NodePort 
+  type: LoadBalancer 
   ports:
     - port:       9998
       targetPort: 9998

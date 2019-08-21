@@ -13,15 +13,16 @@ DOCKER_HOST_IP=`docker network inspect bridge --format="{{ (index .IPAM.Config 0
 DOCKER_COMMAND= export DOCKER_HOST_IP=${DOCKER_HOST_IP} REPO=${REPO} TAG=${TAG} `cat ../.env | tr '\n' ' '` \
 	&& docker-compose -f docker-compose/${COMPOSE_FILE} -p ${PROJECT_NAME}
 
+EXTERNAL_IP=`minikube ip`
+
 build:
 	@ echo "Building ${PROJECT_NAME} ${STAGE_ENV}..." \
-	&& sleep 2 \
 	&& touch .env \
 	&& cd infra/ \
-	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml build worker \
-	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml build compose \
-	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml run --rm \
-		compose composer install \
+	&& docker run --rm -v `pwd`/../:/app \
+		composer install --ignore-platform-reqs \
+			--no-interaction \
+			--prefer-source \
 	&& docker build ../vendor/seanmorris/subspace/infra/ \
 		-f ../vendor/seanmorris/subspace/infra/socket.Dockerfile \
 		-t basic-socket:latest \
@@ -160,15 +161,19 @@ renew-ssl:
 		renew
 
 cluster-apply:
-	kubectl apply -f infra/kubernetes/mysql.deployment.k8s.yml \
+	export EXTERNAL_IP=${EXTERNAL_IP} \
+	&& kubectl apply -f infra/kubernetes/mysql.deployment.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/mysql.service.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/http.deployment.k8s.yml \
-	&& kubectl apply -f infra/kubernetes/http.service.k8s.yml
-	#&& kubectl apply -f infra/kubernetes/updater.job.k8s.yml
+	&& kubectl apply -f infra/kubernetes/http.service.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/socket.deployment.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/socket.service.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/updater.job.k8s.yml \
+	&& cat infra/kubernetes/socket.ingress.k8s.yml | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/http.ingress.k8s.yml   | envsubst | kubectl apply -f -
 
 cluster-delete:
-	kubectl delete -f infra/kubernetes/mysql.deployment.k8s.yml \
-	; kubectl delete -f infra/kubernetes/mysql.service.k8s.yml \
-	; kubectl delete -f infra/kubernetes/http.deployment.k8s.yml \
-	; kubectl delete -f infra/kubernetes/http.service.k8s.yml
-	#; kubectl apply -f infra/kubernetes/updater.job.k8s.yml
+	export EXTERNAL_IP=${EXTERNAL_IP} \
+	; kubectl delete ingress backend socket \
+	; kubectl delete deployment,service database backend socket \
+	; kubectl delete job updater

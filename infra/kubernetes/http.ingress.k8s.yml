@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: backend
+  annotations:
+spec:
+ rules:
+ - host: isotope.$EXTERNAL_IP.xip.io
+   http:
+     paths:
+     - backend:
+         serviceName: backend
+         servicePort: 80

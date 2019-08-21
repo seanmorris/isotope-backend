@@ -7,4 +7,4 @@ export class Config {
 // Config.backend = '//localhost';
 Config.backend   = `//${window.location.host}`;
 Config.title     = 'isotope';
-Config.socketUri = `ws://${window.location.hostname}:9998`
+Config.socketUri = `ws://socket.${window.location.hostname}`

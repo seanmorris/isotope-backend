@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: socket
+  annotations:
+spec:
+ rules:
+ - host: socket.isotope.$EXTERNAL_IP.xip.io
+   http:
+     paths:
+     - backend:
+         serviceName: socket
+         servicePort: 9998
