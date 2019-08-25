@@ -6,3 +6,4 @@ FROM development AS production
 
 COPY ./ /app
 
+CMD ["idilic", "server"]

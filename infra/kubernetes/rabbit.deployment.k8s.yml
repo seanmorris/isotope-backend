@@ -1,0 +1,43 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: rabbit
+  labels:
+    app: rabbit
+spec:
+  selector:
+    matchLabels:
+      app: rabbit
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: rabbit
+        tier: backend
+    spec:
+      containers:
+        - name: rabbit
+          image: rabbitmq:3-management
+          resources:
+            requests:
+              cpu: 10m
+              memory: 128Mi
+          env:
+            - name: GET_HOSTS_FROM
+              value: dns
+
+            - name: RABBITMQ_ERLANG_COOKIE
+              value: O234234QALRPCLNMEQG
+            
+            - name: RABBITMQ_DEFAULT_USER
+              value: rabbitmq
+
+            - name: RABBITMQ_DEFAULT_PASS
+              value: rabbitmq
+
+            - name: RABBITMQ_DEFAULT_VHOST
+              value: /
+
+          ports:
+            - containerPort: 5672

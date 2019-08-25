@@ -96,7 +96,7 @@ services:
     command: ['mysqld', '--character-set-server=utf8mb4']
 
   rabbit:
-    image: "rabbitmq:3-management"
+    image: rabbitmq:3-management
     restart: always
     environment:
       RABBITMQ_ERLANG_COOKIE: "O234234QALRPCLNMEQG"
@@ -106,8 +106,8 @@ services:
     env_file:
         - ../../.env
     ports:
-      - "19994:15672"
-      - "9994:5672"
+      - "15672:15672"
+      - "5672:5672"
     labels:
       NAME: "rabbitmq1"
     volumes:

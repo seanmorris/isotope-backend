@@ -5,7 +5,7 @@ metadata:
   annotations:
 spec:
  rules:
- - host: isotope.$EXTERNAL_IP.xip.io
+ - host: isotope.$EXTERNAL_IP.nip.io
    http:
      paths:
      - backend:

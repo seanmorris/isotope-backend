@@ -19,7 +19,10 @@ class Game extends \SeanMorris\SubSpace\Kallisti\Channel
 	{
 		if(!$this->game)
 		{
-			$game = $this->getGame();
+			if(!$game = $this->getGame())
+			{
+				return;
+			}
 		}
 
 		\SeanMorris\Isotope\Queue\GameJoined::check(function($message){

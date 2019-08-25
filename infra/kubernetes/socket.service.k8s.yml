@@ -4,12 +4,12 @@ metadata:
   name: socket
   labels:
     app: socket
-    tier: backend
+    tier: frontend
 spec:
   type: LoadBalancer 
   ports:
-    - port:       9998
-      targetPort: 9998
+    - port:       80
+      targetPort: 80
   selector:
     app: socket
-    tier: backend
+    tier: frontend

@@ -138,8 +138,9 @@ idilic:
 
 build-js:
 	cd infra/ \
-	&& ${DOCKER_COMMAND} run --rm watcher npm install \
-	&& ${DOCKER_COMMAND} run --rm watcher brunch build -p
+	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml build watcher \
+	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml run --rm watcher npm install \
+	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml run --rm watcher brunch build -p
 
 watch-js:
 	cd infra/ \
@@ -164,6 +165,8 @@ cluster-apply:
 	export EXTERNAL_IP=${EXTERNAL_IP} \
 	&& kubectl apply -f infra/kubernetes/mysql.deployment.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/mysql.service.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/rabbit.deployment.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/rabbit.service.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/http.deployment.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/http.service.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/socket.deployment.k8s.yml \
@@ -175,5 +178,5 @@ cluster-apply:
 cluster-delete:
 	export EXTERNAL_IP=${EXTERNAL_IP} \
 	; kubectl delete ingress backend socket \
-	; kubectl delete deployment,service database backend socket \
+	; kubectl delete deployment,service database rabbit backend socket \
 	; kubectl delete job updater

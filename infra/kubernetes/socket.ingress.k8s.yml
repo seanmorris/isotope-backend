@@ -5,9 +5,9 @@ metadata:
   annotations:
 spec:
  rules:
- - host: socket.isotope.$EXTERNAL_IP.xip.io
+ - host: socket.isotope.$EXTERNAL_IP.nip.io
    http:
      paths:
      - backend:
          serviceName: socket
-         servicePort: 9998
+         servicePort: 80
