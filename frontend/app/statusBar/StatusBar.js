@@ -7,8 +7,12 @@ export class StatusBar extends View
 	{
 		super(args);
 
-		this.args.circle  = new Circle;
 		this.args.yOffset = 0;
+		this.args.speed   = 0.333;
+		
+		this.args.circle  = new Circle;
+
+		this.args.circle.args.speed = 0.333;
 
 		this.template = require('./statusBar.tmp');
 
@@ -25,6 +29,7 @@ export class StatusBar extends View
 			{
 				case 0:
 					this.args.circle.args.repeatCount = '1';
+					this.args.circle.args.speed       = 0.1515;
 					this.args.status  = 'Connected';
 					this.timeout = this.onTimeout(1500, ()=>{
 						this.args.yOffset = 100;
@@ -33,6 +38,7 @@ export class StatusBar extends View
 					break;
 				case 1:
 					this.args.circle.args.repeatCount = 'indefinite';
+					this.args.circle.args.speed       = 0.333;
 					this.args.status  = 'Connecting...';
 					this.timeout = this.onTimeout(500, ()=>{
 						this.args.yOffset = 0;
@@ -40,6 +46,7 @@ export class StatusBar extends View
 					break;
 				case 2:
 					this.args.circle.args.repeatCount = 'indefinite';
+					this.args.circle.args.speed       = 0.333;
 					this.args.status  = 'Reconnecting...';
 					this.timeout = this.onTimeout(500, ()=>{
 						this.args.yOffset = 0;

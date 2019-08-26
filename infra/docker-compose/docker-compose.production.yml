@@ -15,15 +15,6 @@ services:
     depends_on:
       - database
 
-  # worker:
-  #   build:
-  #     target: production
-  #   extends:
-  #     file: docker-compose.base.yml
-  #     service: worker
-  #   depends_on:
-  #     - database
-
   updater:
     build:
       target: production
@@ -53,10 +44,10 @@ services:
     volumes:
       - schema:/var/lib/mysql
 
-  # rabbit:
-  #   extends:
-  #     file: docker-compose.base.yml
-  #     service: rabbit
+  rabbit:
+    extends:
+      file: docker-compose.base.yml
+      service: rabbit
 
 volumes:
   schema:

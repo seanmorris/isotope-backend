@@ -17,6 +17,8 @@ class RootRoute extends \SeanMorris\PressKit\Controller
 
 		if(!isset($_GET['api']) && !($_POST ?? FALSE))
 		{
+			session_write_close();
+
 			\SeanMorris\Ids\Log::debug($_SERVER);
 
 			$public = \SeanMorris\Ids\Settings::read('public');

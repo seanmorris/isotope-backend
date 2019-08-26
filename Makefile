@@ -15,17 +15,13 @@ DOCKER_COMMAND= export DOCKER_HOST_IP=${DOCKER_HOST_IP} REPO=${REPO} TAG=${TAG} 
 
 EXTERNAL_IP=`minikube ip`
 
-build:
+it:
 	@ echo "Building ${PROJECT_NAME} ${STAGE_ENV}..." \
-	&& touch .env \
-	&& cd infra/ \
-	&& docker run --rm -v `pwd`/../:/app \
-		composer install --ignore-platform-reqs \
-			--no-interaction \
-			--prefer-source \
-	&& docker build ../vendor/seanmorris/subspace/infra/ \
-		-f ../vendor/seanmorris/subspace/infra/socket.Dockerfile \
-		-t basic-socket:latest \
+	&& make dependencies
+	&& make build
+
+build:
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml build worker \
 	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml build watcher \
 	&& cd .. \
@@ -35,6 +31,18 @@ build:
 	) \
 	&& cd infra/ \
 	&& ${DOCKER_COMMAND} build \
+
+dependencies:
+	@ touch .env \
+	&& cd infra/ \
+	&& docker run --rm \
+		-v `pwd`/../:/app \
+		composer install --ignore-platform-reqs \
+			--no-interaction \
+			--prefer-source \
+	&& docker build ../vendor/seanmorris/subspace/infra/ \
+		-f ../vendor/seanmorris/subspace/infra/socket.Dockerfile \
+		-t basic-socket:latest
 
 clean:
 	@ cd infra/; \
@@ -48,107 +56,108 @@ clean:
 	make clear-log
 
 host-ip:
-	echo ${DOCKER_HOST_IP}
+	@ echo ${DOCKER_HOST_IP}
 
 link:
-	cd infra/; \
+	@ cd infra/; \
 	${DOCKER_COMMAND} run --rm \
 		worker idilic link
 
 curv:
-	cd curvature/; \
+	@ cd curvature/; \
 	npm run build; \
 	brunch build -p;
 
 curv-link:
-	mount --bind /home/sean/curvature-2 curvature
+	@ mount --bind /home/sean/curvature-2 curvature
 
 push-images:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} push
 
 pull-images:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} pull
 
 start:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} up -d
 
 stop:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} down
 
 stop-all:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} down --remove-orphans
 
 restart:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} down \
 	&& ${DOCKER_COMMAND} up -d
 
 restart-fg:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} down \
 	&& ${DOCKER_COMMAND} up
 
 restart-socket:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} restart socket
 
 restart-watcher:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} restart watcher
 
 composer-install:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm \
 		compose composer install
 
 composer-update:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND}  run --rm \
 		compose composer update
 
 watch-log:
-	cd temporary/ \
+	@ cd temporary/ \
 	&& less -RSXMNI +F log.txt
 
 clear-log:
-	cd temporary/ \
+	@ cd temporary/ \
 	&& echo "" > log.txt
 
 store-schema:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm \
 		worker idilic storeSchema ${PACKAGE}
 
 apply-schema:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm \
 		worker idilic applySchemas 1
 
 CMD?=info
 
 idilic:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm \
 		 worker idilic ${CMD}
 
 build-js:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml build watcher \
+	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml run --rm watcher rm -rf /app/frontend/node_modules/curvature \
 	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml run --rm watcher npm install \
 	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml run --rm watcher brunch build -p
 
 watch-js:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm watcher npm install \
 	&& ${DOCKER_COMMAND} run --rm -p 9485:9485 watcher brunch watch -s
 
 generate-ssl:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm -p 443:443 -p 80:80 \
 		certbot \
 		certonly --standalone --preferred-challenges http \
@@ -156,13 +165,18 @@ generate-ssl:
 		--agree-tos -m sean@seanmorr.is
 
 renew-ssl:
-	cd infra/ \
+	@ cd infra/ \
 	&& ${DOCKER_COMMAND} run --rm \
 		certbot \
 		renew
 
+cluster-credetials:
+	@ kubectl create secret generic regcred \
+	    --from-file=.dockerconfigjson=${HOME}/.docker/config.json \
+	    --type=kubernetes.io/dockerconfigjson;
+
 cluster-apply:
-	export EXTERNAL_IP=${EXTERNAL_IP} \
+	@ export EXTERNAL_IP=${EXTERNAL_IP} \
 	&& kubectl apply -f infra/kubernetes/mysql.deployment.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/mysql.service.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/rabbit.deployment.k8s.yml \
@@ -176,7 +190,7 @@ cluster-apply:
 	&& cat infra/kubernetes/http.ingress.k8s.yml   | envsubst | kubectl apply -f -
 
 cluster-delete:
-	export EXTERNAL_IP=${EXTERNAL_IP} \
+	@ export EXTERNAL_IP=${EXTERNAL_IP} \
 	; kubectl delete ingress backend socket \
 	; kubectl delete deployment,service database rabbit backend socket \
 	; kubectl delete job updater

@@ -1,0 +1,28 @@
+{
+	"origin": "http://backend"
+	, "canonical": "isotope"
+	, "entrypoint" : "SeanMorris\\ThruPut\\Route\\RootRoute"
+	, "devmode" : true
+	, "public": "/app/public"
+	, "logLevel": "error"
+	, "rabbitMq": {
+		"default": {
+			"server": "rabbit"
+			, "port": 5672
+			, "user": "rabbitmq"
+			, "pass": "rabbitmq"
+		}
+	}
+	, "thruput": {
+		"adapters": [
+			"SeanMorris\\ThruPut\\Adapter\\Standard"
+			, "SeanMorris\\ThruPut\\Adapter\\Xpath"
+		]
+		, "cacheableTypes": [
+			"text/html"
+			, "image/vnd.microsoft.icon"
+		]
+		, "suppressHeaders": [
+		]
+	}
+}

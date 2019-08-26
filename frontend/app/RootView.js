@@ -26,6 +26,8 @@ export class RootView extends View
 
 		this.args.statusBar.args.state = 1;
 
+		this.reconnectDelay = 100;
+
 		this.routes = {
 			'':               a => new Lobby(a, this)
 			, home:           a => new Lobby(a, this)
@@ -64,6 +66,8 @@ export class RootView extends View
 		this.socket = Socket.get(Config.socketUri, true);
 
 		this.socket.subscribe('open', (event) => {
+			this.reconnectDelay = 100;
+
 			if(this.reconnecting)
 			{
 				clearInterval(this.reconnecting);
@@ -84,7 +88,7 @@ export class RootView extends View
 			});
 
 			UserRepository.onChange(response => {
-				return fetch('/auth?api', {credentials: 'same-origin'}).then((response)=>{
+				return fetch(Config.backend + '/auth?api', {credentials: 'same-origin'}).then((response)=>{
 					return response.text();
 				}).then((tokenSource)=>{
 					let token = JSON.parse(tokenSource);
@@ -105,8 +109,13 @@ export class RootView extends View
 			this.args.statusBar.args.state = 2;
 
 			this.reconnecting = setInterval(()=>{
+				this.reconnectDelay = this.reconnectDelay * 2;
+				if(this.reconnectDelay > 5000)
+				{
+					this.reconnectDelay = 5000;
+				}
 				this.refreshSocket();
-			}, 5000);
+			}, this.reconnectDelay);
 		});
 	}
 }

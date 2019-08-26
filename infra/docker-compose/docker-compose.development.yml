@@ -9,42 +9,42 @@ services:
       file: docker-compose.base.yml
       service: backend
     ports:
-      - "80:80"
+      - "8088:80"
     volumes:
       - ../../:/app
       - /tmp:/tmp
     depends_on:
       - database
 
-  worker:
-    build:
-      target: development
+  frontend:
     extends:
       file: docker-compose.base.yml
-      service: worker
-    volumes:
-      - ../../:/app
+      service: frontend
+    ports:
+      - "8008:80"
     depends_on:
       - database
+      - backend
 
-  watcher:
-    build:
-      target: development
+  cache-warmer:
     extends:
       file: docker-compose.base.yml
-      service: watcher
+      service: cache-warmer
+    depends_on:
+      - rabbit
 
-  updater:
-    build:
-      target: development
+  load-balancer:
     extends:
       file: docker-compose.base.yml
-      service: updater
-    restart: on-failure
+      service: load-balancer
+    ports:
+      - "80:80"
     volumes:
-      - ../../:/app
+      - ../../data/global/nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - database
+      - backend
+      - frontend
 
   socket:
     build:
@@ -59,12 +59,12 @@ services:
     depends_on:
       - database
 
-  compose:
+  watcher:
     build:
       target: development
     extends:
       file: docker-compose.base.yml
-      service: compose
+      service: watcher
 
   database:
     extends:
@@ -76,6 +76,29 @@ services:
       file: docker-compose.base.yml
       service: rabbit
 
+  updater:
+    build:
+      target: development
+    extends:
+      file: docker-compose.base.yml
+      service: updater
+    restart: on-failure
+    volumes:
+      - ../../:/app
+    depends_on:
+      - database
+
 volumes:
   schema.isotope.seanmorr.is:
     driver: 'local'
+
+  # worker:
+  #   build:
+  #     target: development
+  #   extends:
+  #     file: docker-compose.base.yml
+  #     service: worker
+  #   volumes:
+  #     - ../../:/app
+  #   depends_on:
+  #     - database

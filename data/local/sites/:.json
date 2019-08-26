@@ -6,6 +6,7 @@
 	, "corsDomains": [
 		"http://localhost"
 		, "http://isotope.local.seanmorr.is"
+		, "http://frontend.isotope.127.0.0.1.nip.io"
 	]
 	, "devmode" : false
 	, "databases" : {
@@ -35,6 +36,10 @@
 			, "user": "rabbitmq"
 			, "pass": "rabbitmq"
 		}
+	}
+	, "session": {
+		"lifetime": 315360000
+		, "path":   "/"
 	}
 	, "logLevel": "error"
 }

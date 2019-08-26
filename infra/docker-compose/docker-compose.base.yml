@@ -3,7 +3,7 @@ version: '2.4'
 services:
 
   backend:
-    image: "${REPO}/backend.isotope.seanmorr.is:${TAG}"
+    image: ${REPO}/backend.isotope.seanmorr.is:${TAG}
     build:
       context: ../../
       dockerfile: infra/docker/backend.Dockerfile
@@ -11,8 +11,38 @@ services:
         - ../../.env
     restart: always
 
+  frontend:
+    image: r.cfcr.io/seanmorris/is.seanmorr.thruput.proxy:latest
+    restart: always
+    volumes:
+      - ../../data/global/thruput/;.json:/app/data/local/sites/;.json
+      - ../../.idilicProfile.json:/app/.idilicProfile.json
+      - ../../temporary/proxy:/app/temporary/
+
+  cache-warmer:
+    image: r.cfcr.io/seanmorris/is.seanmorr.thruput.queue:latest
+    restart: always
+    volumes:
+      - ../../data/global/thruput/;.json:/app/data/local/sites/;.json
+      - ../../.idilicProfile.json:/app/.idilicProfile.json
+      - ../../temporary/proxy:/app/temporary/
+    command: ["idilic", "-vv", "SeanMorris/ThruPut", "warmDaemon"]
+
+  socket:
+    image: ${REPO}/socket.isotope.seanmorr.is:${TAG}
+    build:
+      context: ../../
+      dockerfile: infra/docker/socket.Dockerfile
+    env_file:
+        - ../../.env
+    restart: always
+
+  load-balancer:
+    image: nginx:alpine
+    restart: always
+
   worker:
-    image: "${REPO}/worker.isotope.seanmorr.is:${TAG}"
+    image: ${REPO}/worker.isotope.seanmorr.is:${TAG}
     build:
       context: ../../
       dockerfile: infra/docker/worker.Dockerfile
@@ -54,17 +84,6 @@ services:
     env_file:
         - ../../.env
     restart: on-failure
-
-  socket:
-    image: "${REPO}/socket.isotope.seanmorr.is:${TAG}"
-    build:
-      context: ../../
-      dockerfile: infra/docker/socket.Dockerfile
-    env_file:
-        - ../../.env
-    restart: always
-    ports:
-      - "9998:9998"
 
   compose:
     build:
@@ -124,11 +143,3 @@ volumes:
   #     - "9995:8080"
   #   volumes:
   #     - jenkins:/var/jenkins_home
-  # frontend:
-  #   image: thruput.isotope.seanmorr.is
-  #   restart: always
-  #   ports:
-  #     - "9999:80"
-  #   depends_on:
-  #     - isotope.seanmorr.is
-  #     - backend.isotope.seanmorr.is

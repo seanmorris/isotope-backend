@@ -17,7 +17,7 @@
 			type          = "rotate"
 			from          = "0   50 50"
 			to            = "360 50 50"
-			dur           = "0.5s"
+			dur           = "[[speed]]s"
 			repeatCount   = "[[repeatCount]]"
 		/>
 		<animate
@@ -25,7 +25,7 @@
 			attributeType = "XML"
 			from          = "0px"
 			to            = "628px"
-			dur           = "1.5s"
+			dur           = "[[halfSpeed]]s"
 			repeatCount   = "[[repeatCount]]"
 		/>
 	</ellipse>

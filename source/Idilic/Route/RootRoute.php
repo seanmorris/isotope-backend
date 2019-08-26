@@ -138,4 +138,34 @@ class RootRoute implements \SeanMorris\Ids\Routable
 			var_dump($item->time);
 		}
 	}
+
+	public function childProc($router)
+	{
+		$child = new \SeanMorris\Ids\ChildProcess(
+			'prenderer --streaming'
+			, TRUE
+		);
+
+		$child->write('http://example.com/' . PHP_EOL);
+
+		print '--' . PHP_EOL;
+
+		$payload = NULL;
+
+		do
+		{
+			if($payload = $child->read())
+			{
+				print $payload . PHP_EOL;
+			}
+
+			while($signaling = $child->readError())
+			{
+				print $signaling . PHP_EOL;
+			}
+
+		} while(!$payload);
+
+		print '--' . PHP_EOL;
+	}
 }

@@ -16,6 +16,7 @@
         "simpletest/simpletest": "^1.1",
         "seanmorris/kallisti": "dev-master",
         "seanmorris/subspace": "dev-master",
+        "seanmorris/thruput": "dev-master",
         "php-amqplib/php-amqplib": "dev-master#c0b132eb3d487d30c757e00c8dc52b5b1007744d"
     },
     "autoload": {
@@ -43,6 +44,10 @@
         {   
             "type": "vcs",
             "url": "git@github.com:seanmorris/access.git"
+        },
+        {   
+            "type": "vcs",
+            "url": "git@github.com:seanmorris/thruput.git"
         }
     ]
 }
