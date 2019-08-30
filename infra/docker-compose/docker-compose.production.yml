@@ -9,11 +9,41 @@ services:
       file: docker-compose.base.yml
       service: backend
     ports:
-      - "80:80"
+      - "8088:80"
     volumes:
       - /tmp:/tmp
     depends_on:
       - database
+
+  frontend:
+    extends:
+      file: docker-compose.base.yml
+      service: frontend
+    ports:
+      - "8008:80"
+    depends_on:
+      - database
+      - backend
+
+  cache-warmer:
+    extends:
+      file: docker-compose.base.yml
+      service: cache-warmer
+    depends_on:
+      - rabbit
+
+  load-balancer:
+    extends:
+      file: docker-compose.base.yml
+      service: load-balancer
+    ports:
+      - "80:80"
+    volumes:
+      - ../../data/global/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - database
+      - backend
+      - frontend
 
   updater:
     build:

@@ -13,6 +13,10 @@
 			, "pass": "rabbitmq"
 		}
 	}
+	, "redis": {
+		"host": "redis"
+		, "port": 6379
+	}
 	, "thruput": {
 		"adapters": [
 			"SeanMorris\\ThruPut\\Adapter\\Standard"

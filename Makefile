@@ -17,7 +17,7 @@ EXTERNAL_IP=`minikube ip`
 
 it:
 	@ echo "Building ${PROJECT_NAME} ${STAGE_ENV}..." \
-	&& make dependencies
+	&& make dependencies \
 	&& make build
 
 build:
@@ -181,16 +181,20 @@ cluster-apply:
 	&& kubectl apply -f infra/kubernetes/mysql.service.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/rabbit.deployment.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/rabbit.service.k8s.yml \
-	&& kubectl apply -f infra/kubernetes/http.deployment.k8s.yml \
-	&& kubectl apply -f infra/kubernetes/http.service.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/backend.deployment.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/backend.service.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/frontend.deployment.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/frontend.service.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/socket.deployment.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/socket.service.k8s.yml \
+	&& kubectl apply -f infra/kubernetes/cache-warmer.deployment.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/updater.job.k8s.yml \
-	&& cat infra/kubernetes/socket.ingress.k8s.yml | envsubst | kubectl apply -f - \
-	&& cat infra/kubernetes/http.ingress.k8s.yml   | envsubst | kubectl apply -f -
+	&& cat infra/kubernetes/socket.ingress.k8s.yml   | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/backend.ingress.k8s.yml  | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/frontend.ingress.k8s.yml | envsubst | kubectl apply -f -
 
 cluster-delete:
 	@ export EXTERNAL_IP=${EXTERNAL_IP} \
 	; kubectl delete ingress backend socket \
-	; kubectl delete deployment,service database rabbit backend socket \
+	; kubectl delete deployment,service frontend backend database rabbit socket \
 	; kubectl delete job updater

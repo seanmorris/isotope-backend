@@ -131,6 +131,12 @@ services:
       NAME: "rabbitmq1"
     volumes:
       - ../../data/global/rabbitMq/enabled_plugins:/etc/rabbitmq/enabled_plugins
+      
+  redis:
+    image: redis:5.0
+    restart: always
+    ports:
+      - "6379:6379"
 
 volumes:
   schema.isotope.seanmorr.is:

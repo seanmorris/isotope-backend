@@ -88,7 +88,7 @@ export class RootView extends View
 			});
 
 			UserRepository.onChange(response => {
-				return fetch(Config.backend + '/auth?api', {credentials: 'same-origin'}).then((response)=>{
+				return fetch(Config.backend + '/auth?api', {credentials: 'include'}).then((response)=>{
 					return response.text();
 				}).then((tokenSource)=>{
 					let token = JSON.parse(tokenSource);

@@ -66,16 +66,6 @@ services:
       file: docker-compose.base.yml
       service: watcher
 
-  database:
-    extends:
-      file: docker-compose.base.yml
-      service: database
-
-  rabbit:
-     extends:
-      file: docker-compose.base.yml
-      service: rabbit
-
   updater:
     build:
       target: development
@@ -87,6 +77,21 @@ services:
       - ../../:/app
     depends_on:
       - database
+
+  database:
+    extends:
+      file: docker-compose.base.yml
+      service: database
+
+  rabbit:
+     extends:
+      file: docker-compose.base.yml
+      service: rabbit
+
+  redis:
+     extends:
+      file: docker-compose.base.yml
+      service: redis
 
 volumes:
   schema.isotope.seanmorr.is:
