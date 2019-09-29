@@ -209,7 +209,7 @@ cluster-delete:
 	; kubectl delete deployment,service frontend backend database rabbit socket cache-warmer \
 	; kubectl delete job updater
 
-gcp-build:
+cloud-build:
 	gcloud builds submit --config infra/ci/cloud-build.yml .
 
 cert-fake:
