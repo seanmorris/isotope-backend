@@ -20,7 +20,7 @@ spec:
         - name: regcred
       containers:
         - name: backend
-          image: r.cfcr.io/seanmorris/backend.isotope.seanmorr.is:latest
+          image: $REPO/backend.isotope.seanmorr.is:$TAG
           resources:
             requests:
               cpu: 10m

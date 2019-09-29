@@ -20,7 +20,7 @@ spec:
         - name: regcred
       containers:
         - name: frontend
-          image: r.cfcr.io/seanmorris/is.seanmorr.thruput.proxy:latest
+          image: $REPO/is.seanmorr.thruput.proxy:$TAG
           resources:
             requests:
               cpu: 10m

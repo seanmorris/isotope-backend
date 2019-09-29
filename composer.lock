@@ -452,12 +452,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/access.git",
-                "reference": "f559e4f8c942679ae8d929cb3680db290943edc0"
+                "reference": "24ea214ae0e31a84e463ed2fd9a13a7539323551"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/access/zipball/f559e4f8c942679ae8d929cb3680db290943edc0",
-                "reference": "f559e4f8c942679ae8d929cb3680db290943edc0",
+                "url": "https://api.github.com/repos/seanmorris/access/zipball/24ea214ae0e31a84e463ed2fd9a13a7539323551",
+                "reference": "24ea214ae0e31a84e463ed2fd9a13a7539323551",
                 "shasum": ""
             },
             "require": {
@@ -484,7 +484,7 @@
                 "source": "https://github.com/seanmorris/access/tree/master",
                 "issues": "https://github.com/seanmorris/access/issues"
             },
-            "time": "2019-07-21T21:27:52+00:00"
+            "time": "2019-09-01T18:45:38+00:00"
         },
         {
             "name": "seanmorris/form",
@@ -532,12 +532,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/ids.git",
-                "reference": "29522236556f40b87954cf30dc2d9d421236fdc4"
+                "reference": "51751a8feb0e2ba81272a1f12c86b9d3852fcd0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/ids/zipball/29522236556f40b87954cf30dc2d9d421236fdc4",
-                "reference": "29522236556f40b87954cf30dc2d9d421236fdc4",
+                "url": "https://api.github.com/repos/seanmorris/ids/zipball/51751a8feb0e2ba81272a1f12c86b9d3852fcd0e",
+                "reference": "51751a8feb0e2ba81272a1f12c86b9d3852fcd0e",
                 "shasum": ""
             },
             "require-dev": {
@@ -563,7 +563,7 @@
                 "source": "https://github.com/seanmorris/ids/tree/master",
                 "issues": "https://github.com/seanmorris/ids/issues"
             },
-            "time": "2019-08-25T13:37:55+00:00"
+            "time": "2019-09-29T19:55:07+00:00"
         },
         {
             "name": "seanmorris/kallisti",
@@ -638,12 +638,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/PressKit.git",
-                "reference": "f32acaab94dc8168c047b98dcc1b5b3ca8d4e0da"
+                "reference": "588642b600b4ea5ee61952d820ab8181c8e2a32e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/PressKit/zipball/f32acaab94dc8168c047b98dcc1b5b3ca8d4e0da",
-                "reference": "f32acaab94dc8168c047b98dcc1b5b3ca8d4e0da",
+                "url": "https://api.github.com/repos/seanmorris/PressKit/zipball/588642b600b4ea5ee61952d820ab8181c8e2a32e",
+                "reference": "588642b600b4ea5ee61952d820ab8181c8e2a32e",
                 "shasum": ""
             },
             "require": {
@@ -671,7 +671,7 @@
                 "source": "https://github.com/seanmorris/PressKit/tree/master",
                 "issues": "https://github.com/seanmorris/PressKit/issues"
             },
-            "time": "2019-08-12T11:50:31+00:00"
+            "time": "2019-09-02T17:35:25+00:00"
         },
         {
             "name": "seanmorris/subspace",
@@ -758,12 +758,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/thruput.git",
-                "reference": "1df2d0b633d6f243e14c51d2290e1c7fdd60c14d"
+                "reference": "307b552c675fd9a42eb00c411b0deb17574624a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/thruput/zipball/1df2d0b633d6f243e14c51d2290e1c7fdd60c14d",
-                "reference": "1df2d0b633d6f243e14c51d2290e1c7fdd60c14d",
+                "url": "https://api.github.com/repos/seanmorris/thruput/zipball/307b552c675fd9a42eb00c411b0deb17574624a2",
+                "reference": "307b552c675fd9a42eb00c411b0deb17574624a2",
                 "shasum": ""
             },
             "require": {
@@ -789,28 +789,24 @@
                 "source": "https://github.com/seanmorris/thruput/tree/master",
                 "issues": "https://github.com/seanmorris/thruput/issues"
             },
-            "time": "2019-06-09T17:25:10+00:00"
+            "time": "2019-09-03T02:29:20+00:00"
         },
         {
             "name": "simpletest/simpletest",
-            "version": "v1.1.7",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/simpletest/simpletest.git",
-                "reference": "2f8c466c114bdb9c11028a0c3e6d1380ae6a18dc"
+                "reference": "4fb6006517a1428785a0ea704fbedcc675421ec4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/simpletest/simpletest/zipball/2f8c466c114bdb9c11028a0c3e6d1380ae6a18dc",
-                "reference": "2f8c466c114bdb9c11028a0c3e6d1380ae6a18dc",
+                "url": "https://api.github.com/repos/simpletest/simpletest/zipball/4fb6006517a1428785a0ea704fbedcc675421ec4",
+                "reference": "4fb6006517a1428785a0ea704fbedcc675421ec4",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.0.5"
-            },
-            "replace": {
-                "lastcraft/simpletest": "self.version",
-                "vierbergenlars/simpletest": "self.version"
+                "php": "^7.1"
             },
             "type": "library",
             "autoload": {
@@ -824,17 +820,9 @@
             ],
             "authors": [
                 {
-                    "name": "Lars Vierbergen",
-                    "email": "vierbergenlars@gmail.com"
-                },
-                {
-                    "name": "Lachlan Donald",
-                    "email": "lachlan@ljd.cc"
-                },
-                {
                     "name": "Marcus Baker",
-                    "role": "Original project lead",
-                    "email": "marcus@lastcraft.com"
+                    "email": "marcus@lastcraft.com",
+                    "role": "Original project lead"
                 },
                 {
                     "name": "Jason Sweat",
@@ -851,6 +839,17 @@
                 {
                     "name": "Edward Z. Yang",
                     "role": "Original developer"
+                },
+                {
+                    "name": "Lachlan Donald",
+                    "email": "lachlan@ljd.cc"
+                },
+                {
+                    "name": "Lars Vierbergen",
+                    "email": "vierbergenlars@gmail.com"
+                },
+                {
+                    "name": "Jens A. Koch"
                 }
             ],
             "description": "Unit testing, mock objects and web testing framework for PHP built around test cases.",
@@ -862,7 +861,7 @@
                 "testing",
                 "unit-test"
             ],
-            "time": "2015-09-21T18:19:52+00:00"
+            "time": "2019-09-17T15:08:22+00:00"
         }
     ],
     "packages-dev": [],

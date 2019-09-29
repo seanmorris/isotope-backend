@@ -9,7 +9,7 @@ spec:
         - name: regcred     
       containers:
         - name: updater
-          image: r.cfcr.io/seanmorris/updater.isotope.seanmorr.is:latest
+          image: $REPO/updater.isotope.seanmorr.is:$TAG
           command: ['idilic', 'applySchemas', '1']
       restartPolicy: OnFailure
   backoffLimit: 4

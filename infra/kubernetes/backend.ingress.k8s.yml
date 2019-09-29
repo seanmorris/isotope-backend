@@ -3,9 +3,10 @@ kind: Ingress
 metadata:
   name: backend
   annotations:
+    kubernetes.io/ingress.global-static-ip-name: "web-static-ip"
 spec:
  rules:
- - host: isotope.$EXTERNAL_IP.nip.io
+ - host: isotope.seanmorr.is
    http:
      paths:
      - backend:

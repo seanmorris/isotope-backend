@@ -12,3 +12,6 @@ CMD ["idilic", "info"]
 FROM development AS production
 
 COPY ./ /app
+
+RUN rm -rf /app/temporary/log.txt \
+   && ln -sf /dev/stderr /app/temporary/log.txt

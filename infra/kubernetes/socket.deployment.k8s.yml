@@ -20,7 +20,7 @@ spec:
         - name: regcred
       containers:
         - name: socket
-          image: r.cfcr.io/seanmorris/socket.isotope.seanmorr.is:latest
+          image: $REPO/socket.isotope.seanmorr.is:$TAG
           resources:
             requests:
               cpu: 50m

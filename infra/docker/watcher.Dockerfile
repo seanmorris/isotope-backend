@@ -1,4 +1,4 @@
-FROM r.cfcr.io/seanmorris/worker.isotope.seanmorr.is:latest AS development
+FROM gcr.io/my-project-1550542132420/worker.isotope.seanmorr.is:latest AS development
 MAINTAINER Sean Morris <sean@thewhtrbt.com>
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
 	&& apt update \

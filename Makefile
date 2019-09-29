@@ -6,14 +6,15 @@ STAGE_ENV    ?=development
 PROJECT_NAME ?=isotope
 COMPOSE_FILE ?=docker-compose.${STAGE_ENV}.yml
 PACKAGE      ?=SeanMorris/Isotope
-REPO         ?=r.cfcr.io/seanmorris
+# REPO         ?=r.cfcr.io/seanmorris
+REPO         ?=gcr.io/my-project-1550542132420
 TAG          ?=latest
 
 DOCKER_HOST_IP=`docker network inspect bridge --format="{{ (index .IPAM.Config 0).Gateway}}"`
 DOCKER_COMMAND= export DOCKER_HOST_IP=${DOCKER_HOST_IP} REPO=${REPO} TAG=${TAG} `cat ../.env | tr '\n' ' '` \
 	&& docker-compose -f docker-compose/${COMPOSE_FILE} -p ${PROJECT_NAME}
 
-EXTERNAL_IP=`minikube ip`
+EXTERNAL_IP?=`minikube ip`
 
 it:
 	@ echo "Building ${PROJECT_NAME} ${STAGE_ENV}..." \
@@ -74,6 +75,7 @@ curv-link:
 push-images:
 	@ cd infra/ \
 	&& ${DOCKER_COMMAND} push
+# 	&& ${DOCKER_COMMAND} -f ../vendor/seanmorris/thruput/infra/docker-compose.yml push
 
 pull-images:
 	@ cd infra/ \
@@ -82,6 +84,10 @@ pull-images:
 start:
 	@ cd infra/ \
 	&& ${DOCKER_COMMAND} up -d
+
+start-fg:
+	@ cd infra/ \
+	&& ${DOCKER_COMMAND} up
 
 stop:
 	@ cd infra/ \
@@ -111,14 +117,17 @@ restart-watcher:
 
 composer-install:
 	@ cd infra/ \
-	&& ${DOCKER_COMMAND} run --rm \
-		compose composer install
+	&& docker run -it- -rm \
+		-v `pwd`/../:/app \
+		composer install --ignore-platform-reqs \
+			--prefer-source \
 
 composer-update:
 	@ cd infra/ \
-	&& ${DOCKER_COMMAND}  run --rm \
-		compose composer update
-
+	&& docker run -it --rm \
+		-v `pwd`/../:/app \
+		composer update --ignore-platform-reqs \
+			--prefer-source
 watch-log:
 	@ cd temporary/ \
 	&& less -RSXMNI +F log.txt
@@ -176,6 +185,31 @@ cluster-credetials:
 	    --type=kubernetes.io/dockerconfigjson;
 
 cluster-apply:
+	@ export EXTERNAL_IP=${EXTERNAL_IP} REPO=${REPO} TAG=${TAG} \
+	&& cat infra/kubernetes/mysql.deployment.k8s.yml   | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/mysql.service.k8s.yml      | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/rabbit.deployment.k8s.yml  | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/backend.deployment.k8s.yml | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/backend.service.k8s.yml    | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/socket.deployment.k8s.yml  | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/socket.service.k8s.yml     | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/updater.job.k8s.yml        | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/socket.ingress.k8s.yml     | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/backend.ingress.k8s.yml    | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/rabbit.service.k8s.yml     | envsubst | kubectl apply -f -
+
+# 	&& cat infra/kubernetes/cache-warmer.deployment.k8s.yml     | envsubst | kubectl apply -f - \
+# 	&& cat infra/kubernetes/frontend.deployment.k8s.yml | envsubst | kubectl apply -f -\
+# 	&& cat infra/kubernetes/frontend.service.k8s.yml    | envsubst | kubectl apply -f -\
+# 	&& cat infra/kubernetes/frontend.ingress.k8s.yml | envsubst | kubectl apply -f -
+
+cluster-delete:
+	@ export EXTERNAL_IP=${EXTERNAL_IP} \
+	; kubectl delete ingress backend socket \
+	; kubectl delete deployment,service frontend backend database rabbit socket cache-warmer \
+	; kubectl delete job updater
+
+gcp-apply:
 	@ export EXTERNAL_IP=${EXTERNAL_IP} \
 	&& kubectl apply -f infra/kubernetes/mysql.deployment.k8s.yml \
 	&& kubectl apply -f infra/kubernetes/mysql.service.k8s.yml \
@@ -193,8 +227,18 @@ cluster-apply:
 	&& cat infra/kubernetes/backend.ingress.k8s.yml  | envsubst | kubectl apply -f - \
 	&& cat infra/kubernetes/frontend.ingress.k8s.yml | envsubst | kubectl apply -f -
 
-cluster-delete:
+gcp-delete:
 	@ export EXTERNAL_IP=${EXTERNAL_IP} \
 	; kubectl delete ingress backend socket \
 	; kubectl delete deployment,service frontend backend database rabbit socket \
 	; kubectl delete job updater
+
+cert-fake:
+	${DOCKER_COMPOSE} run --rm -p 80:80 certbot certonly \
+		--email webmaster@seanmorr.is --agree-tos --no-eff-email --staging -d \
+		seanmorr.is -d seanmorr.is
+
+cert:
+	${DOCKER_COMPOSE} run --rm -p 80:80 certbot certonly \
+		--email webmaster@seanmorr.is --agree-tos --no-eff-email -d \
+		seanmorr.is -d seanmorr.is

@@ -3,13 +3,14 @@ kind: Ingress
 metadata:
   name: socket
   annotations:
+    kubernetes.io/ingress.global-static-ip-name: "socket-static-ip"
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
     nginx.ingress.kubernetes.io/proxy-send-timeout:    "10"
     nginx.ingress.kubernetes.io/proxy-read-timeout:    "10"
 spec:
  rules:
- - host: socket.isotope.$EXTERNAL_IP.nip.io
+ - host: socket.isotope.seanmorr.is
    http:
      paths:
      - backend:

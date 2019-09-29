@@ -37,9 +37,11 @@ services:
       file: docker-compose.base.yml
       service: load-balancer
     ports:
-      - "80:80"
+      - "8888:80"
+      - "14443:443"
     volumes:
       - ../../data/global/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - letsencrypt:/etc/letsencrypt/
     depends_on:
       - database
       - backend
@@ -79,6 +81,14 @@ services:
       file: docker-compose.base.yml
       service: rabbit
 
+  certbot:
+    image: certbot/certbot
+    volumes:
+       - letsencrypt:/etc/letsencrypt/
+    command: renew
+
 volumes:
+  letsencrypt:
+    driver: "local"
   schema:
     driver: 'local'

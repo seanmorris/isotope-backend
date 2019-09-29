@@ -22,7 +22,7 @@ spec:
         - name: regcred
       containers:
         - name: cache-warmer
-          image: r.cfcr.io/seanmorris/is.seanmorr.thruput.queue:latest
+          image: $REPO/is.seanmorr.thruput.queue:$TAG
           resources:
             requests:
               cpu: 10m
