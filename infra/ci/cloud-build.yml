@@ -17,6 +17,11 @@ steps:
       - STAGE_ENV=production
       - EXTERNAL_IP=34.74.220.149
   - name: 'seanmorris/build-env'
+    args: ['gcloud', 'config', 'set', 'project', 'my-project-1550542132420']
+    env:
+      - STAGE_ENV=production
+      - EXTERNAL_IP=34.74.220.149
+  - name: 'seanmorris/build-env'
     args: ['gcloud', 'container', 'clusters', 'get-credentials', 'isotope']
     env:
       - STAGE_ENV=production
