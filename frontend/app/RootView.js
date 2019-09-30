@@ -50,6 +50,7 @@ export class RootView extends View
 			<div class = "main-box">
 				[[content]]
 			</div>
+			<!-- CD Test -->
 			[[statusBar]]
 		`;
 
