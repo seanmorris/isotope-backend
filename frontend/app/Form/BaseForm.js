@@ -89,6 +89,8 @@ export class BaseForm extends View
 						, query
 					).then((response)=>{
 						this.onResponse(response);
+					}).catch(error=>{
+						this.onError(error);
 					});
 				}
 			});
@@ -102,9 +104,22 @@ export class BaseForm extends View
 			for(let i in response.messages)
 			{
 				Toast.instance().pop(new ToastAlert({
-					title: response.body && response.body.id
-						? 'Error!'
-						: 'Success!'
+					title: 'Success!'
+					, body: response.messages[i]
+					, time: 9400
+				}));
+			}
+		}
+	}
+
+	onError(response)
+	{
+		if(response.messages)
+		{
+			for(let i in response.messages)
+			{
+				Toast.instance().pop(new ToastAlert({
+					title: 'Error!'
 					, body: response.messages[i]
 					, time: 9400
 				}));

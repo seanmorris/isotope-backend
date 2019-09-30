@@ -45,5 +45,5 @@
 		"lifetime": 315360000
 		, "path":   "/"
 	}
-	, "logLevel": "error"
+	, "logLevel": "query"
 }
