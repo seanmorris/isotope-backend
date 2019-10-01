@@ -11,8 +11,6 @@ export class Circle extends View
 		this.args.repeatCount = 'indefinite';
 		this.args.speed       = 0.333;
 
-		console.log(this.args);
-
 		this.args.bindTo('speed', v=>{
 			this.args.halfSpeed = v*3;
 		});

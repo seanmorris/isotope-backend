@@ -21,14 +21,11 @@ export class Login extends BaseForm
 
 	onResponse(response)
 	{
-		console.log(response);
-
-		super.onResponse(response);
-
-		if(response.body && response.body.id)
+		if(response.meta.currentUser)
 		{
-			console.log(response.body.id);
 			Router.go('/');
 		}
+
+		super.onResponse(response);
 	}
 }
