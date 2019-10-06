@@ -11,6 +11,7 @@
 	display:  grid;
 	position: relative;
 	grid-template-columns: auto;
+	z-index: 0;
 }
 
 .alot-shim {
@@ -31,12 +32,14 @@
 	padding-left:    1em;
 	padding-right:	 1em;
 	display:         flex;
-	/*justify-content: center;*/
 	align-items:     center;
+	order:           var(--alot-cell);
+	z-index:         calc(calc(calc(var(--alot-cell)+1) * -1) + var(--alot-cells));
+	/*z-index:         calc( var(--alot-cell) * -1) );*/
 }
 
 .clock {
-	transition: all 1s ease-in;
+	/*transition: all 1s ease-in;*/
 }
 
 .clock.visible {

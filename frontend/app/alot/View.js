@@ -10,13 +10,16 @@ export class View extends BaseView
 	{
 		super(args);
 
-		this.args.header     = false;
-		// this.args.header     = true;
-		this.args.cells      = [];//Array(1024).fill(0).map((x,y)=>y);
+		this.args.header = args.header !== undefined
+			? args.header
+			: false;
+
+		this.args.cells      = [];
 		this.args.autos      = 'auto';
-		this.args.columns    = 3;
-		this.args.rowHeight  = 240;
+		this.args.columns    = 1;
+		this.args.rowHeight  = this.args.rowHeight || 24;
 		this.args.rows       = 0;
+		this.lastScroll      = null;
 		
 		this.args.offset     = 0;
 		this.args.cellOffset = 0;
@@ -33,38 +36,26 @@ export class View extends BaseView
 		});
 
 		this.template = require('./view.tmp');
-	}
 
-	postRender()
-	{
-		let scroller = this.tags.scroll;
-		let showRows = Math.ceil(scroller.element.clientHeight / this.args.rowHeight);
-
-		let source = Array(100).fill(0).map((v,k)=>{
-			return {
-				id: k
-				, title: 'blah'
-				, time:  (new Date).getTime()
-			};
-		});
+		this.source = source;
 
 		if(source instanceof RowProducer)
 		{
 			this.rowProducer = source;
 		}
+		else if(RowProducer.isPrototypeOf(source))
+		{
+			this.rowProducer = new source({}, this);
+		}
 		else
 		{
-			// this.rowProducer = new RowProducer(source);
-			this.rowProducer = new FizzBuzzProducer(source);
+			this.rowProducer = new FizzBuzzProducer(this.source, this);
 		}
+	}
 
-		this.args.rows  = this.rowProducer.count();
-		this.args.cells = Array(this.args.columns * (showRows+1)).fill();
-
-		let topRow      = 0;
-		let visibleRows = Math.ceil(scroller.element.clientHeight / this.args.rowHeight);
-
-		this.refresh(topRow, visibleRows);
+	postRender()
+	{
+		this.refreshDefault();
 	}
 
 	attachHandler(event){}
@@ -73,18 +64,49 @@ export class View extends BaseView
 		let offset      = 0;
 		let scroller    = this.tags.scroll;
 		let scrolled    = scroller.element.scrollTop;
+		let visibleRows = Math.ceil(scroller.element.clientHeight / this.args.rowHeight);
+
+		let showRows = Math.ceil(scroller.element.clientHeight / this.args.rowHeight);
+
+		this.args.rows = this.rowProducer.count();
+
+		if(scroller.element.offsetHeight + scrolled >
+			scroller.element.scrollHeight - this.args.rowHeight
+		){
+			// return;
+		}
+
+		if(this.lastScroll == scrolled)
+		{
+			return;
+		}
+
+		this.lastScroll = scrolled;
+
+		this.viewLists.cells.pause();
+
+		this.args.cells = Array(this.args.columns * (visibleRows+1)).fill('');
+
+		this.args.total = this.args.cells.length;
 
 		scroller.element.focus();
 
 		let topRow      = Math.floor(scrolled / this.args.rowHeight);
-		let visibleRows = Math.ceil(scroller.element.clientHeight / this.args.rowHeight);
 		let tableHeight = visibleRows * this.args.rowHeight;
 		let bottomRow   = topRow + visibleRows;
 
 		if(bottomRow <= this.args.rows)
 		{
+			this.args.offset = (
+				Math.floor(scrolled / this.args.rowHeight)
+				* this.args.rowHeight
+			);
+
+			this.refresh(topRow, visibleRows);
+
 			if(this.args.header)
 			{
+				visibleRows++;
 				this.args.offset = (
 					Math.floor(scrolled / this.args.rowHeight)
 					* this.args.rowHeight
@@ -117,19 +139,68 @@ export class View extends BaseView
 		else
 		{
 			this.args.offset = (
-				(this.rowProducer.count() * this.args.rowHeight)
+				Math.floor(this.rowProducer.count() * this.args.rowHeight)
 				- tableHeight
 			);
 
 			this.refresh(topRow - 1, visibleRows );
 		}
+
+		this.viewLists.cells.pause(false);
+	}
+
+	refreshDefault()
+	{
+		let scroller    = this.tags.scroll;
+		let topRow      = 0;
+		let visibleRows = Math.ceil(scroller.element.clientHeight / this.args.rowHeight);
+
+		this.refresh(topRow, visibleRows);
 	}
 
 	refresh(topRow, visibleRows)
 	{
+		let scroller    = this.tags.scroll;
+
+		this.args.rows  = this.rowProducer.count();
+
+		if(visibleRows > this.args.rows)
+		{
+			visibleRows = this.args.rows;
+
+			if(this.args.header)
+			{
+				visibleRows++;
+			}
+		}
+
 		let segment = this.rowProducer.segment(topRow, visibleRows);
 
+		if(!segment || !segment.segment)
+		{
+			return;
+		}
+
+		this.args.columns = segment.segment
+			.map( s => s.length )
+			.sort( (a,b) => a-b )
+			.reverse()[0];
+
+		const showCells = visibleRows * this.args.columns;
+
+		if(this.args.cells.length < showCells)
+		{
+			for(let i = this.args.cells.length; i < showCells; i++)
+			{
+				this.args.cells[i] = '';
+			}
+
+			this.args.total = this.args.cells.length;
+		}
+
 		let segmentCells = [].concat(...segment.segment);
+
+		this.viewLists.cells.pause();
 
 		this.args.cells.map((cell, index) => {
 			if(this.args.header)
@@ -137,14 +208,22 @@ export class View extends BaseView
 				if(index < this.args.columns)
 				{
 					this.args.cells[index] = segment.header[index] || '';
+
 					return;
 				}
-				this.args.cells[ index ] = segmentCells[ index - this.args.columns ];
+
+				if(segmentCells[ index - this.args.columns ] !== undefined)
+				{
+					this.args.cells[ index ] = segmentCells[ index - this.args.columns ];
+				}
 			}
 			else
 			{
 				this.args.cells[ index ] = segmentCells[ index ];
 			}
 		});
+
+		this.viewLists.cells.pause(false);
+		this.viewLists.cells.reRender();
 	}
 }

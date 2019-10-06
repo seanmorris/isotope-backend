@@ -17,7 +17,7 @@ spec:
         tier: frontend
     spec:
       imagePullSecrets:
-        - name: regcred
+        - name: $REPO_CREDS
       containers:
         - name: backend
           image: $REPO/backend.isotope.seanmorr.is:$TAG

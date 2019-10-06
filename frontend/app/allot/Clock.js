@@ -32,7 +32,6 @@ export class Clock extends BaseView
 
 	postRender()
 	{
-
 		this.tags.clock.bindTo('visible', v => {
 			if(this.tags.clock.element.getRootNode() !== document)
 			{

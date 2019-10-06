@@ -1,4 +1,4 @@
-import { Config     } from 'Config';
+import { Config   } from 'Config';
 import { View     } from 'curvature/base/View';
 import { Toast    } from 'curvature/toast/Toast';
 import { Login    } from './Form/Login';
@@ -6,8 +6,9 @@ import { Create   } from './Form/Create';
 import { Register } from './Form/Register';
 import { Profile  } from './Access/Profile';
 
-import { Lobby } from './Lobby/Lobby';
-import { Board } from './Board/Board';
+import { Lobby    } from './Lobby/Lobby';
+import { GameRows } from './Lobby/GameRows';
+import { Board    } from './Board/Board';
 
 import { UserRepository } from 'curvature/access/UserRepository';
 
@@ -38,8 +39,20 @@ export class RootView extends View
 			, 'my-account':   Profile
 			, create:         Create
 			, allot:          require('allot/View').View
-			, alot:           require('alot/View').View
-			, false:          '404!'
+			, 'alot':   ()=>{
+
+				return new (require('alot/View').View)(
+					{header: true, rowHeight: 400}
+				);
+			}
+			, 'alot/games':   ()=>{
+
+				return new (require('alot/View').View)(
+					{header: true, rowHeight: 120}
+					, require('Lobby/GameRows').GameRows
+				);
+			}
+			, false: '404!'
 		};
 
 		this.template = `

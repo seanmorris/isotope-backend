@@ -7,12 +7,21 @@ PROJECT_NAME ?=isotope
 COMPOSE_FILE ?=docker-compose.${STAGE_ENV}.yml
 PACKAGE      ?=SeanMorris/Isotope
 # REPO         ?=r.cfcr.io/seanmorris
-REPO         ?=gcr.io/my-project-1550542132420
-TAG          ?=latest
+# REPO_CREDS   ?=regcred
 
+REPO         ?=gcr.io/my-project-1550542132420
+REPO         =seanmorris
+REPO_CREDS   ?=gcr-json-key
+
+TAG          ?=latest
 DOCKER_HOST_IP=`docker network inspect bridge --format="{{ (index .IPAM.Config 0).Gateway}}"`
-DOCKER_COMMAND= export DOCKER_HOST_IP=${DOCKER_HOST_IP} REPO=${REPO} TAG=${TAG} `cat ../.env | tr '\n' ' '` \
-	&& docker-compose -f docker-compose/${COMPOSE_FILE} -p ${PROJECT_NAME}
+DOCKER_COMMAND= export \
+	DOCKER_HOST_IP=${DOCKER_HOST_IP} \
+	REPO_CREDS=${REPO_CREDS} \
+	REPO=${REPO} \
+	TAG=${TAG} \
+	`cat ../.env | tr '\n' ' '` \
+		&& docker-compose -f docker-compose/${COMPOSE_FILE} -p ${PROJECT_NAME}
 
 EXTERNAL_IP?=`minikube ip`
 
@@ -185,7 +194,7 @@ cluster-credetials:
 	    --type=kubernetes.io/dockerconfigjson;
 
 cluster-apply:
-	@ export EXTERNAL_IP=${EXTERNAL_IP} REPO=${REPO} TAG=${TAG} \
+	export EXTERNAL_IP=${EXTERNAL_IP} REPO=${REPO} REPO_CREDS=${REPO_CREDS} TAG=${TAG} \
 	&& cat infra/kubernetes/mysql.deployment.k8s.yml   | envsubst | kubectl apply -f - \
 	&& cat infra/kubernetes/mysql.service.k8s.yml      | envsubst | kubectl apply -f - \
 	&& cat infra/kubernetes/rabbit.deployment.k8s.yml  | envsubst | kubectl apply -f - \

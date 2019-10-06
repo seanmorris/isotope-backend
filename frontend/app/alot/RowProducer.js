@@ -2,19 +2,25 @@ import { View } from 'curvature/base/View';
 
 export class RowProducer
 {
-	constructor(source)
+	constructor(source, alot)
 	{
-        Object.defineProperty(this, 'source', {
-            enumerable: false
-            , writable: false
-            , value:    source
-        });
+		Object.defineProperty(this, 'source', {
+			enumerable: false
+			, writable: false
+			, value:    source
+		});
 
-         Object.defineProperty(this, 'rowCache', {
-            enumerable: false
-            , writable: false
-            , value:    {}
-        });
+		Object.defineProperty(this, 'rowCache', {
+			enumerable: false
+			, writable: false
+			, value:    {}
+		});
+
+		Object.defineProperty(this, 'alot', {
+			enumerable: false
+			, writable: false
+			, value:    alot
+		});
 	}
 
 	count()
@@ -26,7 +32,7 @@ export class RowProducer
 	{
 		if(this.count() < index)
 		{
-			return undefined;
+			return {};
 		}
 
 		if(this.source[index])
@@ -34,7 +40,7 @@ export class RowProducer
 			return this.source[index];
 		}
 
-		return undefined;
+		return {};
 	}
 
 	rowSources(start, length)
@@ -77,7 +83,10 @@ export class RowProducer
 				}
 			}
 
-			this.rowCache[i] = row;
+			if(Object.keys(row).length)
+			{
+				this.rowCache[i] = row;
+			}
 
 			result.push(row);
 		}
@@ -123,7 +132,7 @@ export class RowProducer
 
 			for(let j in header)
 			{
-				if(typeof sources[i][ header[j] ] !== 'undefined')
+				if(typeof sources[i][ header[j] ])
 				{
 					row.push( sources[i][ header[j] ] );
 				}

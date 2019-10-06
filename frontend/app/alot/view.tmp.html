@@ -3,7 +3,6 @@
 		background: red;
 		position:   sticky;
 		top:        0px;
-		z-index:    1;
 	}
 
 	.alot-cell:nth-child(n+[[columnsP]]) {
@@ -55,7 +54,7 @@
 	cv-ref = "scroll:curvature/base/Tag"
 >
 	<div class = "alot-shim">&nbsp;</div>
-	<div class = "alot-grid" cv-each ="cells:cell:c">
-		<div class = "alot-cell" data-cell-id = "[[c]]">[[cell]]</div>
+	<div class = "alot-grid" cv-each ="cells:cell:c" style = "--alot-cells:[[total]];">
+		<div class = "alot-cell" style = "--alot-cell:[[c]];" data-cell-id = "[[c]]">[[$cell]]</div>
 	</div>
 </div>

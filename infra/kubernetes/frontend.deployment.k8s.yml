@@ -17,7 +17,7 @@ spec:
         tier: frontend
     spec:
       imagePullSecrets:
-        - name: regcred
+        - name: $REPO_CREDS
       containers:
         - name: frontend
           image: $REPO/is.seanmorr.thruput.proxy:$TAG

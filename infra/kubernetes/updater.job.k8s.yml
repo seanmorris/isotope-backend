@@ -6,7 +6,7 @@ spec:
   template:
     spec:      
       imagePullSecrets:
-        - name: regcred     
+        - name: $REPO_CREDS     
       containers:
         - name: updater
           image: $REPO/updater.isotope.seanmorr.is:$TAG
