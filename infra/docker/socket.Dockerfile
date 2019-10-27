@@ -1,4 +1,4 @@
-FROM seanmorris/subspace-socket:latest AS development
+FROM docker.io/seanmorris/subspace-socket:latest AS development
 
 RUN docker-php-ext-install sockets bcmath
 

@@ -21,8 +21,8 @@ spec:
           image: rabbitmq:3-management
           resources:
             requests:
-              cpu: 10m
-              memory: 128Mi
+              cpu: 1000m
+              memory: 1024Mi
           env:
             - name: GET_HOSTS_FROM
               value: dns

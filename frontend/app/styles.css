@@ -482,9 +482,9 @@ div.particles {
 }
 
 .lobby-content .game-list {
+	position:   relative;
 	height:     16em;
 	display:    flex;
-	overflow-y: scroll;
 	background: white;
 	border:     2px outset #ccc;
 	margin:     0.75em;

@@ -147,4 +147,21 @@ export class RowProducer
 
 		return {header, segment};
 	}
+
+	clearCache()
+	{
+		for(let i in this.rowCache)
+		{
+			for(let j in this.rowCache[i])
+			{
+				if(this.rowCache[i][j] instanceof View && this.rowCache[i][j])
+				{
+					this.rowCache[i][j].remove();
+				}
+
+				this.rowCache[i][j] = ' ';
+			}
+			delete this.rowCache[i];
+		}
+	}
 }

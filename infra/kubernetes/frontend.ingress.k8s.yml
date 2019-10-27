@@ -6,7 +6,7 @@ metadata:
   annotations:
 spec:
  rules:
- - host: frontend.isotope.$EXTERNAL_IP.nip.io
+ - host: frontend.$HOST
    http:
      paths:
      - backend:

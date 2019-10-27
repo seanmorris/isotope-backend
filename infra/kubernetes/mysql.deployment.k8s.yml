@@ -1,4 +1,4 @@
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: database
@@ -20,16 +20,14 @@ spec:
     spec:
       containers:
         - name: database
-          image: mysql:5.7
-          args:    ['--character-set-server=utf8mb4']
+          image:  mariadb:10.4.8-bionic
+          ports:
+            - containerPort: 3306
           resources:
             requests:
-              cpu: 10m
-              memory: 128Mi
+              cpu: 100m
+              memory: 512Mi
           env:
-            - name: GET_HOSTS_FROM
-              value: dns
-
             - name: MYSQL_ROOT_PASSWORD
               value: supersecret
             - name: MYSQL_USER
@@ -38,6 +36,14 @@ spec:
               value: iso_secret
             - name: MYSQL_DATABASE
               value: isotope
-
-          ports:
-            - containerPort: 3306
+            # - name: GET_HOSTS_FROM
+            #   value: dns
+            # - name: GET_HOSTS_FROM
+            #   value: dns
+      #     volumeMounts:
+      #       - name: mysql-volume
+      #         mountPath: /var/lib/mysql
+      # volumes:
+      #   - name: mysql-volume
+      #     persistentVolumeClaim:
+      #       claimName: mysql-volume-claim

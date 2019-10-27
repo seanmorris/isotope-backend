@@ -9,8 +9,10 @@ PACKAGE      ?=SeanMorris/Isotope
 # REPO         ?=r.cfcr.io/seanmorris
 # REPO_CREDS   ?=regcred
 
+# REPO         =seanmorris
+HOST         =seanmorr.is
+HOST         =127.0.0.1.nip.io
 REPO         ?=gcr.io/my-project-1550542132420
-REPO         =seanmorris
 REPO_CREDS   ?=gcr-json-key
 
 TAG          ?=latest
@@ -19,11 +21,12 @@ DOCKER_COMMAND= export \
 	DOCKER_HOST_IP=${DOCKER_HOST_IP} \
 	REPO_CREDS=${REPO_CREDS} \
 	REPO=${REPO} \
+	HOST=${HOST} \
 	TAG=${TAG} \
 	`cat ../.env | tr '\n' ' '` \
 		&& docker-compose -f docker-compose/${COMPOSE_FILE} -p ${PROJECT_NAME}
 
-EXTERNAL_IP?=`minikube ip`
+EXTERNAL_IP=`minikube ip`
 
 it:
 	@ echo "Building ${PROJECT_NAME} ${STAGE_ENV}..." \
@@ -36,7 +39,7 @@ build:
 	&& ${DOCKER_COMMAND} -f docker-compose/docker-compose.base.yml build watcher \
 	&& cd .. \
 	&& ( \
-		[ "${STAGE_ENV}" == "development" ] || \
+		[[ "${STAGE_ENV}" == "development" ]] || \
 		make build-js COMPOSE_FILE=docker-compose.base.yml \
 	) \
 	&& cd infra/ \
@@ -188,13 +191,24 @@ renew-ssl:
 		certbot \
 		renew
 
+# cluster-credetials:
+# 	@ kubectl create secret generic regcred \
+# 	    --from-file=.dockerconfigjson=${HOME}/.docker/config.json \
+# 	    --type=kubernetes.io/dockerconfigjson;
+
+# cluster-creds:
+# 	cat ./.gcr_secret.json
 cluster-credetials:
-	@ kubectl create secret generic regcred \
-	    --from-file=.dockerconfigjson=${HOME}/.docker/config.json \
-	    --type=kubernetes.io/dockerconfigjson;
+	cat ./.gcr_secret.json
+	kubectl delete secret gcr-json-key \
+	; kubectl create secret docker-registry gcr-json-key \
+		--docker-server=https://gcr.io \
+		--docker-username=_json_key \
+		--docker-password="$$(cat ./.gcr_secret.json)" \
+		--docker-email=sean@seanmorr.is
 
 cluster-apply:
-	export EXTERNAL_IP=${EXTERNAL_IP} REPO=${REPO} REPO_CREDS=${REPO_CREDS} TAG=${TAG} \
+	export EXTERNAL_IP=${EXTERNAL_IP} REPO=${REPO} HOST=${HOST} REPO_CREDS=${REPO_CREDS} TAG=${TAG} \
 	&& cat infra/kubernetes/mysql.deployment.k8s.yml   | envsubst | kubectl apply -f - \
 	&& cat infra/kubernetes/mysql.service.k8s.yml      | envsubst | kubectl apply -f - \
 	&& cat infra/kubernetes/rabbit.deployment.k8s.yml  | envsubst | kubectl apply -f - \
@@ -205,8 +219,13 @@ cluster-apply:
 	&& cat infra/kubernetes/updater.job.k8s.yml        | envsubst | kubectl apply -f - \
 	&& cat infra/kubernetes/socket.ingress.k8s.yml     | envsubst | kubectl apply -f - \
 	&& cat infra/kubernetes/backend.ingress.k8s.yml    | envsubst | kubectl apply -f - \
-	&& cat infra/kubernetes/rabbit.service.k8s.yml     | envsubst | kubectl apply -f -
+	&& cat infra/kubernetes/rabbit.service.k8s.yml     | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/load-balancer.deployment.k8s.yml   | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/load-balancer.service.k8s.yml      | envsubst | kubectl apply -f - \
+	&& cat infra/kubernetes/load-balancer.ingress.k8s.yml      | envsubst | kubectl apply -f -
 
+# 	&& cat infra/kubernetes/mysql.volume.k8s.yml       | envsubst | kubectl apply -f - \
+# 	&& cat infra/kubernetes/mysql.volume-claim.k8s.yml | envsubst | kubectl apply -f - \
 # 	&& cat infra/kubernetes/cache-warmer.deployment.k8s.yml     | envsubst | kubectl apply -f - \
 # 	&& cat infra/kubernetes/frontend.deployment.k8s.yml | envsubst | kubectl apply -f -\
 # 	&& cat infra/kubernetes/frontend.service.k8s.yml    | envsubst | kubectl apply -f -\
@@ -214,9 +233,15 @@ cluster-apply:
 
 cluster-delete:
 	@ export EXTERNAL_IP=${EXTERNAL_IP} \
-	; kubectl delete ingress backend socket \
-	; kubectl delete deployment,service frontend backend database rabbit socket cache-warmer \
+	; kubectl delete ingress backend socket load-balancer \
+	; kubectl delete deployment,service frontend backend database rabbit socket cache-warmer load-balancer \
 	; kubectl delete job updater
+
+cluster-delete-volumes:
+	@ export EXTERNAL_IP=${EXTERNAL_IP} \
+	; kubectl delete PersistentVolumeClaim mysql-pv-claim \
+	; kubectl delete PersistentVolumeClaim mysql-volume-claim \
+	; kubectl delete PersistentVolume mysql-volume
 
 cloud-build:
 	gcloud builds submit --config infra/ci/cloud-build.yml .

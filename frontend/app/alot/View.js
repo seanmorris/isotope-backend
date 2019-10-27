@@ -19,7 +19,9 @@ export class View extends BaseView
 		this.args.columns    = 1;
 		this.args.rowHeight  = this.args.rowHeight || 24;
 		this.args.rows       = 0;
+
 		this.lastScroll      = null;
+		this.lastTopRow      = 0;
 		
 		this.args.offset     = 0;
 		this.args.cellOffset = 0;
@@ -95,6 +97,8 @@ export class View extends BaseView
 		let tableHeight = visibleRows * this.args.rowHeight;
 		let bottomRow   = topRow + visibleRows;
 
+		console.log(bottomRow, this.args.rows);
+
 		if(bottomRow <= this.args.rows)
 		{
 			this.args.offset = (
@@ -107,6 +111,7 @@ export class View extends BaseView
 			if(this.args.header)
 			{
 				visibleRows++;
+
 				this.args.offset = (
 					Math.floor(scrolled / this.args.rowHeight)
 					* this.args.rowHeight
@@ -138,12 +143,18 @@ export class View extends BaseView
 		}
 		else
 		{
+			if(this.args.header && topRow > this.lastTopRow)
+			{
+				topRow = this.lastTopRow;
+				visibleRows++;
+			}
+
 			this.args.offset = (
 				Math.floor(this.rowProducer.count() * this.args.rowHeight)
 				- tableHeight
 			);
 
-			this.refresh(topRow - 1, visibleRows );
+			this.refresh(topRow, visibleRows);
 		}
 
 		this.viewLists.cells.pause(false);
@@ -168,13 +179,24 @@ export class View extends BaseView
 		{
 			visibleRows = this.args.rows;
 
-			if(this.args.header)
-			{
-				visibleRows++;
-			}
+			// if(this.args.header)
+			// {
+			// 	visibleRows++;
+			// }
 		}
 
 		let segment = this.rowProducer.segment(topRow, visibleRows);
+
+		// if(segment.segment.length >= visibleRows)
+		// {
+		// 	this.lastTopRow = topRow;
+		// }
+		// else
+		// {
+		// 	topRow = this.lastTopRow;
+		// }
+
+		console.log(segment.segment.length, visibleRows, topRow);
 
 		if(!segment || !segment.segment)
 		{
@@ -198,6 +220,11 @@ export class View extends BaseView
 			this.args.total = this.args.cells.length;
 		}
 
+		// while(this.args.cells.length + (this.args.header ? 0:this.args.columns) > showCells)
+		// {
+		// 	this.args.cells.pop();
+		// }
+
 		let segmentCells = [].concat(...segment.segment);
 
 		this.viewLists.cells.pause();
@@ -215,6 +242,10 @@ export class View extends BaseView
 				if(segmentCells[ index - this.args.columns ] !== undefined)
 				{
 					this.args.cells[ index ] = segmentCells[ index - this.args.columns ];
+				}
+				else
+				{
+					// delete this.args.cells[ index ];
 				}
 			}
 			else

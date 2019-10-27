@@ -27,6 +27,13 @@ export class Lobby extends View
 
 		this.socket = root.socket;
 
+		this.args.scroller = new (require('alot/View').View)(
+			{header: true, rowHeight: 24}
+			, require('./GameRows').GameRows
+		);
+
+		this.gameRows = this.args.scroller.rowProducer;
+
 		// this.args.list = new Allot({
 		// 	rowHeight: 42
 		// 	, header:  [
@@ -38,12 +45,15 @@ export class Lobby extends View
 		// });
 
 		this.args.bindTo('games', (v)=>{
+			if(Array.isArray(v))
+			{
+				this.args.gamesFound = v.length;
+			}
 			if(!v || !(v instanceof Promise))
 			{
 				return;
 			}
 
-			this.args.gamesFound = v.length;
 
 			// this.args.list.source(v.map(vv=>{
 			// 	return {cells:[
@@ -93,6 +103,10 @@ export class Lobby extends View
 
 		this.args.searching = true;
 		this.args.games     = this.args.games || [];
+
+		console.log(this.gameRows);
+
+		this.gameRows.refresh();
 
 		// this.args.list.refresh();
 

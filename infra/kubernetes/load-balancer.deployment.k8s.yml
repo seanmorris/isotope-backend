@@ -1,26 +1,26 @@
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
+  name: load-balancer
   labels:
-    app: backend
+    app: load-balancer
 spec:
   selector:
     matchLabels:
-      app: backend
+      app: load-balancer
       tier: frontend
   replicas: 1
   template:
     metadata:
       labels:
-        app: backend
+        app: load-balancer
         tier: frontend
     spec:
       imagePullSecrets:
         - name: $REPO_CREDS
       containers:
-        - name: backend
-          image: $REPO/backend.isotope.seanmorr.is:$TAG
+        - name: load-balancer
+          image: $REPO/load-balancer.isotope.seanmorr.is:$TAG
           resources:
             requests:
               cpu: 200m

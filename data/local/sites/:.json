@@ -45,5 +45,6 @@
 		"lifetime": 315360000
 		, "path":   "/"
 	}
+	, "log": "php://stderr"
 	, "logLevel": "query"
 }

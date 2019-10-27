@@ -8,27 +8,28 @@
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.3.3",
+            "version": "6.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "407b0cb880ace85c9b63c5f9551db498cb2d50ba"
+                "reference": "0895c932405407fd3a7368b6910c09a24d26db11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/407b0cb880ace85c9b63c5f9551db498cb2d50ba",
-                "reference": "407b0cb880ace85c9b63c5f9551db498cb2d50ba",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/0895c932405407fd3a7368b6910c09a24d26db11",
+                "reference": "0895c932405407fd3a7368b6910c09a24d26db11",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "guzzlehttp/promises": "^1.0",
-                "guzzlehttp/psr7": "^1.4",
+                "guzzlehttp/psr7": "^1.6.1",
                 "php": ">=5.5"
             },
             "require-dev": {
                 "ext-curl": "*",
                 "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
-                "psr/log": "^1.0"
+                "psr/log": "^1.1"
             },
             "suggest": {
                 "psr/log": "Required for using the Log middleware"
@@ -40,12 +41,12 @@
                 }
             },
             "autoload": {
-                "files": [
-                    "src/functions_include.php"
-                ],
                 "psr-4": {
                     "GuzzleHttp\\": "src/"
-                }
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -69,7 +70,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2018-04-22T15:46:56+00:00"
+            "time": "2019-10-23T15:58:00+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -452,12 +453,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/access.git",
-                "reference": "24ea214ae0e31a84e463ed2fd9a13a7539323551"
+                "reference": "bc0af03a58fc6bdae2cbe93d70d3605f2e406d1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/access/zipball/24ea214ae0e31a84e463ed2fd9a13a7539323551",
-                "reference": "24ea214ae0e31a84e463ed2fd9a13a7539323551",
+                "url": "https://api.github.com/repos/seanmorris/access/zipball/bc0af03a58fc6bdae2cbe93d70d3605f2e406d1c",
+                "reference": "bc0af03a58fc6bdae2cbe93d70d3605f2e406d1c",
                 "shasum": ""
             },
             "require": {
@@ -484,7 +485,7 @@
                 "source": "https://github.com/seanmorris/access/tree/master",
                 "issues": "https://github.com/seanmorris/access/issues"
             },
-            "time": "2019-09-01T18:45:38+00:00"
+            "time": "2019-09-30T23:54:31+00:00"
         },
         {
             "name": "seanmorris/form",
@@ -532,12 +533,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/seanmorris/ids.git",
-                "reference": "51751a8feb0e2ba81272a1f12c86b9d3852fcd0e"
+                "reference": "a7ed81cf623a1a8205b3ce13969bc4fc8cf6fe17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/seanmorris/ids/zipball/51751a8feb0e2ba81272a1f12c86b9d3852fcd0e",
-                "reference": "51751a8feb0e2ba81272a1f12c86b9d3852fcd0e",
+                "url": "https://api.github.com/repos/seanmorris/ids/zipball/a7ed81cf623a1a8205b3ce13969bc4fc8cf6fe17",
+                "reference": "a7ed81cf623a1a8205b3ce13969bc4fc8cf6fe17",
                 "shasum": ""
             },
             "require-dev": {
@@ -563,7 +564,7 @@
                 "source": "https://github.com/seanmorris/ids/tree/master",
                 "issues": "https://github.com/seanmorris/ids/issues"
             },
-            "time": "2019-09-29T19:55:07+00:00"
+            "time": "2019-10-09T22:41:17+00:00"
         },
         {
             "name": "seanmorris/kallisti",

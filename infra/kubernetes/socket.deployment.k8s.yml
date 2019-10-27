@@ -23,7 +23,7 @@ spec:
           image: $REPO/socket.isotope.seanmorr.is:$TAG
           resources:
             requests:
-              cpu: 50m
+              cpu: 200m
               memory: 512Mi
           env:
             - name: GET_HOSTS_FROM

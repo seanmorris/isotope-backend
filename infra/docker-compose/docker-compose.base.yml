@@ -38,7 +38,12 @@ services:
     restart: always
 
   load-balancer:
-    image: nginx:alpine
+    image: ${REPO}/load-balancer.isotope.seanmorr.is:${TAG}
+    build:
+      context: ../../
+      dockerfile: infra/docker/load-balancer.Dockerfile
+    env_file:
+        - ../../.env
     restart: always
 
   worker:
@@ -99,7 +104,7 @@ services:
       - ../../data/local/composer/:/root/.composer/
 
   database:
-    image: mysql:5.7
+    image: mariadb:10.4.8-bionic
     restart: always
     ports:
       - "9996:3306"
