@@ -120,22 +120,23 @@ services:
     command: ['mysqld', '--character-set-server=utf8mb4']
 
   rabbit:
-    image: rabbitmq:3-management
+    image: ${REPO}/rabbit.isotope.seanmorr.is:${TAG}
+    build:
+      context: ../../
+      dockerfile: infra/docker/rabbit.Dockerfile
+    env_file:
+        - ../../.env
     restart: always
     environment:
       RABBITMQ_ERLANG_COOKIE: "O234234QALRPCLNMEQG"
       RABBITMQ_DEFAULT_USER: "rabbitmq"
       RABBITMQ_DEFAULT_PASS: "rabbitmq"
       RABBITMQ_DEFAULT_VHOST: "/"
-    env_file:
-        - ../../.env
     ports:
       - "15672:15672"
       - "5672:5672"
     labels:
       NAME: "rabbitmq1"
-    volumes:
-      - ../../data/global/rabbitMq/enabled_plugins:/etc/rabbitmq/enabled_plugins
       
   redis:
     image: redis:5.0

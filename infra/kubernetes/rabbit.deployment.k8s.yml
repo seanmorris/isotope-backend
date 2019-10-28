@@ -16,28 +16,23 @@ spec:
         app: rabbit
         tier: backend
     spec:
+      imagePullSecrets:
+        - name: $REPO_CREDS
       containers:
         - name: rabbit
-          image: rabbitmq:3-management
+          image: bitnami/rabbitmq:3.8-debian-9
           resources:
             requests:
-              cpu: 1000m
-              memory: 1024Mi
+              cpu: 250m
+              memory: 256Mi
           env:
-            - name: GET_HOSTS_FROM
-              value: dns
-
-            - name: RABBITMQ_ERLANG_COOKIE
+            - name: RABBITMQ_ERL_COOKIE
               value: O234234QALRPCLNMEQG
-            
-            - name: RABBITMQ_DEFAULT_USER
+            - name: RABBITMQ_USERNAME
               value: rabbitmq
-
-            - name: RABBITMQ_DEFAULT_PASS
+            - name: RABBITMQ_PASSWORD
               value: rabbitmq
-
-            - name: RABBITMQ_DEFAULT_VHOST
+            - name: RABBITMQ_VHOST
               value: /
-
           ports:
             - containerPort: 5672

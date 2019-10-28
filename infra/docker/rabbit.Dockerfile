@@ -1,5 +1,5 @@
-FROM nginx:alpine AS development
+FROM rabbitmq:3.8.0-management AS development
 
 FROM development AS production
 
-COPY ./data/global/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./data/global/rabbitMq/enabled_plugins /etc/rabbitmq/enabled_plugins

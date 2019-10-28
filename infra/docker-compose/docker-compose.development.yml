@@ -87,6 +87,8 @@ services:
      extends:
       file: docker-compose.base.yml
       service: rabbit
+    volumes:
+      - ../../data/global/rabbitMq/enabled_plugins:/etc/rabbitmq/enabled_plugins
 
   redis:
      extends:
