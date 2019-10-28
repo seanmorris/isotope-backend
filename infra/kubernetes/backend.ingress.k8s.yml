@@ -2,8 +2,8 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: backend
-  annotations:
-    kubernetes.io/ingress.global-static-ip-name: "web-static-ip"
+  # annotations:
+  #   kubernetes.io/ingress.global-static-ip-name: "web-static-ip"
 spec:
  rules:
  - host: backend.isotope.$HOST
